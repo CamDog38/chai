@@ -1,0 +1,252 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.cdnfonts.com/css/aileron');
+
+:root{
+  --bg:#292929;
+  --ink:#e3e2dc;
+  --muted:#b7b5b0;
+  --accent:#495932;
+  --line:#3a3a3a;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:'Poppins',system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial}
+
+/* Optional gradient theme like index */
+body.bg--gradient{
+  background: linear-gradient(135deg, #303030 0%, var(--bg) 38%, #1d1d1d 100%);
+}
+
+/* Ensure scroll proxy remains interactive (allows page scroll) */
+.scroll-detector{ z-index: 10 !important; }
+
+
+.page-head{padding:48px 32px 12px; display:flex; align-items:center; justify-content:center}
+.page-title{font-family:'Aileron','Poppins',system-ui; font-weight:800; font-size:48px; margin:0}
+
+.cases{padding:0 0 32px}
+
+/* Horizontal rail */
+.rail-wrap{
+  position:relative;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding:0 5vw 6vh;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+.rail{
+  display:flex;
+  gap:40px;
+  align-items:center;
+  padding:12px 0;
+  scroll-snap-type:x mandatory;
+  pointer-events: auto; /* ensure interactions are allowed */
+}
+
+/* Large side-by-side panels (approx. double previous tile size) */
+.case-panel{
+  position:relative;
+  flex:0 0 auto;
+  width:600px;            /* fixed card width */
+  aspect-ratio:16/9;      /* keep media proportion */
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  box-shadow:0 26px 70px rgba(0,0,0,.45);
+  scroll-snap-align:center;
+  background:#111;
+}
+.case-media{
+  position:absolute; inset:0;
+  background-image: var(--bg);
+  background-size:cover; background-position:center;
+  filter:saturate(.95) contrast(1.05) brightness(.9);
+}
+.case-panel::before{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.45) 60%, rgba(0,0,0,.6));
+  opacity:.55;
+  transition:opacity 220ms ease;
+}
+
+/* Overlay content */
+.case-overlay{
+  position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:28px; text-align:center; pointer-events:none;
+}
+.case-brand{
+  font-family:'Aileron','Poppins',system-ui;
+  font-weight:800;
+  font-size: clamp(34px, 5vw, 72px);
+  letter-spacing:.04em;
+  color:#ffffff;
+  text-shadow:0 12px 28px rgba(0,0,0,.5);
+  transform:translateY(0);
+  transition:transform 240ms cubic-bezier(.2,.7,0,1), opacity 240ms ease;
+}
+.case-desc{
+  font-family:'Poppins',system-ui;
+  color:var(--ink);
+  line-height:1.8;
+  font-size:clamp(14px, 1.4vw, 18px);
+  max-width:70ch;
+  margin-top:14px;
+  opacity:0;
+  transform:translateY(12px);
+  transition:opacity 260ms ease, transform 260ms cubic-bezier(.2,.7,0,1);
+}
+
+/* Hover state: reveal description */
+.case-panel:hover::before{ opacity:.78; }
+.case-panel:hover .case-brand{ transform:translateY(-8px); }
+.case-panel:hover .case-desc{ opacity:1; transform:translateY(0); }
+
+/* Responsive adjustments */
+@media (max-width: 900px){
+  .page-title{font-size:38px}
+  .rail{gap:22px}
+  .case-panel{ width:88vw }
+}
+@media (max-width: 560px){
+  .rail-wrap{ padding:0 16px 5vh }
+  .case-panel{ width:92vw }
+}
+
+/* ===== Case Card Design Overrides (logos centered, text on hover with gradient) ===== */
+
+/* Re-enable interactions on media layers within case cards (index.css disables .layer-media globally) */
+.viewport .rail .case-card .layer-media{ pointer-events: auto !important; }
+
+/* Size balance: make each card a consistent 16:9 tile with comfortable spacing */
+.case-card{
+  position: relative !important; /* ensure overlay positioning context */
+  pointer-events: auto !important; /* allow parent to receive hover */
+  flex: 0 0 780px !important; /* +30% */
+  width: 780px !important;     /* +30% */
+  height: auto !important;
+  min-height: 0 !important;
+  aspect-ratio: 16/9;
+  margin-right: 0 !important; /* use rail gap instead */
+  padding: 0 !important;      /* remove inner gutter to let image fill */
+  overflow: hidden !important;
+  cursor: default;
+}
+@media (max-width: 1200px){ .case-card{ width: 700px !important; flex-basis: 700px !important; } }
+@media (max-width: 900px){ .case-card{ width: 92vw !important; flex-basis: 92vw !important; margin-right: 22px !important; } }
+@media (max-width: 560px){ .case-card{ width: 96vw !important; flex-basis: 96vw !important; } }
+
+/* Hide numbers on this page to match the clean logo look */
+.case-card .case-card__num{ display:none !important; }
+
+/* Ensure the top area acts as the visual stage */
+.case-card .case-card__top{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height: 100%;
+  aspect-ratio: auto; /* let parent control ratio */
+  /* Ensure this media layer participates in hover interactions (index sets .layer-media to none) */
+  pointer-events: auto !important;
+  z-index: 1; /* establish stacking for ::after and logo */
+}
+
+/* Centered logo (no circular white background) */
+.case-card .case-card__logo{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:auto; height:auto;
+  background:transparent !important;
+  border:0 !important;
+  border-radius:0 !important;
+  transform:none !important;
+  z-index:3;
+  pointer-events:none;
+}
+.case-card .case-card__logo img{
+  width:min(72%, 630px); /* 50% larger than previous 48%/420px */
+  height:auto;
+  object-fit:contain;
+  transition: transform 220ms ease, opacity 220ms ease;
+  filter: drop-shadow(0 14px 32px rgba(0,0,0,.6));
+  padding:0;
+}
+
+/* Gradient veil that appears on hover to improve text readability */
+.case-card .case-card__top::before{
+  /* Always-on subtle vignette to help logo contrast */
+  content:"";
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse at center,
+      rgba(0,0,0,0.26) 0%,
+      rgba(0,0,0,0.20) 32%,
+      rgba(0,0,0,0.08) 58%,
+      rgba(0,0,0,0.00) 80%);
+  z-index:1; /* under ::after and logo */
+  pointer-events:none;
+}
+.case-card .case-card__top::after{
+  content:"";
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.14) 8%, rgba(0,0,0,0.46) 50%, rgba(0,0,0,0.85) 92%);
+  opacity:0;
+  transition: opacity 220ms ease;
+  z-index:2;
+}
+
+/* Text block becomes an overlaid caption at the bottom */
+.case-card .case-card__bottom{
+  position:absolute;
+  left:0; right:0; bottom:0;
+  padding:24px 26px 28px;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.62) 38%, rgba(0,0,0,0.85) 100%);
+  transform: translateY(10px);
+  opacity:0;
+  transition: opacity 220ms ease, transform 240ms cubic-bezier(.2,.7,0,1);
+  will-change: opacity, transform;
+  z-index:3;
+  pointer-events:none;
+}
+.case-card .case-card__brand{ color:#fff; font-size:clamp(28px, 3.4vw, 40px); margin:0 0 8px 0 }
+.case-card .case-card__desc{ 
+  color:#e7e7e7; font-size:15px; line-height:1.7;
+  display:-webkit-box; -webkit-line-clamp:4; line-clamp:4; -webkit-box-orient:vertical; overflow:hidden;
+}
+
+/* Hover interactions */
+.case-card:hover .case-card__top::after{ opacity:1 }
+.case-card:hover .case-card__logo{ opacity:.15; transition:opacity 220ms ease }
+.case-card:hover .case-card__bottom{ opacity:1; transform: translateY(0) }
+
+/* JS-driven hover fallback */
+.case-card.is-hover .case-card__top::after{ opacity:1 }
+.case-card.is-hover .case-card__logo{ opacity:.15 }
+.case-card.is-hover .case-card__bottom{ opacity:1; transform: translateY(0) }
+
+/* Visual feedback to confirm hover is active */
+.case-card:hover{ border-color:#3a3a3a !important; box-shadow:0 32px 80px rgba(0,0,0,.5) !important }
+
+/* Touch/keyboard support */
+.case-card:focus-within .case-card__top::after,
+.case-card:active .case-card__top::after{ opacity:1 }
+.case-card:focus-within .case-card__logo,
+.case-card:active .case-card__logo{ opacity:.15 }
+.case-card:focus-within .case-card__bottom,
+.case-card:active .case-card__bottom{ opacity:1; transform: translateY(0) }
+
+/* Fallback: trigger overlay when hovering the media area specifically */
+.case-card .case-card__top:hover::after{ opacity:1 }
+.case-card .case-card__top:hover ~ .case-card__bottom{ opacity:1; transform: translateY(0) }
+.case-card .case-card__top:hover .case-card__logo{ opacity:.15 }
+
+/* Extra robustness using :has() where supported */
+.case-card:has(.case-card__top:hover) .case-card__top::after{ opacity:1 }
+.case-card:has(.case-card__top:hover) .case-card__logo{ opacity:.15 }
+.case-card:has(.case-card__top:hover) .case-card__bottom{ opacity:1; transform: translateY(0) }

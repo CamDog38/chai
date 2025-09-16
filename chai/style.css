@@ -1,0 +1,688 @@
+ @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.cdnfonts.com/css/aileron');
+
+:root{
+  /* Theme */
+  --bg:#292929;           /* slate grey */
+  --ink:#e3e2dc;          /* oat (primary text) */
+  --muted:#b7b5b0;        /* muted oat */
+  --accent:#495932;       /* olive (highlight) */
+  --line:#3a3a3a;         /* lines/borders */
+
+  --rail-gap:48px; --rail-pad:56px;
+  --panel-w:520px;
+  /* Gradient controls (for optional solid gradient theme) */
+  --bg-start:#303030;     /* slightly lighter than --bg */
+  --bg-end:#1d1d1d;       /* slightly darker tail */
+  /* Studio light controls */
+  --light-x: 22%;         /* hotspot position X */
+  --light-y: 20%;         /* hotspot position Y */
+  --light-size: 920px;    /* maximum smoothness radius */
+  --light-strong: 0.06;   /* ultra-gentle center */
+  --light-soft: 0.03;     /* ultra-gentle mid */
+  /* Accent serif for selective emphasis (Didot LP Display → Playfair fallback) */
+  --accent-serif: "Didot LP Display", "Playfair Display", serif;
+}
+
+/* ================= Loader ================= */
+.loader{
+  position:fixed; inset:0; z-index:2000;
+  background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg) 38%, var(--bg-end) 100%);
+  display:block; overflow:hidden;
+  /* Panel slide reveal: start covering screen, then slide up off screen */
+  transform: translateY(0);
+  transition: transform 3000ms cubic-bezier(.2,.7,0,1);
+  will-change: transform;
+}
+.loader__logo{
+  position:absolute; left:50%; top:50%; transform:translate(-50%, -50%) scale(.94);
+  width:min(36vw, 300px); height:auto; filter: drop-shadow(0 18px 46px rgba(0,0,0,.45));
+  opacity:0; transition: transform 900ms cubic-bezier(.2,.7,0,1), opacity 800ms ease;
+}
+.loader__bg,.loader__mask,.loader__edge{position:absolute; inset:0; pointer-events:none}
+.loader__bg{background: radial-gradient(ellipse at center, rgba(255,255,255,.06) 0%, rgba(255,255,255,0) 60%)}
+.loader__edge{border-top:1px solid rgba(255,255,255,.06)}
+.loader.on .loader__logo{ opacity:1; transform:translate(-50%, -50%) scale(1) }
+.loader.animate{ transform: translateY(-100%); }
+.loader.is-hidden{display:none}
+
+/* Reduce motion accessibility */
+@media (prefers-reduced-motion: reduce){
+  .loader{ transition: none; }
+  .loader__logo{ transition: none }
+}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  /* full-bleed background */
+ body{font-family:'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"; color:var(--ink); overflow:hidden;
+   /* Background texture (prototype): consider downloading and self-hosting for production */
+   background-color:#292929;
+   background-image:url("https://www.transparenttextures.com/patterns/concrete-wall.png");
+   background-attachment:fixed; /* keep texture stable on scroll */
+ }
+
+ /* Background texture overlay (behind UI) */
+body::before{
+  content:"";
+  position:fixed; inset:0; pointer-events:none;
+  z-index:0; /* behind .viewport (1) and all content */
+  background-image:url("https://www.transparenttextures.com/patterns/concrete-wall.png");
+  background-size:256px 256px; background-repeat:repeat; background-position:0 0;
+  opacity:0.22;               /* subtle strength so it doesn't affect text */
+  mix-blend-mode:normal;
+}
+
+  /* Scroll proxy */
+  .scroll-detector{position:fixed; inset:0; overflow-y:auto; z-index:10}
+  .scroll-height{height:1650vh; width:1px}
+
+  /* Hide vertical scrollbar on scroll proxy (preserve scrolling) */
+  .scroll-detector{ 
+    scrollbar-width: none;       /* Firefox */
+    -ms-overflow-style: none;    /* IE 10+ / old Edge */
+  }
+  .scroll-detector::-webkit-scrollbar{ /* Chrome, Safari, new Edge */
+    width: 0;
+    height: 0;
+  }
+
+  /* Full-screen viewport (no border, no frame) */
+  .viewport{
+    position:fixed; top:0; left:0; width:100vw; height:100vh;
+    background:transparent; /* let the body texture show through */
+    overflow:visible; z-index:1;
+    /* Shift all content to the right to make space for header on the left */
+    padding-left:84px;
+  }
+
+  /* Case studies responsive height */
+  @media (max-width: 900px){
+    .case-card{height:auto; min-height:480px}
+    .case-card__top{aspect-ratio:16/9}
+  }
+
+  /* Hero-style card box for text panel */
+  .panel--hero-card{
+    background:#202020;
+    border:1px solid var(--line);
+    border-radius:14px;
+    box-shadow:0 30px 70px rgba(0,0,0,.35);
+    padding:36px 40px;
+    position:relative; /* for texture overlay */
+  }
+  .panel--hero-card h2{font-family:'Aileron', 'Poppins', system-ui; font-size:36px; line-height:1.15; margin-bottom:16px; font-weight:800; color:var(--ink)}
+  .panel--hero-card .body-text{font-size:18px; line-height:1.6; color:var(--muted)}
+  .panel--hero-card::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:url("https://www.transparenttextures.com/patterns/concrete-wall.png");
+    background-size:256px 256px; background-repeat:repeat; background-position:0 0;
+    opacity:0.12;            /* subtle texture */
+    mix-blend-mode:normal;
+    pointer-events:none;
+    z-index:0;               /* above background, below content */
+  }
+
+  /* Boxless copy panel: focus on type and comfortable spacing */
+  .panel.panel--copy{border:0; background:transparent; padding:0; margin:0 100px}
+  /* Make the copy panel wider than default text panels */
+  .panel--copy.panel--text{flex-basis:980px}
+  /* Extra space after the copy block before first service card (reduced for closer proximity) */
+  #services.panel.panel--copy{margin-right:280px}
+
+  /* Case studies header: align high like services title and remove border */
+  #case-studies.panel{border:0; padding:0; background:transparent}
+  #case-studies.panel--text{flex-basis:auto}
+  /* Align case studies header with copy panel margins */
+  #case-studies{align-self:flex-start; margin:50px 100px 0 100px}
+  #case-studies .copy-head{margin:0}
+  .panel--copy .body-text{
+    max-width:980px;
+    padding:0 24px; /* breathing room without a box */
+    font-size:21px;
+    line-height:1.8;
+    letter-spacing:0.1px;
+    color:var(--muted);
+    font-weight:400;
+  }
+  .panel--copy .body-text p + p{margin-top:18px}
+
+  /* Paragraph words: same behavior as headline (no gradient line) */
+  #services .body-text p{ color:var(--muted); }
+  #services .body-text p .word{ color:var(--muted); transition:color 140ms linear }
+  #services .body-text p .word.on{ color:var(--ink) }
+
+  /* Headline per-word reveal: entire word toggles from muted → ink (no gradient line) */
+  #services .copy-head{color:var(--ink)}
+  #services .copy-head .word{color:var(--muted); transition:color 140ms linear}
+  #services .copy-head .word.on{color:var(--ink)}
+
+  /* Reference-style headline and columns */
+  .copy-head{
+    font-family:'Aileron', 'Poppins', system-ui;
+    font-size:46px;
+    line-height:1.15;
+    font-weight:800;
+    color:var(--ink);
+    letter-spacing:-0.2px;
+    margin:0 24px 22px 24px;
+    max-width:980px;
+  }
+  .u-strong{font-weight:900; text-decoration:underline; text-decoration-color:var(--accent); text-decoration-thickness:3px; text-underline-offset:4px}
+  .copy-cols{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:42px;
+    max-width:1100px;
+    margin:0 24px;
+  }
+  .copy-cols p{font-family:"Inter";font-size:16px; line-height:1.7; color:var(--muted)}
+
+  /* Responsiveness */
+  @media (max-width: 1024px){
+    .copy-head{font-size:40px}
+    .panel.panel--copy{margin:0 64px}
+  }
+  @media (max-width: 768px){
+    .copy-head{font-size:34px}
+    .copy-cols{grid-template-columns:1fr}
+    .panel.panel--copy{margin:0 40px}
+  }
+  @media (max-width: 480px){
+    .copy-head{font-size:28px}
+    .panel.panel--copy{margin:0 24px}
+  }
+
+  /* Horizontal rail */
+  .rail{
+    height:100%; display:flex; align-items:center;
+    gap:var(--rail-gap); padding:0 var(--rail-pad);
+    will-change:transform; transform:translateX(0);
+  }
+
+  /* Panels */
+ .panel{flex:0 0 auto; background:transparent; border:1px solid var(--line); padding:28px}
+  .panel--text{flex-basis:var(--panel-w)}
+  .panel--hero{
+    flex-basis:100vw; border:0; padding:0;
+    display:flex; align-items:center; justify-content:space-between; gap:5vw;
+    position:relative;
+    background:transparent; /* allow dark hero from hero.css */
+  }
+
+  /* Text always above media */
+  .layer-text{position:relative; z-index:5}
+  .layer-media{position:relative; z-index:2; pointer-events:none}
+
+  .hero-inner{flex:1; padding-left:8vw}
+ .logo{width:150px;height:50px;border:1px solid var(--line);background:#202020;display:flex;align-items:center;justify-content:center;margin-bottom:32px;color:var(--muted)}
+
+  h1{font-family:'Aileron','Poppins',system-ui; font-size:64px;line-height:1.1;font-weight:800;color:var(--ink)}
+ h2{font-family:'Aileron','Poppins',system-ui; font-size:36px;line-height:1.2;margin-bottom:18px;font-weight:700;color:var(--ink)}
+ h3{font-family:'Aileron','Poppins',system-ui; font-size:22px;margin-bottom:10px;font-weight:700;color:var(--ink)}
+ .subtitle{font-family:'Aileron','Poppins',system-ui; font-size:18px;line-height:1.6;color:var(--muted)}
+ .body-text{font-family:'Poppins',system-ui; font-size:16px;line-height:1.55;color:var(--muted)}
+
+  .cta-group{display:flex;gap:16px;margin-top:22px}
+ .cta-button{padding:10px 18px;border:1px solid var(--accent);background:var(--accent);color:#111;font-size:14px}
+.cta-button:hover{filter:brightness(0.95)}
+
+  /* Hero transition image (no borders, allowed to grow) */
+ .hero-media{flex:1; max-width:60vw; display:flex; align-items:center; justify-content:center}
+ .photo-wrap{width:100%; height:60vh; transform:scale(0.9); transform-origin:center; transition:transform 0.2s linear; will-change:transform; border:0}
+ .photo-wrap img{width:100%; height:100%; object-fit:cover; border:0; outline:0}
+
+  /* Services: stacked image card */
+  .category-stack{flex:0 0 520px; display:flex; flex-direction:column; border:1px solid var(--line); background:#1a1a1a; border-radius:14px; box-shadow:0 18px 46px rgba(0,0,0,.35); overflow:hidden}
+  .category-stack__img{height:300px; background:#151515; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:14px; color:#aaa;
+     transform:scale(0.9); transition:transform 0.18s linear; will-change:transform; backface-visibility:hidden;}
+  .category-stack__content{padding:28px}
+  .category-stack__label{display:inline-block; padding:6px 12px; border:1px solid var(--line); margin-bottom:12px; font-size:14px; color:var(--muted)}
+  .category-stack__title{font-size:22px; margin-bottom:10px; color:var(--ink)}
+  .category-stack__desc{font-size:14px; color:var(--muted); line-height:1.5}
+
+  /* Services: list layout (reference style) */
+  .services{flex-basis:1600px; border:0; padding:0; display:grid; grid-template-columns:280px 1fr; gap:36px; align-items:start}
+  .services-visual{position:relative; height:400px; pointer-events:none}
+  .services-visual__img{position:absolute; left:0; top:0; width:260px; height:380px; background:#151515; border:1px solid var(--line); border-radius:8px; box-shadow:0 30px 70px rgba(0,0,0,.35); transform:rotate(-8deg); transform-origin:40% 60%; background-size:cover; background-position:center}
+  /* replace url(...) with your asset path when ready */
+  .services-visual__img{background-image:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0))}
+  .services-visual__tag{position:absolute; width:120px; height:80px; background:var(--accent); bottom:30px; left:170px; transform:rotate(-12deg); border-radius:6px; box-shadow:0 18px 46px rgba(0,0,0,.35)}
+
+  .services-list{border-left:0}
+  .service-row{display:grid; grid-template-columns:60px 1fr 48px; gap:24px; align-items:center; padding:14px 18px; margin:12px 0; background:#1a1a1a; border:1px solid var(--line); border-radius:12px; box-shadow:0 10px 26px rgba(0,0,0,.25)}
+  .service-num{color:var(--muted); font-weight:600; letter-spacing:.06em}
+  .service-main{display:grid; grid-template-columns:0.45fr 1.55fr; gap:28px; align-items:flex-start}
+  .service-title{font-family:'Aileron','Poppins',system-ui; font-weight:800; color:var(--ink); font-size:20px}
+  .service-desc{font-family:'Poppins',system-ui; color:var(--muted); font-size:14px; line-height:1.6}
+  .service-arrow{color:var(--muted); font-size:28px; text-align:right}
+  .service-row:hover .service-arrow{color:var(--ink); transform:translateX(2px)}
+
+  @media (max-width: 1200px){
+    .services{grid-template-columns:1fr; gap:22px; flex-basis:auto}
+    .services-visual{height:260px}
+    .services-visual__img{width:220px; height:260px}
+    .services-visual__tag{width:90px; height:60px; bottom:24px; left:160px}
+    .service-main{grid-template-columns:1fr}
+  }
+
+  /* Transition video */
+  .video-panel{flex-basis:900px; border:1px solid var(--line); padding:0; display:flex; align-items:center; justify-content:center; background:#0f0f0f; margin-right:200px}
+ .video-wrap{width:100%; height:440px; position:relative; overflow:hidden; transform:scale(0.92); transform-origin:center; transition:transform 0.18s linear; will-change:transform; background:#0f0f0f}
+ .video-wrap video{width:100%; height:100%; object-fit:cover; background:transparent}
+ .video-overlay{position:absolute; left:12px; top:12px; background:transparent; border:0; padding:6px 10px; font-size:12px; color:var(--muted)}
+
+  /* Case studies */
+ .case-card{flex:0 0 520px; background:#1a1a1a; border:1px solid var(--line); display:flex; flex-direction:column; border-radius:14px; box-shadow:0 18px 46px rgba(0,0,0,.35); overflow:visible; height:78vh; min-height:560px; margin-right:120px; position:relative}
+ .case-card__top{background:#151515; padding:24px 28px; aspect-ratio:16/9; display:flex; align-items:center; justify-content:flex-end; border-bottom:0; background-position: var(--bg-x, 50%) var(--bg-y, 50%); background-size: cover; position:relative}
+
+/* Subtle texture inside case card body */
+.case-card::before{
+  content:"";
+  position:absolute; inset:0;
+  background-image:url("https://www.transparenttextures.com/patterns/concrete-wall.png");
+  background-size:256px 256px; background-repeat:repeat; background-position:0 0;
+  opacity:0.08;
+  mix-blend-mode:normal;
+  pointer-events:none;
+  z-index:0; /* above background, below children */
+}
+
+/* Logos marquee (single-line horizontal ticker) */
+.logos-marquee{position:relative; height:150px; padding:0; display:flex; align-items:center; justify-content:center; border:0; z-index:4; margin-top:24px}
+/* Place the ticker at the very bottom of the contact panel and span full viewport width */
+.panel.contact{ position:relative; padding-bottom:420px; }
+.panel.contact .logos-marquee{ position:absolute; left:50%; transform:translateX(calc(-50% + 100px)); width:70vw; bottom:-140px; margin-top:0; pointer-events:none }
+.logos-marquee__inner{position:relative; width:100%; max-width:none; padding:0}
+.logos-row{position:relative; height:130px; overflow:hidden; mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, #000 0.1%, #000 99.9%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, #000 0.1%, #000 99.9%, rgba(0,0,0,0) 100%)}
+.logos-track{display:flex; flex-direction:row; align-items:center; gap:24px; will-change:transform; animation: marquee-left 32s linear infinite}
+
+/* Marquee logo cards (white background, larger logos while keeping card size) */
+.logo-card{flex:0 0 206px; height:100px; padding:2px 6px; background:#ffffff; border:1px solid var(--line); border-radius:12px; display:flex; align-items:center; justify-content:center; overflow:hidden; pointer-events:none; box-shadow:0 8px 18px rgba(0,0,0,.26)}
+.logo-card img{max-width:100%; max-height:100%; object-fit:contain; filter:none}
+
+@keyframes marquee-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .case-card__num{font-size:44px; font-weight:700; color:var(--ink); line-height:1; position:absolute; top:14px; left:18px}
+  .case-card__logo{width:120px;height:120px;border:0;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);
+    transform:scale(0.9); transition:transform 0.18s linear; will-change:transform; overflow:hidden;
+    background:#ffffff; /* white background behind logo */}
+ /* Ensure logo images fit nicely within the circular logo holder (smaller inside same circle) */
+ .case-card__logo img{width:80%; height:80%; object-fit:contain; object-position:center; padding:0; display:block}
+  .case-card__bottom{padding:0; flex:1; display:flex; flex-direction:column;margin-top:15px;}
+ .case-card__brand{font-family:'Aileron','Poppins',system-ui; font-size:30px; letter-spacing:1.5px; font-weight:800; margin-bottom:12px; color:var(--ink)}
+ .case-card__desc{font-family:'Inter','Poppins',system-ui; font-size:15px; color:var(--muted); line-height:1.7}
+
+  /* About & Contact */
+  .about{flex-basis:680px; align-self:flex-start; margin:100px 100px 0 100px; position:relative; top:60px; padding-bottom:80px}
+  /* Align About header with other headers and enlarge about copy */
+  .about .copy-head{margin:0 0 22px 48px}
+  /* About headline per-word reveal */
+  .about .copy-head{color:var(--ink)}
+  .about .copy-head .word{color:var(--muted); transition:color 140ms linear}
+  .about .copy-head .word.on{color:var(--ink)}
+  .about .copy-cols{max-width:1100px; gap:48px; margin:0 48px}
+  .about .copy-cols p{font-size:22px; line-height:1.8}
+  .about .copy-cols p + p{margin-top:14px}
+  /* About per-word reveal (match Services behavior) */
+  .about .copy-cols p{ color:var(--muted); }
+  .about .copy-cols p .word{ color:var(--muted); transition:color 140ms linear }
+  .about .copy-cols p .word.on{ color:var(--ink) }
+  /* Bold lines keep heavier weight while still using fill color transition */
+  .about .copy-cols p.is-strong .word{ font-weight:800 }
+  .contact{flex-basis:680px; align-self:flex-start; margin:100px 100px 0 100px; position:relative; top:60px}
+  /* Make contact panel align with copy layout spacing */
+  .panel.contact{border:0; padding:0; background:transparent; margin:0 100px; position:relative; min-height:70vh}
+  /* Contact header alignment to match About */
+  .contact .copy-head{margin:0 0 22px 48px}
+  /* Contact helper copy above the button */
+  .contact-copy{
+    font-family:'Poppins',system-ui;
+    font-size:22px; /* match .about .copy-cols p */
+    line-height:1.8; /* match About rhythm */
+    color:var(--muted);
+    text-align:left;
+    max-width:520px; /* tighter to fit within the indicated red box */
+    margin:8px 0 22px 48px; /* align under header and fit within the indicated area */
+  }
+  .contact-copy a{ color:var(--ink); text-decoration:underline; text-underline-offset:3px }
+  .form{display:grid; gap:12px}
+  .input,.textarea,.submit{font-family:inherit; font-size:14px}
+  .input,.textarea{padding:10px 12px; border:1px solid var(--line); background:#202020; color:var(--ink)}
+  .textarea{min-height:120px; resize:vertical}
+  .submit{
+    width:240px; height:240px; /* twice as big */
+    border:2px solid var(--accent); /* site accent green */
+    border-radius:50%;
+    background:var(--accent); /* site accent green */
+    color:#fff; /* contrast */
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    font-size:48px; line-height:1;
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+    transition:background-color 160ms linear, color 160ms linear, border-color 160ms linear, transform 120ms ease-out, box-shadow 180ms ease;
+  }
+  /* Ensure inline SVG icons inherit color and flip to white on hover */
+  .submit svg{ width:1em; height:1em; fill:currentColor; stroke:currentColor }
+  /* Center the contact button in the middle of the contact rail */
+  .panel.contact .submit{ position:absolute; left:60%; top:50%; transform:translate(-50%, -50%); margin-top:50px; z-index:20 }
+  /* Preserve centering on hover while adding scale */
+  .panel.contact .submit:hover{ 
+    transform:translate(-50%, -50%) scale(1.02);
+    background:var(--accent);
+    color:#fff;
+    border-color:var(--accent);
+    box-shadow:0 28px 80px rgba(0,0,0,.45);
+  }
+  /* JS-driven hover state (when native :hover is intercepted) */
+  .panel.contact .submit.is-hover{
+    transform:translate(-50%, -50%) scale(1.02);
+    background:var(--accent);
+    color:#fff;
+    border-color:var(--accent);
+    box-shadow:0 28px 80px rgba(0,0,0,.45);
+  }
+  .submit:hover{
+    background:var(--accent);
+    color:#fff;
+    border-color:var(--accent);
+    transform:scale(1.02);
+    box-shadow:0 28px 80px rgba(0,0,0,.45);
+  }
+  /* Generic JS-driven hover for non-absolute contexts */
+  .submit.is-hover{
+    background:var(--accent);
+    color:#fff;
+    border-color:var(--accent);
+    transform:scale(1.02);
+    box-shadow:0 28px 80px rgba(0,0,0,.45);
+  }
+
+  /* Fixed UI */
+ /* Legacy small sidebar (hidden; replaced by .left-menu) */
+ .sidebar{display:none}
+ .sidebar-item{display:none}
+  .instructions{position:fixed; top:20px; left:50%; transform:translateX(-50%); background:#0f0f0f; padding:8px 16px; border:1px solid var(--line); font-size:12px; z-index:100; color:var(--muted)}
+  .progress-bar{position:fixed; bottom:24px; left:50%; transform:translateX(-50%); width:420px;height:4px;background:#1e1e1e;z-index:100}
+   .progress-fill{height:100%; background:var(--accent); width:0%}
+
+  /* Services (STACKED layout copied from stack.css, adapted) */
+  .services-stack{flex-basis:1400px; border:0; padding:0; display:grid; grid-template-columns:360px 1fr; gap:32px; align-items:start; margin-right:240px; pointer-events:auto}
+  /* Ensure parent class 'layer-media' does not disable interactions here */
+  .services-stack.layer-media{ pointer-events: auto !important; }
+  .services-stack .media-pane{position:relative; padding-left:0; margin-left:-28px}
+  .services-stack .media-title{font-size:56px; line-height:1; font-weight:800; margin-bottom:24px; margin-top: 50px}
+  .services-stack .media-stack{position:relative; width:100%; max-width:360px; height:420px}
+  .services-stack .media-card{position:absolute; width:320px; height:360px; left:0; top:60px; background:#1a1a1a; border:1px solid var(--line); transform:rotate(-8deg); box-shadow:0 20px 40px rgba(0,0,0,0.45); overflow:hidden}
+  /* Show actual image with fade-in */
+  .services-stack .media-card img{width:100%; height:100%; object-fit:cover; display:block; opacity:0; transition:opacity 300ms ease}
+  .services-stack .media-card img.is-visible{opacity:1}
+  /* Remove placeholder overlay */
+  .services-stack .media-card::before,
+  .services-stack .media-card::after{display:none; content:none}
+  .services-stack .media-accent{position:absolute; width:140px; height:40px; background:#495932; right:-20px; bottom:24px; transform:rotate(-10deg)}
+
+  /* Right services list (STACKED, animated) */
+  .services-stack .services-list{position:relative; height:720px; overflow:hidden; padding:32px 16px 0 0; margin-top:36px; pointer-events:auto}
+  .services-stack .service{position:absolute; height:132px; display:grid; grid-template-columns:56px minmax(0, 1.4fr) minmax(0, 0.8fr) 32px; align-items:center; gap:12px; padding:10px 20px; border:1px solid #1d1d1d; background:rgba(15,15,15,0.92); border-radius:10px; left:0px; right:14px; overflow:hidden; margin-bottom:4px; pointer-events:auto; z-index:1; cursor:pointer;
+    /* animation vars set by JS */
+    --ty: 0px; --tx: 0px; --alpha: 0; --bg: none;
+    transform: translateY(var(--ty)) translateX(var(--tx)); opacity: var(--alpha);
+    will-change: transform, opacity; transition: transform 320ms cubic-bezier(.2,.7,0,1), opacity 320ms ease-out, background-color 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    background-repeat:no-repeat; background-position:center; background-size:cover;
+  }
+  .services-stack .service__row{display:contents}
+  .services-stack .service__num{font-family:"Inter";color:#bdbdbd; font-weight:700; font-size:12px; justify-self:start}
+  .services-stack .service__title{font-family:"Aileron";font-size:clamp(20px, 2vw, 26px); line-height:1.2; font-weight:800; color:#d9d9d9; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; text-overflow:ellipsis; letter-spacing:-0.01em; margin:0}
+  .services-stack .service__desc{font-family:"Inter";color:var(--muted); font-size:15px; line-height:1.5; display:-webkit-box; -webkit-line-clamp:3; line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; margin:0; margin-left: -100%}
+  .services-stack .service__cta{font-family:"Inter";justify-self:end; font-size:24px; color:#9a9a9a; transition: color 180ms ease, transform 220ms cubic-bezier(.2,.7,0,1)}
+  .services-stack .service:hover{
+    /* No background overlay on card hover */
+    background-image: none !important;
+    border-color:#3a3a3a; box-shadow:0 2px 8px rgba(0,0,0,0.15);
+  }
+  /* JS-driven hover fallback when overlay blocks pointer events (no background) */
+  .services-stack .service.service--hover{
+    background-image: none !important;
+    border-color:#3a3a3a; box-shadow:0 2px 8px rgba(0,0,0,0.15);
+  }
+  .services-stack .service:hover .service__title{color:#ffffff}
+  .services-stack .service:hover .service__cta{color:#ffffff; transform:translateX(6px)}
+
+  /* Responsive tweaks matching stack.css */
+  @media (max-width: 1400px){
+    .services-stack{grid-template-columns:320px 1fr}
+    .services-stack .service__desc{ margin-left: -120%; }
+  }
+  @media (max-width: 1200px){
+    .services-stack{grid-template-columns:1fr}
+    .services-stack .media-pane{display:none}
+    .services-stack .service{grid-template-columns:64px 1.8fr 0.7fr 48px}
+  }
+  @media (max-width: 900px){
+    .services-stack .service{grid-template-columns:56px 1fr 44px; min-height:128px; padding:10px 20px}
+    .services-stack .service__title{font-size:clamp(18px, 5vw, 22px)}
+    .services-stack .service__desc{display:none}
+  }
+  @media (min-width: 1400px){
+    .services-stack{grid-template-columns:320px 1fr; gap:40px}
+    .services-stack .services-list{padding-right:0}
+  }
+
+
+  /* HERO Section */
+
+  
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0; background:var(--bg); color:var(--text); font-family:inherit;}
+
+/* Optional: solid linear gradient background (not layered).
+   Activate by adding class "bg--gradient" to the <body> element. */
+body.bg--gradient{
+  /* Single, solid gradient — no stacking of multiple gradients */
+  background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg) 38%, var(--bg-end) 100%);
+  color: var(--ink);
+}
+/* Disable texture overlay when gradient theme is active to avoid a layered look */
+body.bg--gradient::before{ display:none; }
+/* Also disable the body texture when studio light is on to avoid cross-layer blending */
+body.studio-light::before{ display:none; }
+
+/* Optional: single-gradient "studio light" spotlight anchored to viewport */
+/* Disable the body-based overlay to avoid duplication */
+body.studio-light::after{ display:none !important; }
+
+/* Apply the light on the fixed .viewport so it travels with content and avoids fixed-body flicker */
+body.studio-light .viewport{ isolation:isolate; }
+body.studio-light .viewport::before{
+  content: "";
+  position: absolute;
+  /* Oversize so edges remain off-screen */
+  inset: -12vmax;
+  pointer-events: none;
+  z-index: 0; /* under .viewport children */
+  /* Single radial gradient — with sRGB fallback and oklab enhancement */
+  /* Fallback (sRGB) */
+  background: radial-gradient(
+    farthest-corner at var(--light-x) var(--light-y),
+    rgba(255,255,255, var(--light-strong)) 0%,
+    rgba(255,255,255, calc(var(--light-strong) * 0.5)) 22%,
+    rgba(255,255,255, var(--light-soft)) 46%,
+    rgba(255,255,255, 0.018) 74%,
+    rgba(255,255,255, 0.003) 98%,
+    rgba(255,255,255, 0) 100%
+  );
+  /* Progressive enhancement (oklab, smoother perceptually) */
+  background: radial-gradient(
+    in oklab, farthest-corner at var(--light-x) var(--light-y),
+    rgba(255,255,255, var(--light-strong)) 0%,
+    rgba(255,255,255, calc(var(--light-strong) * 0.5)) 22%,
+    rgba(255,255,255, var(--light-soft)) 46%,
+    rgba(255,255,255, 0.018) 74%,
+    rgba(255,255,255, 0.003) 98%,
+    rgba(255,255,255, 0) 100%
+  );
+  mix-blend-mode: normal;
+  /* Stabilize compositing */
+  backface-visibility: hidden;
+  contain: paint;
+  /* Avoid over-promoting layers to reduce flicker */
+}
+
+.hero{min-height:100svh; height:100svh; display:flex; align-items:center; overflow:visible}
+.panel--hero{ overflow: visible; }
+.hero__inner{position:relative; width:100%; height:100%; padding:40px 32px; display:grid; align-items:center; grid-template-columns:minmax(300px, 1.05fr) minmax(320px, 0.95fr); gap:32px}
+
+/* Left */
+.badge{display:inline-block; padding:8px 12px; border:1px solid var(--line); color:var(--muted); border-radius:6px; font-size:12px; letter-spacing:.08em; text-transform:lowercase;}
+.hero__heading{margin:12px 0 6px; line-height:.9; font-weight:800; text-transform:lowercase; letter-spacing:-0.02em; font-family:'Aileron','Poppins',system-ui}
+.hero__heading .line{display:block; font-size:clamp(44px, 12vh, 136px); letter-spacing:-0.03em}
+.hero__copy{max-width:60ch; font-size:18px; color:var(--muted); line-height:1.6}
+.hero__copy p{margin:0 0 14px}
+.hero__cta{margin-top:16px; display:flex; gap:12px}
+.btn{font-family:"Inter";display:inline-flex; align-items:center; gap:8px; padding:12px 16px; border-radius:8px; border:1px solid var(--line); color:#d9d9d9; text-decoration:none; font-weight:600; background:#151515}
+.btn--primary{background:var(--accent); color:var(--text); border-color:transparent}
+.btn:hover{transform:translateY(-1px); box-shadow:0 6px 16px rgba(0,0,0,.25)}
+
+/* Right visual (dark style) */
+.hero__right{position:relative; overflow:visible}
+/* Allow the visual to overflow for growth/shadow, but clip the inner image for rounded corners */
+.visual{position:relative; height:min(48vh, 520px); border-radius:14px; background:#121212; border:1px solid var(--line); overflow:visible; box-shadow:0 30px 70px rgba(0,0,0,.35); z-index:4}
+.visual__img{position:absolute; inset:0; border-radius:inherit; overflow:hidden}
+.visual__img{position:absolute; inset:0; background-image:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)), url('./Images/IMG_57442 (1).jpeg'); background-size:cover; background-position:center; filter:saturate(.95) contrast(1.05) brightness(.9)}
+.visual__ring{position:absolute; width:560px; height:560px; border-radius:50%; border:40px solid var(--ring); left:-160px; top:-120px; filter:blur(8px)}
+.visual__accent{position:absolute; bottom:22px; right:28px; font-family:var(--accent-serif); font-size:72px; color:#f5f5f5; opacity:.08; letter-spacing:.04em}
+
+/* Typographic accents matching reference */
+  .type-serif{font-family:var(--accent-serif); font-size:clamp(40px, 9vh, 120px); line-height:1; letter-spacing:.02em; color:#fff; opacity:.1; margin:6px 0 -2px}
+  .type-star{position:absolute; top:18px; left:52%; transform:translateX(-10%); font-size:clamp(36px, 8vh, 96px); color:#ffffff; opacity:.16; pointer-events:none}
+
+/* Scroll hint */
+.scrollhint{position:absolute; left:24px; bottom:24px; writing-mode:vertical-rl; text-orientation:mixed; color:#7e7e7e; font-size:12px; letter-spacing:.4em}
+
+/* Responsive */
+@media (max-width: 1100px){
+  .hero__inner{grid-template-columns:1fr; gap:24px}
+  .visual{height:min(40vh, 420px)}
+}
+@media (max-width: 700px){
+  .hero__inner{padding:28px 18px}
+  .hero__heading .line{font-size:clamp(32px, 9vh, 80px)}
+  .type-serif{font-size:clamp(28px, 8vh, 72px)}
+  .visual{height:min(36vh, 360px)}
+}
+
+/* Accent font utilities and rules */
+.accent-serif{ font-family: var(--accent-serif) !important; font-weight:400; letter-spacing:.01em }
+.hero__heading .accent-serif{ font-size:1.02em; font-family: var(--accent-serif) !important; font-style: italic }
+strong, b{ font-family: var(--accent-serif) !important; letter-spacing:.005em }
+
+/* Ensure accent wins over paragraph font in About copy (specificity beats .copy-cols p) */
+.about .copy-cols .accent-serif,
+.about .copy-cols i.accent-serif,
+.about .copy-cols em.accent-serif,
+.about .copy-cols b,
+.about .copy-cols strong{
+  font-family: var(--accent-serif) !important;
+}
+
+/* ================= Case Studies v2 (merged from case-studies-2.css) ================= */
+/* Grid spacing */
+.cs2 .rail{ gap:32px }
+
+/* Hide tag and text on hover so logo dominates */
+.cs2 .case-card:hover .case-tag,
+.cs2 .case-card.is-hover .case-tag{ opacity:0; transition:opacity 180ms ease }
+.cs2 .case-card:hover .case-card__bottom,
+.cs2 .case-card.is-hover .case-card__bottom{ opacity:0 !important; transition:opacity 180ms ease }
+
+/* Card sizing tweaks */
+.cs2 .case-card{ position:relative; width:357px !important; flex-basis:378px !important; aspect-ratio:5/8; border-radius:20px !important; box-shadow:0 28px 70px rgba(0,0,0,.45) !important }
+
+/* Center logos relative to the media area itself */
+.cs2 .case-card .case-card__top{ position:relative !important; z-index:1; overflow:visible }
+
+/* Location pill (hidden on v2) */
+.cs2 .case-card .case-tag{ position:absolute; top:16px; left:16px; padding:6px 10px; border-radius:999px; background:rgba(255,255,255,.96); color:#111; font:600 11px/1 'Inter', system-ui; letter-spacing:.08em; text-transform:uppercase; z-index:4; box-shadow:0 6px 14px rgba(0,0,0,.18); display:none !important }
+
+/* Centered hover logo (raw transparent logo only) */
+.cs2 .case-card .case-card__logo{
+  position:absolute; inset:0; /* fill media area */
+  background:transparent !important; border-radius:0 !important; box-shadow:none !important;
+  display:flex; align-items:center; justify-content:center; z-index:4; pointer-events:none; overflow:visible !important;
+  opacity:0; transition:opacity 220ms ease
+}
+.cs2 .case-card .case-card__logo img{
+  width:min(75%, 630px); height:auto; object-fit:contain; max-width:none;
+  filter: drop-shadow(0 8px 30px rgba(0,0,0,.35)); padding:0 !important
+}
+
+/* Reveal logo; enlarge image slightly on hover */
+.cs2 .case-card:hover .case-card__logo,
+.cs2 .case-card.is-hover .case-card__logo{ opacity:1 }
+.cs2 .case-card:hover .case-card__logo img,
+.cs2 .case-card.is-hover .case-card__logo img{ width:min(90%, 760px) }
+
+/* Green tint under logo on hover */
+.cs2 .case-card .case-card__top::before{ content:""; position:absolute; inset:0; pointer-events:none; background: var(--accent); opacity:0; transition: opacity 220ms ease; z-index:1 }
+.cs2 .case-card:hover .case-card__top::before,
+.cs2 .case-card.is-hover .case-card__top::before{ opacity:1 }
+.cs2 .case-card .case-card__top::after{ opacity:.9 !important }
+
+/* Bottom block is always visible in v2 (non-hover behavior override) */
+.cs2 .case-card .case-card__bottom{ position:absolute; left:0; right:0; bottom:0; padding:22px 26px 24px 22px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.48) 36%, rgba(0,0,0,0.86) 100%) !important; opacity:1 !important; transform:none !important }
+.cs2 .case-card .case-card__brand{ font-family:'Aileron','Poppins',system-ui; font-weight:800; letter-spacing:.01em; font-size:clamp(24px, 3.8vw, 40px); color:#ffffff; opacity:.7; text-shadow:0 10px 26px rgba(0,0,0,.55) }
+.cs2 .case-card .case-card__desc{ font-family:'Inter','Poppins',system-ui; margin-top:8px; color:#e3e3e3; opacity:.92; line-height:1.7; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; overflow:hidden }
+
+@media (max-width: 900px){
+  .cs2 .case-card{ width:86vw !important; flex-basis:86vw !important }
+  .cs2 .case-card .case-card__bottom{ padding-left:22px }
+}
+
+  /* ================= Left Fixed Menu ================= */
+  .left-menu{
+    position:fixed; left:0; top:0; bottom:0; width:84px; height:100vh;
+    display:flex; flex-direction:column; align-items:center;
+    padding:14px 6px; gap:12px; z-index:120;
+    border-right:1px solid var(--line);
+    background:rgba(18,18,18,0.66); backdrop-filter: blur(4px);
+  }
+  /* Vertical logo presentation (no card) */
+  .left-menu__logo{
+    display:flex; align-items:center; justify-content:center;
+    width:100%; height:auto; padding:0; margin:50px 0 6px;
+    border:0; border-radius:0; background:transparent; overflow:visible;
+  }
+  .left-menu__logo img{
+    width:81px; height:auto; display:block; object-fit:contain;
+    transform:rotate(-90deg); transform-origin:center;
+  }
+  .left-menu__toggle{
+    width:28px; height:28px; border-radius:50%; border:1px solid var(--line);
+    background:#1a1a1a; color:#cfcfcf; cursor:pointer; font-family:"Inter"; font-weight:700;
+    line-height:1; display:flex; align-items:center; justify-content:center;
+    /* Center the + button vertically within the left menu */
+    position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
+    margin:0;
+  }
+  .left-menu__toggle:hover{ color:#fff; border-color:#3a3a3a }
+  .left-menu__spacer{flex:1}
+  .left-menu__socials{display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:8px}
+  .sm{width:26px; height:26px; border-radius:50%; border:1px solid var(--line); background:#1a1a1a; color:#b7b5b0; display:flex; align-items:center; justify-content:center; font-family:"Inter"; font-size:11px; text-decoration:none}
+  .sm:hover{color:#fff; border-color:#3a3a3a}
+
+  /* Flyout menu (self-contained within left-menu; slides out to the right) */
+  .left-flyout{
+    position:absolute; left:100%; top:50%; width:220px;
+    transform: translateY(-50%) translateX(8px) scale(0.98);
+    border:1px solid var(--line); border-radius:10px; padding:12px;
+    background:#0f0f0f; box-shadow:0 18px 46px rgba(0,0,0,.35);
+    opacity:0; pointer-events:none; z-index:130;
+    transition: opacity 180ms ease, transform 220ms cubic-bezier(.2,.7,0,1);
+  }
+  .left-flyout ul{list-style:none; margin:0; padding:0}
+  .left-flyout li + li{margin-top:6px}
+  .left-flyout a{display:block; padding:10px 12px; border:1px solid #1d1d1d; border-radius:8px; color:#d9d9d9; text-decoration:none; background:#151515}
+  .left-flyout a:hover{border-color:#3a3a3a; background:#161616}
+  .left-menu.is-open .left-flyout{opacity:1; pointer-events:auto; transform: translateY(-50%) translateX(0) scale(1)}
