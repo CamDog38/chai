@@ -294,12 +294,17 @@ body::before{
 .panel.contact{ position:relative; padding-bottom:420px; }
 .panel.contact .logos-marquee{ position:absolute; left:50%; transform:translateX(calc(-50% + 100px)); width:70vw; bottom:-140px; margin-top:0; pointer-events:none }
 .logos-marquee__inner{position:relative; width:100%; max-width:none; padding:0}
-.logos-row{position:relative; height:130px; overflow:hidden; mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, #000 0.1%, #000 99.9%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, #000 0.1%, #000 99.9%, rgba(0,0,0,0) 100%)}
-.logos-track{display:flex; flex-direction:row; align-items:center; gap:24px; will-change:transform; animation: marquee-left 32s linear infinite}
+.logos-row{position:relative; height:130px; overflow:hidden; /* longer feathered edges so logos never feel cropped */
+  mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, #000 6%, #000 94%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, #000 6%, #000 94%, rgba(0,0,0,0) 100%);
+}
+.logos-track{display:flex; flex-direction:row; align-items:center; gap:24px; will-change:transform; animation: marquee-left 32s linear infinite; transform: translate3d(0,0,0)}
 
 /* Marquee logo cards (white background, larger logos while keeping card size) */
 .logo-card{flex:0 0 206px; height:100px; padding:2px 6px; background:#ffffff; border:1px solid var(--line); border-radius:12px; display:flex; align-items:center; justify-content:center; overflow:hidden; pointer-events:none; box-shadow:0 8px 18px rgba(0,0,0,.26)}
 .logo-card img{max-width:100%; max-height:100%; object-fit:contain; filter:none}
+/* Double-size variant for GS only */
+.logo-card--gs img{ transform: scale(1.8); transform-origin: center; }
 
 @keyframes marquee-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   .case-card__num{font-size:44px; font-weight:700; color:var(--ink); line-height:1; position:absolute; top:14px; left:18px}
@@ -414,6 +419,12 @@ body::before{
   .services-stack .media-title{font-size:56px; line-height:1; font-weight:800; margin-bottom:24px; margin-top: 50px}
   .services-stack .media-stack{position:relative; width:100%; max-width:360px; height:420px}
   .services-stack .media-card{position:absolute; width:320px; height:360px; left:0; top:60px; background:#1a1a1a; border:1px solid var(--line); transform:rotate(-8deg); box-shadow:0 20px 40px rgba(0,0,0,0.45); overflow:hidden}
+  /* Premium feel: tiny parallax/nudge and smoother transitions */
+  .services-stack .media-card{ transform: rotate(-8deg) translateZ(0); transition: transform 220ms cubic-bezier(.2,.7,0,1), box-shadow 220ms ease; will-change: transform; }
+  /* When a service is active, give the Polaroid a subtle lift and deeper shadow */
+  .services-stack:has(.service--active) .media-card{ transform: rotate(-8deg) translate3d(2px, -1px, 0); box-shadow:0 24px 56px rgba(0,0,0,0.50); }
+  /* On hover anywhere over the services list, apply a gentle nudge */
+  .services-stack:has(.services-list:hover) .media-card{ transform: rotate(-8deg) translate3d(1px, -0.5px, 0); box-shadow:0 22px 50px rgba(0,0,0,0.48); }
   /* Show actual image with fade-in */
   .services-stack .media-card img{width:100%; height:100%; object-fit:cover; display:block; opacity:0; transition:opacity 300ms ease}
   .services-stack .media-card img.is-visible{opacity:1}
