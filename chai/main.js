@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const GAP_SAFE = 4;  // safety pixels to prevent any bleed/overlap
     const SIDE_PAD_LEFT = 0;
     const SIDE_PAD_RIGHT = 14;
-    const BOTTOM_PAD = 68; // shifted up ~30px more
+    const BOTTOM_PAD = 120; // more bottom breathing room so last card fully fits
     const STACK_TOP_OFFSET = 0; // no extra top offset needed with larger gaps
 
     function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
