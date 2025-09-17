@@ -278,6 +278,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const stackRoot = document.querySelector('.services-stack');
     if (!stackRoot) return;
     const DEBUG_STACK = true;
+    // Tuning: make stacking start earlier and finish by mid-screen
+    // Positive offset nudges the section as if it's slightly further left, so progress increases earlier
+    const STACK_EARLY_OFFSET_PX = 140;    // increase to start stacking sooner (suggested: 100–200)
+    const STACK_SPEED = 1.18;             // >1 speeds up progress; keep modest to avoid abrupt animation
     const services = Array.from(stackRoot.querySelectorAll('.service'));
     const listEl = stackRoot.querySelector('.services-list');
     const mediaImg = document.getElementById('mediaImage');
@@ -287,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const GAP_SAFE = 4;  // safety pixels to prevent any bleed/overlap
     const SIDE_PAD_LEFT = 0;
     const SIDE_PAD_RIGHT = 14;
-    const BOTTOM_PAD = 120; // more bottom breathing room so last card fully fits
+    const BOTTOM_PAD = 68; // shifted up ~30px more
     const STACK_TOP_OFFSET = 0; // no extra top offset needed with larger gaps
 
     function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
@@ -339,9 +343,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const vCenter = vRect.left + vRect.width / 2;
       const vRight = vRect.left + vRect.width;
       const sCenter = sRect.left + sRect.width / 2;
-      // g=0 when section center is at viewport right edge; g=1 when section center reaches viewport center
+      // Progress baseline: 0 when section center is at viewport right edge; 1 when at viewport center
       const denom = Math.max(1, vRect.width / 2);
-      const g = clamp((vRight - sCenter) / denom, 0, 1);
+      // Apply an early-start bias and a gentle speed multiplier, then clamp
+      const base = (vRight - sCenter + STACK_EARLY_OFFSET_PX) / denom;
+      const g = clamp(base * STACK_SPEED, 0, 1);
 
       const ch = listEl ? listEl.clientHeight : vh;
 
@@ -371,7 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (DEBUG_STACK) {
         const firstP = clamp(g * N - 0, 0, 1);
-        console.log('[stack] layout', { y, g: +g.toFixed(3), N, ch, activeIdx, firstP, sectionCenter: sCenter.toFixed(1), vCenter: vCenter.toFixed(1), vRight: vRight.toFixed(1), vWidth: vRect.width.toFixed(1) });
+        console.log('[stack] layout', { y, g: +g.toFixed(3), N, ch, activeIdx, firstP, sectionCenter: sCenter.toFixed(1), vCenter: vCenter.toFixed(1), vRight: vRight.toFixed(1), vWidth: vRect.width.toFixed(1), base: +base.toFixed(3) });
       }
 
       services.forEach((el, i) => {
