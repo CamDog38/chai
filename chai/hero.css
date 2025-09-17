@@ -1,0 +1,8 @@
+/* Placeholder hero stylesheet.
+   This file exists to prevent 404s on Vercel. If you had local styles,
+   please paste them here. Otherwise, core hero styles live in style.css. */
+
+/* Example minimal variables to avoid missing references */
+:root{
+  --ring: rgba(255,255,255,0.06);
+}
