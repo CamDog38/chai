@@ -527,6 +527,76 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, { passive: false });
 
+  // Overlay click proxy: forward clicks that land on the scroll overlay to the underlying CTA anchors
+  if (scrollDetector){
+    scrollDetector.addEventListener('click', (ev) => {
+      // If the click actually hit a real anchor, let existing handlers process it
+      if (ev.target.closest && ev.target.closest('a')) return;
+      // Peek underneath the overlay to find the element at the click point
+      const prev = scrollDetector.style.pointerEvents;
+      scrollDetector.style.pointerEvents = 'none';
+      const below = document.elementFromPoint(ev.clientX, ev.clientY);
+      scrollDetector.style.pointerEvents = prev || '';
+      const anchor = below && below.closest ? below.closest('a[href="#case-studies"], a[href="#contact"]') : null;
+      if (!anchor) return;
+      ev.preventDefault();
+      const href = anchor.getAttribute('href');
+      const target = document.querySelector(href);
+      if (!target) return;
+      scrollRailToSection(target, { focus: 'section' });
+      // Close flyout if open
+      const menu = document.querySelector('.left-menu');
+      if (menu && menu.classList.contains('is-open')){
+        menu.classList.remove('is-open');
+        const btn = document.querySelector('.left-menu__toggle');
+        const fly = document.getElementById('leftFlyout');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+        if (fly) fly.setAttribute('aria-hidden', 'true');
+      }
+    }, { passive: false });
+  }
+
+  // Fallback: ensure hero CTA anchors (#case-studies, #contact) always scroll
+  document.addEventListener('click', (ev) => {
+    const a = ev.target.closest && ev.target.closest('a[href="#case-studies"], a[href="#contact"]');
+    if (!a) return;
+    const href = a.getAttribute('href');
+    const target = document.querySelector(href);
+    if (!target) return;
+    ev.preventDefault();
+    scrollRailToSection(target, { focus: 'section' });
+    // Close the flyout if it is open
+    const menu = document.querySelector('.left-menu');
+    if (menu && menu.classList.contains('is-open')){
+      menu.classList.remove('is-open');
+      const btn = document.querySelector('.left-menu__toggle');
+      const fly = document.getElementById('leftFlyout');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+      if (fly) fly.setAttribute('aria-hidden', 'true');
+    }
+  }, { passive: false });
+
+  // JS-driven hover for hero CTA buttons so overlay can't suppress the visual affordance
+  (function ensureHeroHover(){
+    const cta = document.querySelector('.hero__cta');
+    if (!cta) return;
+    const btns = Array.from(cta.querySelectorAll('.btn'));
+    function setHover(e){
+      // Probe under the overlay if necessary
+      let el = e.target;
+      if (scrollDetector){
+        const prev = scrollDetector.style.pointerEvents;
+        scrollDetector.style.pointerEvents = 'none';
+        el = document.elementFromPoint(e.clientX, e.clientY);
+        scrollDetector.style.pointerEvents = prev || '';
+      }
+      btns.forEach(b => b.classList.toggle('is-hover', !!(el && (el === b || (el.closest && el.closest('.btn') === b)))));
+    }
+    function clearHover(){ btns.forEach(b => b.classList.remove('is-hover')); }
+    window.addEventListener('mousemove', setHover, { passive: true });
+    window.addEventListener('mouseout', clearHover, { passive: true });
+  })();
+
   // Explicit logo-to-start handler (in case delegated handler misses it)
   const logoLink = document.querySelector('.left-menu__logo[href="#start"]');
   if (logoLink){
