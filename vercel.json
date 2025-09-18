@@ -23,6 +23,7 @@
     { "source": "/mediaportfolio", "destination": "/chai/mediaportfolio.html" },
     { "source": "/mediaportfolio.html", "destination": "/chai/mediaportfolio.html" },
     { "source": "/sportmediasportfolio", "destination": "/chai/sportmediasportfolio.html" },
-    { "source": "/sportmediasportfolio.html", "destination": "/chai/sportmediasportfolio.html" }
+    { "source": "/sportmediasportfolio.html", "destination": "/chai/sportmediasportfolio.html" },
+    { "source": "/(.*)", "destination": "/chai/$1" }
   ]
 }
