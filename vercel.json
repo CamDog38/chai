@@ -20,6 +20,7 @@
     }
   ],
   "rewrites": [
+    { "source": "/:path*.html", "destination": "/chai/:path*.html" },
     { "source": "/index", "destination": "/chai/index.html" },
     { "source": "/index.html", "destination": "/chai/index.html" },
     { "source": "/mediaportfolio", "destination": "/chai/mediaportfolio.html" },
