@@ -18,5 +18,11 @@
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
     }
+  ],
+  "rewrites": [
+    { "source": "/mediaportfolio", "destination": "/chai/mediaportfolio.html" },
+    { "source": "/mediaportfolio.html", "destination": "/chai/mediaportfolio.html" },
+    { "source": "/sportmediasportfolio", "destination": "/chai/sportmediasportfolio.html" },
+    { "source": "/sportmediasportfolio.html", "destination": "/chai/sportmediasportfolio.html" }
   ]
 }
