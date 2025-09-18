@@ -31,7 +31,14 @@
   <button class="left-menu__toggle" aria-expanded="false" aria-controls="leftFlyout" title="Open menu">+</button>
   <nav id="leftFlyout" class="left-flyout" aria-hidden="true">
     <ul>
-      <li><a href="#services">services.</a></li>
+      <li><a href="#start" class="active">home.</a></li>
+      <li>
+        <a href="#services">services.</a>
+        <ul class="submenu" aria-label="Services submenu">
+          <li><a href="mediaportfolio.html">media portfolio</a></li>
+          <li><a href="sportmediasportfolio.html">sports media portfolio</a></li>
+        </ul>
+      </li>
       <li><a href="#case-studies">case Studies.</a></li>
       <li><a href="#about">about us.</a></li>
       <li><a href="#contact">contact us.</a></li>
@@ -292,19 +299,48 @@
 <script src="hero.js" defer></script>
 <script src="main.js" defer></script>
 <script src="case-studies-hover.js" defer></script>
-<script defer>
-  // Left menu toggle
-  (function(){
-    const menu = document.querySelector('.left-menu');
-    const btn = document.querySelector('.left-menu__toggle');
-    const fly = document.getElementById('leftFlyout');
-    if(!menu || !btn || !fly) return;
-    btn.addEventListener('click', ()=>{
-      const open = menu.classList.toggle('is-open');
-      btn.setAttribute('aria-expanded', String(open));
-      fly.setAttribute('aria-hidden', String(!open));
-    });
-  })();
-  </script>
+  <script defer>
+    // Left menu toggle
+    (function(){
+      const menu = document.querySelector('.left-menu');
+      const btn = document.querySelector('.left-menu__toggle');
+      const fly = document.getElementById('leftFlyout');
+      if(!menu || !btn || !fly) return;
+      btn.addEventListener('click', ()=>{
+        const open = menu.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', String(open));
+        fly.setAttribute('aria-hidden', String(!open));
+      });
+
+      // Close on click outside
+      document.addEventListener('click', (e) => {
+        if (!menu.contains(e.target) && menu.classList.contains('is-open')) {
+          menu.classList.remove('is-open');
+          btn.setAttribute('aria-expanded', 'false');
+          fly.setAttribute('aria-hidden', 'true');
+        }
+      });
+
+      // Close when any link inside the flyout is clicked
+      fly.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (link) {
+          menu.classList.remove('is-open');
+          btn.setAttribute('aria-expanded', 'false');
+          fly.setAttribute('aria-hidden', 'true');
+        }
+      });
+
+      // Close on Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menu.classList.contains('is-open')) {
+          menu.classList.remove('is-open');
+          btn.setAttribute('aria-expanded', 'false');
+          fly.setAttribute('aria-hidden', 'true');
+          btn.focus();
+        }
+      });
+    })();
+    </script>
 </body>
 </html>

@@ -59,17 +59,24 @@ function tokenizePreserve(el){
   return allSpans;
 }
 
-// Smooth-scroll the horizontal rail so a given section is centered in the viewport
-function scrollRailToSection(sectionEl){
+// Smooth-scroll the horizontal rail so a given section (or its heading) is centered in the viewport
+// opts: { offsetPx?: number, focus?: 'auto' | 'heading' | 'section' }
+function scrollRailToSection(sectionEl, opts = {}){
+  const { offsetPx = 0, focus = 'auto' } = opts;
   if(!sectionEl || !rail || !scrollDetector || !viewport) return;
   const vpRect = viewport.getBoundingClientRect();
-  const elRect = sectionEl.getBoundingClientRect();
+  // Prefer the heading (.copy-head) when focusing, so the title aligns centrally
+  let focal = sectionEl;
+  if (focus === 'heading' || (focus === 'auto' && sectionEl.querySelector && sectionEl.querySelector('.copy-head'))){
+    focal = sectionEl.querySelector('.copy-head') || sectionEl;
+  }
+  const elRect = focal.getBoundingClientRect();
   const vCenter = vpRect.left + vpRect.width / 2;
   const sCenter = elRect.left + elRect.width / 2;
-  // Positive delta means section center is to the right; we need to scroll further down to move rail left
+  // Positive delta means target center is to the right; we need to scroll further down to move rail left
   const delta = sCenter - vCenter;
   const maxScroll = Math.max(0, scrollDetector.scrollHeight - window.innerHeight);
-  let target = scrollDetector.scrollTop + delta;
+  let target = scrollDetector.scrollTop + delta + offsetPx;
   target = Math.max(0, Math.min(maxScroll, target));
   scrollDetector.scrollTo({ top: target, behavior: 'smooth' });
 }
@@ -474,10 +481,13 @@ document.addEventListener('DOMContentLoaded', () => {
         a.addEventListener('click', (e) => {
           const hash = a.getAttribute('href');
           if (!hash || hash.length < 2) return;
-          const target = document.querySelector(hash);
+          // For Services, target the services stack panel instead of the copy panel
+          const svcStack = document.querySelector('#rail > section.panel.services-stack.layer-media');
+          const target = (hash === '#services' && svcStack) ? svcStack : document.querySelector(hash);
           if (target){
             e.preventDefault();
-            scrollRailToSection(target);
+            const focus = hash === '#services' ? 'section' : 'auto';
+            scrollRailToSection(target, { focus });
             // Close the flyout if open
             const menu = document.querySelector('.left-menu');
             if (menu && menu.classList.contains('is-open')){
@@ -498,12 +508,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!a) return;
       const href = a.getAttribute('href');
       if (!href || href.length < 2) return;
-      const target = document.querySelector(href);
+      const svcStack = document.querySelector('#rail > section.panel.services-stack.layer-media');
+      const target = (href === '#services' && svcStack) ? svcStack : document.querySelector(href);
       if (!target) return;
       // Only intercept if the target is part of the horizontal rail content
       if (!target.closest || !target.closest('.rail')) return;
       ev.preventDefault();
-      scrollRailToSection(target);
+      const focus = href === '#services' ? 'section' : 'auto';
+      scrollRailToSection(target, { focus });
       // Close the flyout if it is open
       const menu = document.querySelector('.left-menu');
       if (menu && menu.classList.contains('is-open')){

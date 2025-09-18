@@ -1,0 +1,1071 @@
+/* Portfolio Purpose Animation Styles */
+
+/* Enable scrolling on portfolio pages despite global overflow hidden */
+body.portfolio-page {
+    overflow-y: auto !important;
+    overflow-x: hidden;
+}
+
+/* Align Contact section with page copy on mediaportfolio */
+body.portfolio-page .panel.contact {
+    margin: 0 140px !important; /* nudge further right */
+}
+
+/* Align heading and copy flush with left content edge */
+body.portfolio-page .contact .copy-head {
+    margin: 0 0 22px 48px !important; /* slight indent like index */
+}
+
+body.portfolio-page .contact-copy {
+    margin: 8px 0 22px 48px !important; /* match heading indent */
+}
+
+/* Adjust marquee horizontal centering to account for 60px side margin (was 100px on index) */
+body.portfolio-page .panel.contact .logos-marquee {
+    /* Center to viewport, independent of section margins */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+}
+
+/* Center the large circular email button to the viewport */
+body.portfolio-page .panel.contact .submit {
+    left: 50% !important;
+}
+
+/* Responsive: keep comfortable margins on mobile */
+@media (max-width: 768px) {
+  body.portfolio-page .panel.contact { margin: 0 20px !important; }
+  body.portfolio-page .contact .copy-head { margin: 0 0 18px 0 !important; }
+  body.portfolio-page .contact-copy { margin: 6px 0 18px 0 !important; }
+  body.portfolio-page .panel.contact .logos-marquee { transform: translateX(calc(-50% + 20px)) !important; }
+}
+
+/* Portfolio CTA white button (moved from mediaportfolio.html inline styles) */
+.white-button {
+    color: white !important;
+    border-color: white !important;
+    background-color: transparent !important;
+    transition: all 0.3s ease !important;
+}
+
+.white-button:hover {
+    background-color: white !important;
+    color: #333 !important;
+}
+
+/* Contact Section Styles */
+.contact-section {
+    background-color: #E4E2DD;
+    position: relative;
+    padding: 30px 0;
+    margin-top: 0;
+}
+
+.contact-section .section-header {
+    margin-bottom: 20px;
+}
+
+.contact-section .section-header h3 {
+    margin: 10px 0;
+}
+
+.contact-container {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 0;
+}
+
+.contact-container p {
+    margin-bottom: 30px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    line-height: 1.4;
+    color: #292929;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.form-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.form-group label {
+    margin-bottom: 0.3rem;
+    font-weight: bold;
+    color: #292929;
+    font-family: 'Poppins', sans-serif;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #292929;
+    font-size: 1rem;
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+
+.contact-form button {
+    padding: 0.75rem 2rem;
+    background-color: transparent;
+    border: 2px solid #292929;
+    color: #292929;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.contact-form button:hover {
+    background-color: #292929;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.border-line {
+    position: absolute;
+    background-color: #292929;
+    opacity: 0.2;
+    transition: all 0.3s ease;
+}
+
+.border-line.top {
+    top: 0;
+    left: 10px;
+    right: 10px;
+    height: 1px;
+}
+
+.border-line.bottom {
+    bottom: 0;
+    left: 10px;
+    right: 10px;
+    height: 1px;
+}
+
+.border-line.left {
+    top: 10px;
+    bottom: 10px;
+    left: 0;
+    width: 1px;
+}
+
+.border-line.right {
+    top: 10px;
+    bottom: 10px;
+    right: 0;
+    width: 1px;
+}
+.portfolio-purpose-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: left;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.portfolio-purpose-text {
+    font-family: 'Aileron', sans-serif;
+    font-size: 48px;
+    line-height: 1.2;
+    font-weight: 300;
+    letter-spacing: -0.025em;
+    text-align: left;
+    max-width: 1000px;
+    margin-top: 0;
+    transition: color 1.2s ease, font-weight 1.2s ease;
+    color: white;
+}
+
+.portfolio-purpose-word {
+    display: inline-block;
+    color: white;
+    font-weight: 300;
+    margin-right: 10px;
+    transition: color 0.8s ease, font-weight 0.8s ease, opacity 0.8s ease;
+    opacity: 0.7;
+}
+
+.portfolio-purpose-word.visible {
+    color: white;
+    font-weight: 500;
+    opacity: 1;
+}
+
+/* Portfolio-specific styles */
+.portfolio-hero {
+    height: 100vh;
+    background-color: #292929;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    position: relative;
+}
+
+.portfolio-hero .logo-image {
+    width: 370px; /* Match width of tagline text */
+    height: auto;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: fadeInUp 1s ease forwards;
+}
+
+.portfolio-hero .tagline {
+    font-family: 'Aileron', sans-serif;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.3;
+    color: white;
+    margin-bottom: 60px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1s ease 0.3s forwards;
+}
+
+.portfolio-cta {
+    border: 2px solid white;
+    border-radius: 50px;
+    padding: 15px 40px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1s ease 0.6s forwards;
+}
+
+.portfolio-cta:hover {
+    background-color: white;
+    color: #292929;
+}
+
+.portfolio-about {
+    background-color: #495932;
+    padding: 180px 0;
+    color: white;
+}
+
+.portfolio-about .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 60px;
+    text-align: left;
+}
+
+.portfolio-about .main-text {
+    font-family: 'Aileron', sans-serif;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 1.2;
+    color: white;
+    margin-bottom: 0;
+}
+
+/* Animation handled by word-by-word animation now */
+
+.portfolio-about .main-text .highlight {
+    font-weight: bold;
+}
+
+.portfolio-about .bottom-section {
+    padding-top: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 60px;
+    border-top: none;
+}
+
+/* New Info Section */
+.info-section {
+    background-color: #495932 !important;
+    padding: 60px 0;
+    color: white;
+    width: 100%;
+    display: block;
+    position: relative;
+    z-index: 1;
+}
+
+.info-section .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 60px;
+    text-align: left;
+}
+
+.info-section .info-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 60px;
+}
+
+.info-section .info-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: white;
+    flex: 1;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease 0.2s;
+}
+
+.info-section .info-text.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.info-section .note-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: white;
+    flex: 1;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease 0.4s;
+}
+
+.info-section .note-text.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.portfolio-about .info-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: white;
+    flex: 1;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease 0.2s;
+}
+
+.portfolio-about .info-text.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.portfolio-about .note-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: white;
+    flex: 1;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease 0.4s;
+}
+
+.portfolio-about .note-text.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.portfolio-grid {
+    background-color: #292929;
+    padding: 100px 0;
+    color: #E4E2DD;
+}
+
+.portfolio-grid .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: 656px; /* Updated to match grid item height */
+    gap: 20px;
+    margin-top: 60px;
+    background-color: #292929;
+}
+
+.grid-item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease;
+    margin-bottom: 0;
+    height: 656px; /* Increased by 25% from 525px */
+}
+
+.grid-item.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.grid-item:hover {
+    transform: translateY(-10px);
+}
+
+.grid-item {
+    grid-column: span 2;
+}
+
+/* Middle row styling - same height as other rows */
+.grid-item.large {
+    margin-bottom: 0; /* Remove any bottom margin */
+}
+
+/* Middle row height adjustment - same as other items */
+.grid-item.large img, .grid-item.large video {
+    height: 650px; /* Increased by 25% from 520px */
+}
+
+/* Middle row width distribution: 1/3 for image, 2/3 for video */
+/* Target the specific middle row items by their position in the grid */
+.grid-container > div:nth-child(4) { /* First item in middle row (the image) */
+    grid-column: 1 / span 2; /* Span 2 columns (1/3 of grid) */
+}
+
+.grid-container > div:nth-child(5) { /* Second item in middle row (the video) */
+    grid-column: 3 / span 4; /* Span 4 columns (2/3 of grid) */
+}
+
+/* Sports portfolio specific bottom row layout */
+.sports-bottom-video {
+    grid-column: 1 / span 4 !important; /* Span 4 columns (2/3 of grid) */
+}
+
+.sports-bottom-image {
+    grid-column: 5 / span 2 !important; /* Span 2 columns (1/3 of grid) */
+}
+
+.grid-item img, .grid-item video {
+    width: 100%;
+    height: 650px; /* Increased by 25% from 520px */
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    border-radius: 12px;
+    background-color: #333;
+}
+
+.grid-item.large img, .grid-item.large video {
+    width: 100%;
+    object-fit: cover;
+    height: 650px; /* Match the standard height */
+}
+
+.video-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.sound-toggle {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    z-index: 100; /* Higher z-index to ensure it's above video controls */
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.sound-toggle::before {
+    content: '';
+    width: 18px;
+    height: 18px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.sound-toggle.muted::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23292929'%3E%3Cpath d='M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z'/%3E%3C/svg%3E");
+}
+
+.sound-toggle:not(.muted)::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23292929'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/%3E%3C/svg%3E");
+}
+
+.video-item:hover .sound-toggle {
+    background-color: white;
+    transform: scale(1.1);
+}
+
+.packages-section {
+    background-color: #292929;
+    padding: 100px 0 50px;
+    margin-bottom: 0;
+    color: #E4E2DD;
+}
+
+.packages-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.package-header {
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.package-header h2 {
+    font-family: 'Aileron', sans-serif;
+    font-weight: bold;
+    font-size: 64px;
+    color: #E4E2DD;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+}
+
+.package-header h2.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.package-item {
+    margin-bottom: 80px;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease;
+}
+
+.package-item.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.package-title {
+    font-family: 'Aileron', sans-serif;
+    font-weight: bold;
+    font-size: 48px;
+    color: #E4E2DD;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #E4E2DD;
+    padding-bottom: 20px;
+}
+
+.package-subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    color: #AAA;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.package-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 40px;
+}
+
+.package-features {
+    list-style: none;
+    padding: 0;
+}
+
+.package-features li {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    color: #E4E2DD;
+    margin-bottom: 15px;
+    position: relative;
+    padding-left: 20px;
+}
+
+.package-features li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #495932;
+    font-weight: bold;
+}
+
+.package-features .feature-category {
+    font-weight: bold;
+    color: #E4E2DD;
+}
+
+.package-features .feature-detail {
+    color: #AAA;
+}
+
+.package-price {
+    font-family: 'Aileron', sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+    color: #E4E2DD;
+    margin-top: 40px;
+}
+
+.contact-section {
+    background-color: #E4E2DD;
+    padding: 100px 0;
+    text-align: center;
+    color: #292929;
+}
+
+.contact-section .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.contact-section p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    color: #292929;
+    margin-bottom: 60px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+}
+
+.contact-section p.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.contact-section .logo {
+    font-family: 'Aileron', sans-serif;
+    font-weight: bold;
+    font-size: 80px;
+    color: #292929;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease 0.2s;
+}
+
+.contact-section .logo.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.contact-section .tagline {
+    font-family: 'Aileron', sans-serif;
+    font-size: 20px;
+    color: #292929;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease 0.4s;
+}
+
+.contact-section .tagline.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Section Headers & Animated Lines */
+.section-header {
+    text-align: center;
+    padding: 5px 0;
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+.top-line {
+    margin-bottom: 15px;
+}
+
+.bottom-line {
+    margin-top: 15px;
+}
+
+/* Lines start at 0 width and animate to 100%, fading in from left */
+.line {
+    display: block;
+    height: 1px;
+    background-color: #E4E2DD;
+    width: 1px;
+    opacity: 0;
+    transition: width 1.5s ease, opacity 1.5s ease;
+    position: relative;
+}
+
+/* When in-view, the .animate class is added via JS */
+.line.animate {
+    width: 100%;
+    opacity: 1;
+}
+
+.line::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #E4E2DD;
+    transition: width 0.5s ease;
+}
+
+.line.animate::after {
+    width: 100%;
+}
+
+/* Header3 styling for package titles */
+.header3 {
+    font-family: 'Aileron', sans-serif;
+    font-weight: bold;
+    font-size: 48px;
+    letter-spacing: -0.025em;
+    line-height: 1.0;
+    color: #E4E2DD;
+    text-align: center;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+    /* Hero Section */
+    .portfolio-hero {
+        height: 100vh;
+        padding: 0 20px;
+    }
+
+    .portfolio-hero .tagline {
+        font-size: 20px;
+        margin-bottom: 40px;
+    }
+
+    .portfolio-cta {
+        padding: 12px 30px;
+        font-size: 16px;
+    }
+
+    /* About Section */
+    .portfolio-about {
+        padding: 100px 0;
+    }
+
+    .portfolio-about .container {
+        padding: 0 20px;
+    }
+
+    .portfolio-about .main-text {
+        font-size: 28px;
+    }
+
+    /* Mobile Media Experience */
+    .mobile-media-experience {
+        display: block;
+        position: relative;
+        height: 100vh;
+        overflow-y: auto;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .mobile-media-item {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        display: flex;
+        overflow: hidden;
+    }
+
+    .mobile-media-item img,
+    .mobile-media-item video {
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+    }
+
+    .media-progress-indicator {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        color: #292929;
+    }
+
+    .mobile-content-reveal {
+        height: 100vh;
+        background: #292929;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        text-align: center;
+        scroll-snap-align: start;
+    }
+
+    .mobile-content-reveal h3 {
+        font-family: 'Aileron', sans-serif;
+        font-size: 32px;
+        margin-bottom: 20px;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s ease forwards;
+    }
+
+    .mobile-content-reveal p {
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s ease 0.3s forwards;
+    }
+
+    /* Hide desktop grid on mobile */
+    .portfolio-grid {
+        display: none;
+    }
+
+    .portfolio-about .info-text,
+    .portfolio-about .note-text,
+    .info-section .note-text {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    /* Sports-specific grid overrides */
+    .sports-bottom-video,
+    .sports-bottom-image {
+        grid-column: span 1 !important;
+    }
+
+    /* Sound toggle positioning */
+    .sound-toggle {
+        width: 35px;
+        height: 35px;
+        bottom: 15px;
+        right: 15px;
+    }
+
+    /* Packages Section */
+    .packages-section {
+        padding: 60px 0;
+    }
+
+    .packages-container {
+        padding: 0 20px;
+    }
+
+    .package-header h2 {
+        font-size: 36px;
+    }
+
+    .package-item {
+        margin-bottom: 50px;
+    }
+
+    .header3 {
+        font-size: 28px;
+    }
+
+    .package-subtitle {
+        font-size: 16px;
+        margin: 20px 0;
+    }
+
+    .package-details {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .package-features li {
+        font-size: 14px;
+        margin-bottom: 12px;
+        padding-left: 15px;
+    }
+
+    .package-price {
+        font-size: 20px;
+        margin-top: 30px;
+    }
+
+    /* Contact Section */
+    .contact-section {
+        padding: 60px 0;
+    }
+
+    .contact-section .container {
+        padding: 0 20px;
+    }
+
+    .contact-section .logo {
+        font-size: 48px;
+        margin-bottom: 15px;
+    }
+
+    .contact-section .tagline {
+        font-size: 16px;
+    }
+
+    .contact-section p {
+        font-size: 16px;
+        margin-bottom: 40px;
+    }
+
+    /* Contact Form */
+    .contact-container {
+        padding: 30px 15px;
+    }
+
+    .contact-form {
+        gap: 0.8rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        font-size: 16px;
+        padding: 0.6rem;
+    }
+
+    .contact-form button {
+        padding: 0.6rem 1.5rem;
+        font-size: 16px;
+    }
+}
+
+/* Tablet responsive styles */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .portfolio-about .container,
+    .info-section .container,
+    .portfolio-section .container,
+    .contact-section .container {
+        padding: 0 40px;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: 400px;
+        gap: 18px;
+    }
+
+    .grid-item {
+        grid-column: span 2;
+        height: 500px; /* Increased by 25% from 400px */
+    }
+
+    .grid-item.large {
+        grid-column: span 2;
+        height: 500px; /* Increased by 25% from 400px */
+    }
+
+    .grid-item img,
+    .grid-item video,
+    .grid-item.large img,
+    .grid-item.large video {
+        height: 500px; /* Increased by 25% from 400px */
+    }
+
+    .portfolio-about .main-text {
+        font-size: 40px;
+    }
+
+    .header3 {
+        font-size: 40px;
+    }
+
+    .package-header h2 {
+        font-size: 44px;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    .portfolio-hero .logo-image {
+        width: 240px;
+    }
+
+    .portfolio-hero .tagline {
+        font-size: 18px;
+    }
+
+    .portfolio-cta {
+        padding: 10px 25px;
+        font-size: 14px;
+    }
+
+    .portfolio-about .main-text {
+        font-size: 24px;
+    }
+
+    .grid-container {
+        grid-auto-rows: 250px;
+        gap: 12px;
+    }
+
+    .grid-item,
+    .grid-item.large {
+        height: 550px !important; /* Increased by 25% from 250px */
+    }
+
+    .grid-item img,
+    .grid-item video,
+    .grid-item.large img,
+    .grid-item.large video {
+        height: 550px; /* Increased by 25% from 250px */
+    }
+
+    .header3 {
+        font-size: 24px;
+    }
+
+    .package-header h2 {
+        font-size: 32px;
+    }
+
+    .contact-section .logo {
+        font-size: 40px;
+    }
+}
+
+
+  
