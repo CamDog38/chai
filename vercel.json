@@ -3,7 +3,8 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    { "source": "/", "destination": "/chai/", "permanent": false }
+    { "source": "/", "destination": "/chai/", "permanent": false },
+    { "source": "/:path(.+).html", "destination": "/:path", "permanent": false }
   ],
   "headers": [
     {
