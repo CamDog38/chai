@@ -1,0 +1,99 @@
+/* Case Study detail page styles (inherits from style.css) */
+:root {
+  --cs-accent: #D7FF3F; /* same neon accent used sitewide */
+}
+
+/* Override global overflow:hidden set in style.css for case study pages */
+html, body.case-study{
+  height: auto;
+}
+body.case-study{
+  overflow: auto;
+  overflow-x: hidden; /* prevent accidental horizontal scroll */
+  background-attachment: scroll; /* avoid fixed artifacts from base */
+}
+
+body.case-study .left-menu a.active {
+  color: var(--cs-accent);
+}
+
+/* Keep content clear of the fixed left menu (matches .viewport padding on site) */
+body.case-study main{
+  padding-left: 84px;
+}
+
+.case-hero {
+  position: relative;
+  min-height: 80vh;
+  display: grid;
+  place-items: center;
+  background: #111 center/cover no-repeat;
+}
+.case-hero::after{ /* subtle overlay for legibility */
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.55) 100%);
+}
+.case-hero__inner{ position: relative; z-index: 1; text-align: center; padding: 4rem 1.5rem; }
+.case-hero__logo { max-width: 440px; width: 80vw; filter: drop-shadow(0 8px 24px rgba(0,0,0,.35)); }
+
+.case-hero__title{ margin-top: 1.5rem; font-size: clamp(40px, 8vw, 64px); color: var(--ink); font-weight: 800; letter-spacing: -.02em; font-family:'Aileron','Poppins',system-ui; }
+.no-hero-title .case-hero__title{ display:none; }
+.case-hero__tag{ display:inline-block; margin-top: .5rem; padding: .35rem .6rem; border: 1.5px solid rgba(255,255,255,.55); border-radius: 999px; color: #fff; font-size: .8rem; letter-spacing: .08em; }
+
+.case-intro{ padding: clamp(30px,5vw,80px) 20px; max-width: 1200px; margin: 0 auto; display: grid; gap: 32px; grid-template-columns: 1.2fr .8fr; align-items: start; }
+.case-intro.single{ grid-template-columns: 1fr; max-width: 980px; }
+.brand-label{ font-family:'Aileron','Poppins',system-ui; font-weight:800; color: var(--ink); letter-spacing:-0.02em; font-size: clamp(28px, 3.8vw, 48px); line-height: 1.05; display:block; margin-bottom:6px; }
+.case-intro h2{ font-size: clamp(28px,3.8vw,48px); line-height: 1.05; font-weight: 800; color: var(--ink); font-family:'Aileron','Poppins',system-ui; }
+.case-intro h2 em{ font-family: "Playfair Display", serif; font-style: italic; color: var(--ink); }
+.case-intro p{ font-size: clamp(16px,1.2vw,18px); color: var(--muted); font-family:'Poppins',system-ui; }
+@media (max-width: 900px){ .case-intro{ grid-template-columns: 1fr; } }
+
+.case-metrics { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 8px; }
+.case-metrics .metric{ background: #1a1a1a; border:1px solid var(--line); border-radius: 14px; padding: 18px 16px; box-shadow: 0 8px 32px rgba(0,0,0,.18); }
+.metric b{ font-size: 1.8rem; display:block; color: var(--ink); font-family:'Aileron','Poppins',system-ui; }
+.metric span{ color: var(--muted); font-size: .9rem; font-family:'Inter', system-ui; }
+@media (max-width: 800px){ .case-metrics{ grid-template-columns: 1fr 1fr; } }
+
+.case-gallery{ padding: 40px 20px 80px; max-width: 1280px; margin: 0 auto; display: grid; gap: 16px; grid-template-columns: 2fr 1fr; }
+.case-gallery img{ width: 100%; border-radius: 16px; display:block; }
+.case-gallery .tall{ grid-row: span 2; object-fit: cover; height: 100%; }
+@media (max-width: 1000px){ .case-gallery{ grid-template-columns: 1fr; } .case-gallery .tall{ grid-row: auto; height: auto; } }
+
+.case-media{ padding: 40px 20px 20px; max-width: 1280px; margin: 0 auto; }
+.case-media .media-grid{ column-count: 3; column-gap: 16px; }
+.case-media .media-item{ position:relative; break-inside: avoid; margin-bottom:16px; display:block }
+.case-media video, .case-media img{ width:100%; height:auto; object-fit:cover; display:block; border-radius:16px; background:#333 }
+@media (max-width: 1000px){ .case-media .media-grid{ column-count: 2 } }
+@media (max-width: 640px){ .case-media .media-grid{ column-count: 1 } }
+
+/* Square composition: left tall + two stacked right */
+.case-media .media-square{ display:grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap:16px; align-items:stretch; position:relative; overflow:hidden; }
+.case-media .media-square .media-item{ margin:0; break-inside:auto; height:100%; min-height:0; overflow:hidden; display:block; }
+.case-media .media-square .media-tall{ grid-row: 1 / span 2; }
+.case-media .media-square video, .case-media .media-square img{ width:100%; height:100%; object-fit:cover; border-radius:16px; display:block; }
+/* Keep square aspect on the whole block */
+.case-media .media-square{ aspect-ratio: 1 / 1; }
+@supports not (aspect-ratio: 1 / 1){
+  .case-media .media-square{ height: min(70vw, 720px); }
+}
+
+/* Reverse layout: tall piece on the right, stacked items left */
+.case-media .media-square.reverse{ grid-template-columns: 1fr 2fr; }
+.case-media .media-square.reverse .media-tall{ grid-column: 2; grid-row: 1 / span 2; }
+
+/* Four-up square: 2x2 grid */
+.case-media .media-square.four{ display:grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap:16px; }
+.case-media .media-square.four .media-item{ margin:0; height:100%; min-height:0; overflow:hidden; }
+.case-media .media-square.four video, .case-media .media-square.four img{ width:100%; height:100%; object-fit:cover; border-radius:16px }
+
+/* Sound toggle borrowed from portfolio styles (simplified) */
+.case-media .sound-toggle{ position:absolute; bottom:16px; right:16px; width:40px; height:40px; background:rgba(255,255,255,.95); border-radius:50%; border:2px solid rgba(255,255,255,.3); box-shadow:0 2px 8px rgba(0,0,0,.2); cursor:pointer; display:flex; align-items:center; justify-content:center }
+.case-media .sound-toggle::before{ content:""; width:18px; height:18px; display:block; background-size:contain; background-repeat:no-repeat; background-position:center }
+.case-media .sound-toggle.muted::before{ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23292929'%3E%3Cpath d='M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z'/%3E%3C/svg%3E"); }
+.case-media .sound-toggle:not(.muted)::before{ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23292929'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/%3E%3C/svg%3E"); }
+
+.case-cta{ padding: 60px 20px 100px; display:flex; gap:12px; align-items:center; justify-content:center; }
+
+.breadcrumb{ position: fixed; right: 18px; bottom: 18px; z-index: 4; }
+.breadcrumb a{ background:#000; color:#fff; border-radius:999px; padding:10px 14px; text-decoration:none; font-size:.9rem }
