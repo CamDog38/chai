@@ -292,6 +292,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const services = Array.from(stackRoot.querySelectorAll('.service'));
     const listEl = stackRoot.querySelector('.services-list');
     const mediaImg = document.getElementById('mediaImage');
+    // Set default preview to service 01 (Kate) and make it visible on load
+    if (mediaImg) {
+      const abs0 = new URL('Images/Team/Kate.JPG', window.location.href).href;
+      if (mediaImg.src !== abs0) mediaImg.src = abs0;
+      mediaImg.classList.add('is-visible');
+    }
+    // Force service 01 (data-idx="1") image first until user interacts
+    let hasShownFirst = false;
+    let forcedIdx = services.findIndex(el => el.getAttribute('data-idx') === '1');
 
     const ROW_H = 132;
     const ROW_GAP = 20; // closer spacing between cards
@@ -343,6 +352,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const maxScroll = scrollDetector.scrollHeight - vh;
       const progress = maxScroll > 0 ? y / maxScroll : 0;
       if (progressFill) progressFill.style.width = `${progress * 100}%`;
+
+      // On the very first layout pass, set the preview to service 01 (brand & strategy)
+      if (!hasShownFirst) {
+        const firstSvc = services[forcedIdx] || services[0];
+        const url0 = firstSvc && firstSvc.getAttribute('data-image');
+        if (url0) setMedia(url0);
+        hasShownFirst = true;
+        // keep going so positions are computed, but prefer forcedIdx below
+      }
 
       // Horizontal-position driven progress (guarantee full stack by center)
       const vRect = viewport.getBoundingClientRect();
@@ -396,7 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
         else el.classList.remove('service--hover');
       });
 
-      const chosenIdx = hoverIdx !== -1 ? hoverIdx : activeIdx;
+      const chosenIdx = (forcedIdx !== -1) ? forcedIdx : (hoverIdx !== -1 ? hoverIdx : activeIdx);
       const chosen = services[chosenIdx];
       const url = hoverIdx !== -1 ? hoverUrl : chosen?.getAttribute('data-image');
       if (url) setMedia(url);
@@ -415,6 +433,11 @@ document.addEventListener('DOMContentLoaded', () => {
       el.addEventListener('focus', enter);
       el.addEventListener('blur', leave);
     });
+
+    // Clear the forced preview once the user interacts or after a short delay
+    const clearForced = () => { if (forcedIdx !== -1) { forcedIdx = -1; layout(); } };
+    listEl && listEl.addEventListener('mouseenter', clearForced, { passive: true });
+    listEl && listEl.addEventListener('focusin', clearForced, { passive: true });
 
     // Overlay hover probe INSIDE init so it has access to variables
     function probeHoverFromOverlay(ev){
