@@ -158,6 +158,16 @@ body::before{
   #services .copy-head .word{color:var(--muted); transition:color 140ms linear}
   #services .copy-head .word.on{color:var(--ink)}
 
+  /* Services intro: reduce heading size (~40% smaller than default copy-head) */
+  #services .body-text .copy-head{
+    font-size: clamp(22px, 3.2vw, 30px);
+    line-height: 1.25;
+    margin: 0.6em 0 0.8em;
+  }
+  @media (max-width: 720px){
+    #services .body-text .copy-head{ font-size: clamp(20px, 5.2vw, 26px); }
+  }
+
   /* Reference-style headline and columns */
   .copy-head{
     font-family:'Aileron', 'Poppins', system-ui;
