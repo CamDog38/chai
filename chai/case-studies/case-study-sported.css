@@ -21,7 +21,8 @@ body.sported-alt main{
     "media intro"
     "cta cta";
   align-items: start;
-  gap: clamp(16px, 3vw, 32px);
+  column-gap: clamp(16px, 3vw, 32px);
+  row-gap: clamp(28px, 5vw, 64px); /* more space between hero and the next row */
 }
 body.sported-alt .case-hero{ grid-area: hero; }
 body.sported-alt .case-media{ grid-area: media; }
