@@ -43,6 +43,11 @@ body.sported-right .case-split .split-text{
 body.sported-right .case-split .split-text h2{
   margin-top: 0;
 }
+/* Use Inter for paragraph copy to match site tone */
+body.sported-right .case-split .split-text p{
+  font-family: 'Inter', system-ui;
+  line-height: 1.75;
+}
 /* Accent font for emphasized word in heading (match case-study.css intro style) */
 body.sported-right .case-split .split-text h2 em{
   font-family: "Playfair Display", serif;
@@ -52,12 +57,13 @@ body.sported-right .case-split .split-text h2 em{
 
 /* Bottom video section */
 body.sported-right .case-bottom-video{
-  margin-top: clamp(32px, 7vw, 84px);
+  margin-top: clamp(10px, 7vw, 22px);
   padding-bottom: clamp(16px, 4vw, 40px);
 }
 body.sported-right .case-bottom-video .video-wrap{
   position: relative;
   width: 100%;
+  height: auto;
   margin: 0; /* align to section padding just like split section */
   border-radius: 18px;
   overflow: hidden;
