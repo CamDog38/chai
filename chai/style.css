@@ -75,7 +75,7 @@ body::before{
 
   /* Scroll proxy */
   .scroll-detector{position:fixed; inset:0; overflow-y:auto; z-index:10}
-  .scroll-height{height:1480vh; width:1px}
+  .scroll-height{height:1660vh; width:1px}
 
   /* Hide vertical scrollbar on scroll proxy (preserve scrolling) */
   .scroll-detector{ 
