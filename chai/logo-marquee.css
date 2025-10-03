@@ -1,0 +1,135 @@
+/* Logo Marquee Test Page Styles */
+:root {
+  --lm-row-height: 150px; /* taller rows for larger cards */
+  --lm-gap: 28px; /* slightly more space between cards */
+  --lm-pad: clamp(16px, 3vw, 48px);
+  --lm-radius: 12px;
+  --lm-backdrop: rgba(255,255,255,0.06);
+  --lm-border: rgba(255,255,255,0.12);
+  --lm-shadow: 0 10px 30px rgba(0,0,0,0.25) inset,
+               0 6px 16px rgba(0,0,0,0.16);
+  /* Constrain content between visual gutters */
+  --lm-max: min(1120px, 72vw);
+}
+
+/* Page scaffold (inherits typography/colors from style.css) */
+.lm-page {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.lm-header {
+  display: flex;
+  align-items: center;
+  gap: var(--lm-gap);
+  padding: var(--lm-pad) 0;
+  width: var(--lm-max);
+  margin: 0 auto;
+}
+.lm-header img {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+.lm-title h1 {
+  margin: 0 0 4px;
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+.lm-title p {
+  margin: 0;
+  opacity: 0.7;
+}
+
+/* Full-page marquee area */
+.lm-wrap {
+  display: grid;
+  /* Fill the available 1fr area so rows can span top-to-bottom */
+  height: 100%;
+  /* Distribute rows vertically from top to bottom */
+  align-content: space-between;
+  gap: var(--lm-gap);
+  padding: var(--lm-pad) 0;
+  width: var(--lm-max);
+  margin: 0 auto;
+}
+
+/* Each row container */
+.marquee-row {
+  position: relative;
+  height: var(--lm-row-height);
+  overflow: hidden;
+  box-shadow: var(--lm-shadow);
+}
+
+/* Track that moves left/right */
+.marquee-track {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--lm-gap);
+  padding-inline: 0; /* no inner padding so content sits exactly between gutters */
+  will-change: transform;
+  animation-name: lm-scroll-left;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: 40s; /* default; overwritten by JS */
+}
+.marquee-track.is-reverse {
+  animation-name: lm-scroll-right;
+}
+
+/* Pause on hover */
+.marquee-row:hover .marquee-track { animation-play-state: paused; }
+
+/* Cards */
+.logo-card {
+  display: grid;
+  place-items: center;
+  /* Match index marquee proportions for best fit */
+  width: 236px;
+  min-width: 236px;
+  height: 120px;
+  padding: 2px 6px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06); /* charcoal pill */
+  border: 1px solid rgba(255,255,255,0.12);
+  overflow: hidden; /* ensure logos never spill outside rounded shape */
+  box-shadow: 0 8px 18px rgba(0,0,0,.26);
+}
+.logo-card img {
+  max-height: 100%;
+  max-width: 100%;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  filter: none;
+}
+
+/* Slight variant example (kept from index style) */
+.logo-card--gs img { transform: none; }
+
+@keyframes lm-scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes lm-scroll-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* Homepage usage: create larger visual gap from previous section */
+.marquee-panel {
+  /* Add extra horizontal gap from the previous panel in the rail */
+  margin-left: clamp(240px, 18vw, 380px);
+}
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+  :root { --lm-row-height: clamp(48px, 9vh, 90px); }
+  .lm-header img { height: 32px; }
+}

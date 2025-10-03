@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="style.css" />
 <link rel="stylesheet" href="hero.css" />
 <link rel="stylesheet" href="case-studies.css" />
+<link rel="stylesheet" href="logo-marquee.css" />
 </head>
 <body class="bg--gradient studio-light cs2">
 
@@ -144,11 +145,21 @@
       </section>
     </section>
 
-    <!-- TRANSITION VIDEO -->
-    <section class="panel video-panel layer-media">
-      <div class="video-wrap grow-on-center">
-        <video autoplay muted loop playsinline></video>
-        <div class="video-overlay layer-text">Transition Video</div>
+    <!-- ABOUT (moved up) -->
+    <section class="panel panel--text panel--copy layer-text about" id="about">
+      <h2 class="copy-head">about us.</h2>
+      <div class="copy-cols">
+        <div>
+          <p>born in the Gulf and built by a global team of strategists, creatives, and specialists, we exist to help brands speak <i class="accent-serif">human</i>.</p>
+          <p>our lean agency model brings together the right minds for the right briefs, delivering clarity and connection across industries, time zones, and formats. backed by years of experience leading campaigns for world-class brands, we cut through the noise to build stories that stick.</p>
+        </div>
+        <div>
+          <p>we partner with performance-led, purpose-driven brands to craft strategies, narratives, and experiences that move people — whether redefining patient care, amplifying wellness, or showcasing <i class="accent-serif">human</i> potential.</p>
+          <p><i class="accent-serif">we turn strategy into story.</i></p>
+          <p><i class="accent-serif">complexity into clarity.</i></p>
+          <p><i class="accent-serif">ambition into action.</i></p>
+          <p>no fluff. just communications <i class="accent-serif">made to matter</i>.</p>
+        </div>
       </div>
     </section>
 
@@ -236,22 +247,9 @@
       </div>
     </section>
 
-    <!-- ABOUT -->
-    <section class="panel panel--text panel--copy layer-text about" id="about">
-      <h2 class="copy-head">about us.</h2>
-      <div class="copy-cols">
-        <div>
-          <p>born in the Gulf and built by a global team of strategists, creatives, and specialists, we exist to help brands speak <i class="accent-serif">human</i>.</p>
-          <p>our lean agency model brings together the right minds for the right briefs, delivering clarity and connection across industries, time zones, and formats. backed by years of experience leading campaigns for world-class brands, we cut through the noise to build stories that stick.</p>
-        </div>
-        <div>
-          <p>we partner with performance-led, purpose-driven brands to craft strategies, narratives, and experiences that move people — whether redefining patient care, amplifying wellness, or showcasing <i class="accent-serif">human</i> potential.</p>
-          <p><i class="accent-serif">we turn strategy into story.</i></p>
-          <p><i class="accent-serif">complexity into clarity.</i></p>
-          <p><i class="accent-serif">ambition into action.</i></p>
-          <p>no fluff. just communications <i class="accent-serif">made to matter</i>.</p>
-        </div>
-      </div>
+    <!-- MARQUEE WALL (replaces transition video) -->
+    <section class="panel marquee-panel layer-media" aria-label="Client Logos">
+      <div class="lm-wrap" id="lmWrap"></div>
     </section>
 
     <!-- CONTACT -->
@@ -259,45 +257,6 @@
       <h2 class="copy-head">contact us.</h2>
       <p class="contact-copy">please click the button below or email us at <a href="mailto:info@chaidigital.com">info@chaidigital.com</a>. let's create work that is <i class="accent-serif">made to matter</i>.</p>
       <a class="submit" href="mailto:info@chaidigital.com" aria-label="Email us">✉</a>
-
-      <!-- CLIENT LOGO MARQUEE (single-line horizontal ticker) -->
-      <div class="logos-marquee layer-media" aria-label="Our clients">
-        <div class="logos-marquee__inner">
-          <div class="logos-row" aria-hidden="true">
-            <div class="logos-track">
-              <div class="logo-card"><img src="Images/Logo marquie/ASGC.png" alt="ASGC" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Al Ashram.png" alt="Al Ashram" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Dr Sal.png" alt="Dr Sal" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Foothill.png" alt="Foothill" /></div>
-              <div class="logo-card logo-card--gs"><img src="Images/Logo marquie/GS.png" alt="GS" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Gardens.png" alt="Gardens" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Imperial.png" alt="Imperial" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Integra.png" alt="Integra" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Light Hearted.png" alt="Light Hearted" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Polar.png" alt="Polar" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Smart Heart.png" alt="Smart Heart" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Sported Orange.png" alt="Sported" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/TLHA.png" alt="TLHA" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Velo Presto.png" alt="Velo Presto" /></div>
-              <!-- duplicate set for seamless loop -->
-              <div class="logo-card"><img src="Images/Logo marquie/ASGC.png" alt="" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Al Ashram.png" alt="" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Dr Sal.png" alt="" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Foothill.png" alt="" /></div>
-              <div class="logo-card logo-card--gs"><img src="Images/Logo marquie/GS.png" alt="" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Gardens.png" alt="" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Imperial.png" alt="" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Integra.png" alt="" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Light Hearted.png" alt="" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Polar.png" alt="" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Smart Heart.png" alt="" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Sported Orange.png" alt="" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/TLHA.png" alt="" /></div>
-              <div class="logo-card"><img src="Images/Logo marquie/Velo Presto.png" alt="" /></div>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
 
   </div>
@@ -315,6 +274,7 @@
 <script src="hero.js" defer></script>
 <script src="main.js" defer></script>
 <script src="case-studies-hover.js" defer></script>
+<script src="logo-marquee.js" defer></script>
   <script defer>
     // Left menu toggle
     (function(){

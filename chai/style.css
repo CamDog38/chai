@@ -125,7 +125,7 @@ body::before{
   }
 
   /* Boxless copy panel: focus on type and comfortable spacing */
-  .panel.panel--copy{border:0; background:transparent; padding:0; margin:0 100px; margin-left: 200px; margin-right: 200px;}
+  .panel.panel--copy{border:0; background:transparent; padding:0; margin:-29px 100px; margin-left: 200px; margin-right: 200px;}
   /* Make the copy panel wider than default text panels */
   .panel--copy.panel--text{flex-basis:980px}
   /* Extra space after the copy block before first service card (reduced for closer proximity) */
@@ -135,7 +135,7 @@ body::before{
   #case-studies.panel{border:0; padding:0; background:transparent}
   #case-studies.panel--text{flex-basis:auto}
   /* Align case studies header with copy panel margins */
-  #case-studies{align-self:flex-start; margin:50px 100px 0 100px}
+  #case-studies{align-self:flex-start; margin:29px 100px 0 100px}
   #case-studies .copy-head{margin:0}
   .panel--copy .body-text{
     max-width:980px;
@@ -212,7 +212,7 @@ body::before{
   }
 
   /* Panels */
- .panel{flex:0 0 auto; background:transparent; border:1px solid var(--line); padding:28px}
+ .panel{flex:0 0 auto; background:transparent; padding:28px}
   .panel--text{flex-basis:var(--panel-w)}
   .panel--hero{
     flex-basis:100vw; border:0; padding:0;
@@ -346,7 +346,7 @@ body::before{
   .about .copy-cols p .word.on{ color:var(--ink) }
   /* Bold lines keep heavier weight while still using fill color transition */
   .about .copy-cols p.is-strong .word{ font-weight:800 }
-  .contact{flex-basis:680px; align-self:flex-start; margin:100px 100px 0 100px; position:relative; top:60px}
+  .contact{flex-basis:680px; align-self:flex-start; margin:100px 100px 0 100px; position:relative; top:29px}
   /* Make contact panel align with copy layout spacing */
   .panel.contact{border:0; padding:0; background:transparent; margin:0 100px; position:relative; min-height:70vh}
   /* Contact header alignment to match About */
@@ -381,7 +381,7 @@ body::before{
   /* Ensure inline SVG icons inherit color and flip to white on hover */
   .submit svg{ width:1em; height:1em; fill:currentColor; stroke:currentColor }
   /* Center the contact button in the middle of the contact rail */
-  .panel.contact .submit{ position:absolute; left:60%; top:50%; transform:translate(-50%, -50%); margin-top:50px; z-index:20 }
+  .panel.contact .submit{ position:absolute; left:60%; top:66%; transform:translate(-50%, -50%); margin-top:50px; z-index:20 }
   /* Preserve centering on hover while adding scale */
   .panel.contact .submit:hover{ 
     transform:translate(-50%, -50%) scale(1.02);
@@ -419,15 +419,33 @@ body::before{
  .sidebar{display:none}
  .sidebar-item{display:none}
   .instructions{position:fixed; top:20px; left:50%; transform:translateX(-50%); background:#0f0f0f; padding:8px 16px; border:1px solid var(--line); font-size:12px; z-index:100; color:var(--muted)}
-  .progress-bar{position:fixed; bottom:24px; left:50%; transform:translateX(-50%); width:420px;height:4px;background:#1e1e1e;z-index:100}
-   .progress-fill{height:100%; background:var(--accent); width:0%}
+  .progress-bar{
+    position:fixed;
+    bottom:24px;
+    left:50%;
+    transform:translateX(-50%);
+    width:420px;
+    height:6px;
+    background: rgba(255,255,255,0.1);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 4px 20px rgba(0,0,0,0.3);
+    z-index:100;
+  }
+  .progress-fill{
+    height:100%;
+    background: linear-gradient(90deg, var(--accent), #6b8e4e);
+    box-shadow: 0 0 20px var(--accent);
+    transition: width 0.1s ease-out;
+    width:0%;
+  }
 
   /* Services (STACKED layout copied from stack.css, adapted) */
   .services-stack{flex-basis:1400px; border:0; padding:0; display:grid; grid-template-columns:360px 1fr; gap:32px; align-items:start; margin:0 100px; pointer-events:auto}
   /* Ensure parent class 'layer-media' does not disable interactions here */
   .services-stack.layer-media{ pointer-events: auto !important; }
   .services-stack .media-pane{position:relative; padding-left:0; margin-left:-28px}
-  .services-stack .media-title{font-size:56px; line-height:1; font-weight:800; margin-bottom:24px; margin-top: 50px}
+  .services-stack .media-title{font-size:56px; line-height:1; font-weight:800; margin-bottom:24px; margin-top: 56px}
   .services-stack .media-stack{position:relative; width:100%; max-width:360px; height:420px}
   .services-stack .media-card{position:absolute; width:320px; height:360px; left:0; top:60px; background:#1a1a1a; border:1px solid var(--line); transform:rotate(-8deg); box-shadow:0 20px 40px rgba(0,0,0,0.45); overflow:hidden}
   /* Premium feel: tiny parallax/nudge and smoother transitions */
@@ -447,7 +465,7 @@ body::before{
   .services-stack .media-accent{position:absolute; width:140px; height:40px; background:#495932; right:-20px; bottom:24px; transform:rotate(-10deg)}
 
   /* Right services list (STACKED, animated) */
-  .services-stack .services-list{position:relative; height:720px; overflow:hidden; padding:32px 16px 0 16px; margin-top:36px; pointer-events:auto}
+  .services-stack .services-list{position:relative; height:720px; overflow:hidden; padding:0px 16px 0 16px; pointer-events:auto}
   .services-stack .service{position:absolute; height:132px; display:grid; grid-template-columns:56px minmax(0, 1.4fr) minmax(0, 0.8fr) 32px; align-items:center; gap:12px; padding:10px 20px; border:1px solid #1d1d1d; background:rgba(15,15,15,0.92); border-radius:10px; left:14px; right:14px; overflow:hidden; margin-bottom:4px; pointer-events:auto; z-index:1; cursor:pointer;
     /* animation vars set by JS */
     --ty: 0px; --tx: 0px; --alpha: 0; --bg: none;
