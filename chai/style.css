@@ -284,8 +284,31 @@ body::before{
  .video-overlay{position:absolute; left:12px; top:12px; background:transparent; border:0; padding:6px 10px; font-size:12px; color:var(--muted)}
 
   /* Case studies */
- .case-card{flex:0 0 520px; background:#1a1a1a; border:1px solid var(--line); display:flex; flex-direction:column; border-radius:14px; box-shadow:0 18px 46px rgba(0,0,0,.35); overflow:visible; height:78vh; min-height:560px; margin-right:120px; position:relative}
- .case-card__top{background:#151515; padding:24px 28px; aspect-ratio:16/9; display:flex; align-items:center; justify-content:flex-end; border-bottom:0; background-position: var(--bg-x, 50%) var(--bg-y, 50%); background-size: cover; position:relative}
+ .case-card{flex:0 0 520px; background:#1a1a1a; border:1px solid var(--line); display:flex; flex-direction:column; border-radius:14px; box-shadow:0 18px 46px rgba(0,0,0,.35); overflow:visible; height:78vh; min-height:560px; margin-right:120px; position:relative;
+  /* Initial state for scroll animation */
+  opacity:0;
+  transform:translateY(-40px) scale(0.95);
+  transition:opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+             transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+             box-shadow 0.3s ease;
+ }
+ 
+ /* Visible state when scrolled into view */
+ .case-card.is-visible{
+  opacity:1;
+  transform:translateY(0) scale(1);
+ }
+ 
+ /* Enhanced hover with lift and glow */
+ .case-card:hover{
+  box-shadow:0 24px 60px rgba(0,0,0,.45),
+             0 0 40px rgba(73, 89, 50, 0.12);
+  transform:translateY(-8px);
+ }
+ .case-card__top{background:#151515; padding:24px 28px; aspect-ratio:16/9; display:flex; align-items:center; justify-content:flex-end; border-bottom:0; background-position: var(--bg-x, 50%) var(--bg-y, 50%); background-size: cover; position:relative;
+  transition:transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-style:preserve-3d;
+ }
 
 /* Subtle texture inside case card body */
 .case-card::before{
@@ -318,11 +341,18 @@ body::before{
 .logo-card--gs img{ transform: scale(1.8); transform-origin: center; }
 
 @keyframes marquee-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  .case-card__num{font-size:44px; font-weight:700; color:var(--ink); line-height:1; position:absolute; top:14px; left:18px}
+  .case-card__num{font-size:44px; font-weight:700; color:var(--ink); line-height:1; position:absolute; top:14px; left:18px;
+  transform:translateZ(30px);
+  transition:transform 0.3s ease;
+ }
+  .case-card:hover .case-card__num{transform:translateZ(30px) scale(1.05);}
   .case-card__logo{width:120px;height:120px;border:0;border-radius:50%;
     display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);
-    transform:scale(0.9); transition:transform 0.18s linear; will-change:transform; overflow:hidden;
-    background:#ffffff; /* white background behind logo */}
+    transform:scale(0.9) translateZ(50px); transition:transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); will-change:transform; overflow:hidden;
+    background:#ffffff; /* white background behind logo */
+    box-shadow:0 8px 24px rgba(0,0,0,0.2);
+  }
+  .case-card:hover .case-card__logo{transform:scale(1) translateZ(50px) rotate(5deg);}
  /* Ensure logo images fit nicely within the circular logo holder (smaller inside same circle) */
  .case-card__logo img{width:80%; height:80%; object-fit:contain; object-position:center; padding:0; display:block}
   .case-card__bottom{padding:0; flex:1; display:flex; flex-direction:column;margin-top:15px;}

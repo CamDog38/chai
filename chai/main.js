@@ -666,4 +666,45 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 })();
 
+  // Marquee panel: one-time scroll-in animation (no glitchy reverse)
+  (function initMarqueeScrollAnimation(){
+    const marqueePanel = document.querySelector('.marquee-panel');
+    if (!marqueePanel) return;
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          // Unobserve after first trigger to prevent glitchy reverse
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15, // Trigger when 15% visible
+      rootMargin: '0px'
+    });
+    
+    observer.observe(marqueePanel);
+  })();
+
+  // Case studies: staggered scroll-in from top
+  (function initCaseStudyAnimations(){
+    const caseCards = document.querySelectorAll('.case-card');
+    if (!caseCards.length) return;
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.2,
+      rootMargin: '-50px'
+    });
+    
+    caseCards.forEach(card => observer.observe(card));
+  })();
+
 });

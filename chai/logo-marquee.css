@@ -61,7 +61,22 @@
   position: relative;
   height: var(--lm-row-height);
   overflow: hidden;
-  box-shadow: var(--lm-shadow);
+  /* Remove row shadow for cleaner look */
+  /* Add blur fade on edges */
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
 }
 
 /* Track that moves left/right */
@@ -77,6 +92,10 @@
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   animation-duration: 40s; /* default; overwritten by JS */
+  /* Prevent flicker during animation */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 .marquee-track.is-reverse {
   animation-name: lm-scroll-right;
@@ -93,12 +112,19 @@
   width: 236px;
   min-width: 236px;
   height: 120px;
-  padding: 2px 6px;
-  border-radius: 12px;
-  background: rgba(255,255,255,0.06); /* charcoal pill */
-  border: 1px solid rgba(255,255,255,0.12);
-  overflow: hidden; /* ensure logos never spill outside rounded shape */
-  box-shadow: 0 8px 18px rgba(0,0,0,.26);
+  padding: 8px 12px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.04); /* subtle charcoal pill */
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,.18),
+              inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Stabilize rendering to prevent flicker */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform;
 }
 .logo-card img {
   max-height: 100%;
@@ -107,11 +133,28 @@
   width: auto;
   object-fit: contain;
   display: block;
-  filter: none;
+  filter: brightness(0.95) contrast(1.05);
+  transition: filter 0.3s ease, transform 0.3s ease;
 }
 
 /* Slight variant example (kept from index style) */
 .logo-card--gs img { transform: none; }
+
+/* Enhanced hover state */
+.logo-card:hover {
+  transform: translateY(-6px) scale(1.08);
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.16);
+  box-shadow: 0 12px 32px rgba(0,0,0,.35),
+              0 0 40px rgba(73, 89, 50, 0.15),
+              inset 0 1px 0 rgba(255,255,255,0.1);
+  z-index: 10;
+}
+
+.logo-card:hover img {
+  filter: brightness(1.1) contrast(1.1);
+  transform: scale(1.05);
+}
 
 @keyframes lm-scroll-left {
   0% { transform: translateX(0); }
@@ -126,6 +169,44 @@
 .marquee-panel {
   /* Add extra horizontal gap from the previous panel in the rail */
   margin-left: clamp(240px, 18vw, 380px);
+  position: relative;
+  /* Isolate stacking context to prevent overlay conflicts */
+  isolation: isolate;
+  /* Initial state for scroll animation */
+  opacity: 0;
+  transform: translateX(60px) scale(0.96);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Visible state when scrolled into view */
+.marquee-panel.is-visible {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+/* Add subtle glow effect to marquee area */
+.marquee-panel::before {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(73, 89, 50, 0.08) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: -1;
+  /* Prevent flicker on glow layer */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  /* Animate glow on scroll */
+  opacity: 0;
+  transition: opacity 1s ease 0.3s;
+}
+
+.marquee-panel.is-visible::before {
+  opacity: 1;
 }
 
 /* Responsive tweaks */
