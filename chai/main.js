@@ -640,9 +640,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-    layout(); 
-    if (DEBUG_STACK) console.log('[stack] init', { count: services.length });
-    sizeScrollProxy();
-    layout();
+  layout(); 
+  if (DEBUG_STACK) console.log('[stack] init', { count: services.length });
+  sizeGlobalScrollProxy();
+  layout();
+})();
+
+(function(){
+  // Case studies: subtle 3D tilt on hover (requested)
+  (function enableCaseCardTilt(){
+    const cards = document.querySelectorAll('.case-card__top');
+    if (!cards.length) return;
+    cards.forEach((card) => {
+      card.style.willChange = 'transform';
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `perspective(1000px) rotateY(${x * 5}deg) rotateX(${-y * 5}deg) scale3d(1.02, 1.02, 1.02)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateY(0) rotateX(0) scale3d(1, 1, 1)';
+      });
+    });
   })();
+})();
+
 });

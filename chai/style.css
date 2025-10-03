@@ -494,7 +494,7 @@ body::before{
   /* Responsive tweaks matching stack.css */
   @media (max-width: 1400px){
     .services-stack{grid-template-columns:320px 1fr}
-    .services-stack .service__desc{ margin-left: -120%; }
+    .services-stack .service__desc{ margin-left: -100%; }
   }
   @media (max-width: 1200px){
     .services-stack{grid-template-columns:1fr}
