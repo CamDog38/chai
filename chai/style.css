@@ -287,10 +287,15 @@ body::before{
  .case-card{flex:0 0 520px; background:#1a1a1a; border:1px solid var(--line); display:flex; flex-direction:column; border-radius:14px; box-shadow:0 18px 46px rgba(0,0,0,.35); overflow:visible; height:78vh; min-height:560px; margin-right:120px; position:relative;
   /* Initial state for scroll animation */
   opacity:0;
-  transform:translateY(-40px) scale(0.95);
+  transform: translateZ(0) translateY(-40px) scale(0.95);
   transition:opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
              box-shadow 0.3s ease;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  content-visibility: auto;
+  contain-intrinsic-size: 560px 520px;
  }
  
  /* Visible state when scrolled into view */
@@ -308,6 +313,9 @@ body::before{
  .case-card__top{background:#151515; padding:24px 28px; aspect-ratio:16/9; display:flex; align-items:center; justify-content:flex-end; border-bottom:0; background-position: var(--bg-x, 50%) var(--bg-y, 50%); background-size: cover; position:relative;
   transition:transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
   transform-style:preserve-3d;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
  }
 
 /* Subtle texture inside case card body */

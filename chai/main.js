@@ -107,12 +107,26 @@ document.querySelectorAll('.category-stack__img').forEach(el => growTargets.push
 document.querySelectorAll('.case-card__logo').forEach(el => growTargets.push(el));
 document.querySelectorAll('.video-wrap').forEach(el => growTargets.push(el));
 
+// Track only the elements near the viewport to reduce per-frame work
+const activeGrow = new Set();
+let growObserver;
+try{
+  growObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) activeGrow.add(entry.target);
+      else activeGrow.delete(entry.target);
+    });
+  }, { root: document.querySelector('.viewport'), threshold: 0, rootMargin: '0px 40% 0px 40%' });
+  growTargets.forEach(el => growObserver.observe(el));
+} catch(e){ /* fallback: activeGrow stays empty -> applyImageScales loops all */ }
+
 function applyImageScales() {
   const vRect = viewport.getBoundingClientRect();
   const vCenter = vRect.left + vRect.width / 2;
   const half = vRect.width / 2;
 
-  for (const el of growTargets) {
+  const iter = activeGrow.size ? activeGrow : growTargets;
+  for (const el of iter) {
     const r = el.getBoundingClientRect();
     const c = r.left + r.width / 2;
     const norm = Math.min(1, Math.abs(c - vCenter) / half); // 0 when centered
@@ -177,14 +191,21 @@ function update() {
   const y = scrollDetector.scrollTop;
   const progress = y / maxScroll;
 
-  rail.style.transform = `translateX(${-y * PX_PER_SCROLL}px)`;
+  // Use translate3d to keep the rail on the compositor thread
+  rail.style.transform = `translate3d(${-y * PX_PER_SCROLL}px, 0, 0)`;
   progressFill.style.width = `${progress * 100}%`;
 
   applyImageScales();
   updateCopyFill();
 }
 
-scrollDetector.addEventListener('scroll', update, { passive: true });
+// Throttle global updates to animation frames to reduce jank
+let tickingGlobal = false;
+scrollDetector.addEventListener('scroll', () => {
+  if (tickingGlobal) return;
+  tickingGlobal = true;
+  requestAnimationFrame(() => { update(); tickingGlobal = false; });
+}, { passive: true });
 window.addEventListener('resize', () => { sizeGlobalScrollProxy(); update(); });
 sizeGlobalScrollProxy();
 update();
@@ -284,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
   (function initServicesStack(){
     const stackRoot = document.querySelector('.services-stack');
     if (!stackRoot) return;
-    const DEBUG_STACK = true;
+    const DEBUG_STACK = false;
     // Tuning: make stacking start earlier and finish by mid-screen
     // Positive offset nudges the section as if it's slightly further left, so progress increases earlier
     const STACK_EARLY_OFFSET_PX = 140;    // increase to start stacking sooner (suggested: 100–200)
@@ -459,7 +480,13 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollDetector.addEventListener('mouseleave', () => { if (hoverIdx !== -1){ hoverIdx = -1; hoverUrl = ''; layout(); } }, { passive: true });
 
     // Bind to global scroll so the stack updates while you scroll
-    scrollDetector.addEventListener('scroll', layout, { passive: true });
+    // Throttle stack layout to rAF as well
+    let tickingStack = false;
+    scrollDetector.addEventListener('scroll', () => {
+      if (tickingStack) return;
+      tickingStack = true;
+      requestAnimationFrame(() => { layout(); tickingStack = false; });
+    }, { passive: true });
     window.addEventListener('resize', () => {
       updateCopyFill();
     });
@@ -680,8 +707,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }, {
-      threshold: 0.15, // Trigger when 15% visible
-      rootMargin: '0px'
+      threshold: 0.1, // trigger a bit earlier
+      rootMargin: '0px 240px 0px 240px' // expand root horizontally to pre-trigger
     });
     
     observer.observe(marqueePanel);
@@ -689,8 +716,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Case studies: staggered scroll-in from top
   (function initCaseStudyAnimations(){
+    // Preload ONLY the first case-card image to avoid first-hit jank; others load normally
+    (function preloadFirstCaseStudyImage(){
+      try{
+        const firstTop = document.querySelector('.case-card__top');
+        if(!firstTop) return;
+        const inline = firstTop.style && firstTop.style.backgroundImage ? firstTop.style.backgroundImage : '';
+        const m = inline.match(/url\((['\"]?)(.*?)\1\)/);
+        const src = m && m[2] ? m[2] : '';
+        if(!src) return;
+        const img = new Image();
+        img.decoding = 'async';
+        img.loading = 'eager';
+        img.fetchPriority = 'high';
+        img.src = src;
+      } catch(err){ /* no-op */ }
+    })();
+
     const caseCards = document.querySelectorAll('.case-card');
     if (!caseCards.length) return;
+    // Make only the first card visible immediately to avoid a first-hit animation stall
+    caseCards[0] && caseCards[0].classList.add('is-visible');
     
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -700,11 +746,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }, {
-      threshold: 0.2,
-      rootMargin: '-50px'
+      threshold: 0.25,
+      rootMargin: '0px'
     });
     
-    caseCards.forEach(card => observer.observe(card));
+    caseCards.forEach((card, i) => { if (i > 0) observer.observe(card); });
   })();
 
 });
