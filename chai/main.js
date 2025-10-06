@@ -60,9 +60,31 @@ function tokenizePreserve(el){
 }
 
 // Smooth-scroll the horizontal rail so a given section (or its heading) is centered in the viewport
-// opts: { offsetPx?: number, focus?: 'auto' | 'heading' | 'section' }
+// opts: { offsetPx?: number, focus?: 'auto' | 'heading' | 'section', duration?: number }
+let autoScrollRAF = 0;
+function animateVerticalScrollTo(target, duration = 700){
+  try { cancelAnimationFrame(autoScrollRAF); } catch(_){}
+  const start = scrollDetector.scrollTop;
+  const change = target - start;
+  const t0 = performance.now();
+  const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+  document.body.classList.add('is-auto-scrolling');
+  const step = (now) => {
+    const t = Math.min(1, (now - t0) / duration);
+    const e = easeOutCubic(t);
+    scrollDetector.scrollTop = start + change * e;
+    if (t < 1) autoScrollRAF = requestAnimationFrame(step);
+    else {
+      document.body.classList.remove('is-auto-scrolling');
+      // Run a final update/layout after auto-scroll finishes
+      requestAnimationFrame(() => { update(); });
+    }
+  };
+  autoScrollRAF = requestAnimationFrame(step);
+}
+
 function scrollRailToSection(sectionEl, opts = {}){
-  const { offsetPx = 0, focus = 'auto' } = opts;
+  const { offsetPx = 0, focus = 'auto', duration = 700 } = opts;
   if(!sectionEl || !rail || !scrollDetector || !viewport) return;
   const vpRect = viewport.getBoundingClientRect();
   // Prefer the heading (.copy-head) when focusing, so the title aligns centrally
@@ -78,7 +100,7 @@ function scrollRailToSection(sectionEl, opts = {}){
   const maxScroll = Math.max(0, scrollDetector.scrollHeight - window.innerHeight);
   let target = scrollDetector.scrollTop + delta + offsetPx;
   target = Math.max(0, Math.min(maxScroll, target));
-  scrollDetector.scrollTo({ top: target, behavior: 'smooth' });
+  animateVerticalScrollTo(target, duration);
 }
 
 // Ensure scroll proxy height covers entire horizontal rail
@@ -121,6 +143,7 @@ try{
 } catch(e){ /* fallback: activeGrow stays empty -> applyImageScales loops all */ }
 
 function applyImageScales() {
+  if (document.body.classList.contains('is-auto-scrolling')) return; // pause during auto-scroll
   const vRect = viewport.getBoundingClientRect();
   const vCenter = vRect.left + vRect.width / 2;
   const half = vRect.width / 2;
@@ -368,6 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function layout(){
+      if (document.body.classList.contains('is-auto-scrolling')) return; // pause during auto-scroll
       const vh = window.innerHeight;
       const y = scrollDetector.scrollTop;
       const maxScroll = scrollDetector.scrollHeight - vh;
