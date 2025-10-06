@@ -247,9 +247,26 @@
       </div>
     </section>
 
-    <!-- MARQUEE WALL (replaces transition video) -->
+    <!-- MARQUEE WALL (HTML-managed list + script builds randomized rows; per-logo offsets via inline style on source list) -->
     <section class="panel marquee-panel layer-media" aria-label="Client Logos">
       <div class="lm-wrap" id="lmWrap"></div>
+      <!-- Source logo list you can edit: add/remove <img>, and set per-logo variables: --tx, --ty, --scale, --bg-x, --bg-y -->
+      <div id="logosSource" style="display:none">
+        <img src="Images/Logo marquie/ASGC.png" alt="ASGC" style="--tx: 2px; --ty: -55px; --scale: 1.06; --bg-y: 52%;">
+        <img src="Images/Logo marquie/Al Ashram.png" alt="Al Ashram" style="--tx: 2px; --ty: -20px; --scale: 1.00; --bg-y: 52%;">
+        <img src="Images/Logo marquie/Dr Sal.png" alt="Dr Saliha Afridi">
+        <img src="Images/Logo marquie/Foothill.png" alt="Foothill" style="--tx: 2px; --ty: -15px; --scale: 1.00; --bg-y: 52%;">
+        <img src="Images/Logo marquie/GS.png" alt="Growthspace" class="logo-card--gs">
+        <img src="Images/Logo marquie/Gardens.png" alt="Gardens" style="--tx: 2px; --ty: -20px; --scale: 1.00; --bg-y: 52%;">
+        <img src="Images/Logo marquie/Imperial.png" alt="Imperial" style="--tx: 2px; --ty: -10px; --scale: 1.00; --bg-y: 52%;">
+        <img src="Images/Logo marquie/Integra.png" alt="Integra" style="--tx: 2px; --ty: -20px; --scale: 1.00; --bg-y: 52%;">
+        <img src="Images/Logo marquie/Light Hearted.png" alt="Light Hearted" style="--tx: 2px; --ty: -20px; --scale: 1.00; --bg-y: 52%;">
+        <img src="Images/Logo marquie/Polar.png" alt="Polar" style="--tx: 2px; --ty: -20px; --scale: 1.00; --bg-y: 52%;">
+        <img src="Images/Logo marquie/Smart Heart.png" alt="Smart Heart" style="--tx: 2px; --ty: -20px; --scale: 1.00; --bg-y: 52%;">
+        <img src="Images/Logo marquie/Sported Orange.png" alt="Sported" style="--tx: 2px; --ty: -45px; --scale: 1.06; --bg-y: 52%;">
+        <img src="Images/Logo marquie/TLHA.png" alt="The Lighthouse Arabia">
+        <img src="Images/Logo marquie/Velo Presto.png" alt="Velo Presto" style="--tx: 2px; --ty: -20px; --scale: 1.00; --bg-y: 52%;">
+      </div>
     </section>
 
     <!-- CONTACT -->
@@ -274,7 +291,98 @@
 <script src="hero.js" defer></script>
 <script src="main.js" defer></script>
 <script src="case-studies-hover.js" defer></script>
-<script src="logo-marquee.js" defer></script>
+<!-- Build randomized marquee rows from #logosSource; ensure no duplicates per row and varied order across rows -->
+<script>
+  (function(){
+    const wrap = document.getElementById('lmWrap');
+    const srcList = document.querySelectorAll('#logosSource img');
+    if(!wrap || !srcList.length) return;
+
+    // Read source list (keep any inline style/class so you can control per-logo positioning)
+    const logos = Array.from(srcList).map((el, i)=>({
+      src: el.getAttribute('src'),
+      alt: el.getAttribute('alt')||'',
+      style: el.getAttribute('style')||'',
+      className: el.getAttribute('class')||''
+    }));
+
+    const rows = 3;
+    const durations = [36, 41, 46];
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
+    }
+
+    function rotate(arr, n){
+      const k = ((n%arr.length)+arr.length)%arr.length;
+      return arr.slice(k).concat(arr.slice(0,k));
+    }
+
+    const failed = new Set();
+
+    function createCard(item){
+      const card = document.createElement('div');
+      card.className = 'logo-card' + (item.className?(' '+item.className):'');
+      const img = document.createElement('img');
+      // Encode URI to safely handle spaces in filenames
+      img.src = encodeURI(item.src);
+      img.alt = item.alt;
+      if(item.style) img.style.cssText = item.style;
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.addEventListener('error', () => {
+        // Remove the whole card if the image fails to load
+        failed.add(item.src);
+        card.remove();
+      }, { once: true });
+      card.appendChild(img);
+      return card;
+    }
+
+    // Partition the shuffled list into disjoint chunks (one per row) so rows don't share logos
+    const shuffled = shuffle(logos);
+    const chunkSize = Math.ceil(shuffled.length / rows);
+    const partitions = Array.from({length: rows}, (_, i) =>
+      shuffled.slice(i * chunkSize, (i + 1) * chunkSize)
+    );
+
+    for(let r=0; r<rows; r++){
+      // randomize the order within this row's unique subset
+      let order = shuffle(partitions[r] || []);
+
+      const row = document.createElement('div');
+      row.className = 'marquee-row';
+      const track = document.createElement('div');
+      track.className = 'marquee-track' + (r%2? ' is-reverse':'');
+      track.style.animationDuration = (durations[r%durations.length]||40) + 's';
+      // Negative delay to desync
+      track.style.animationDelay = (-Math.random()*track.style.animationDuration.replace('s',''))+'s';
+
+      const set1 = document.createElement('div');
+      set1.style.display='flex'; set1.style.gap='var(--lm-gap)';
+      const set2 = document.createElement('div');
+      set2.style.display='flex'; set2.style.gap='var(--lm-gap)';
+
+      order.forEach(item=> set1.appendChild(createCard(item)) );
+      // Duplicate for seamless loop
+      order.forEach(item=> set2.appendChild(createCard(item)) );
+
+      track.appendChild(set1); track.appendChild(set2);
+      row.appendChild(track);
+      wrap.appendChild(row);
+    }
+
+    if(failed.size){
+      // Surface which files failed so you can fix paths/file names
+      console.warn('[Logo marquee] Failed to load these logos:', Array.from(failed));
+    }
+  })();
+  </script>
   <script defer>
     // Left menu toggle
     (function(){

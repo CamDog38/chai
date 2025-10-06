@@ -132,13 +132,18 @@
   height: auto;
   width: auto;
   object-fit: contain;
+  /* Per-logo positioning: define --bg-x and --bg-y on .logo-card (or img) */
+  object-position: var(--bg-x, 50%) var(--bg-y, 50%);
   display: block;
   filter: brightness(0.95) contrast(1.05);
   transition: filter 0.3s ease, transform 0.3s ease;
+  /* Optional fine-grain offset and scale without JS */
+  transform: translate(var(--tx, 0), var(--ty, 0)) scale(var(--scale, 1));
 }
 
-/* Slight variant example (kept from index style) */
-.logo-card--gs img { transform: none; }
+/* GrowthSpace (GS) logo tweaks */
+/* Nudge GS upward; you can tweak values as needed */
+.logo-card--gs { margin-top: -17%; }
 
 /* Enhanced hover state */
 .logo-card:hover {
