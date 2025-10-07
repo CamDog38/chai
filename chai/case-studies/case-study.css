@@ -14,7 +14,7 @@ body.case-study{
 }
 
 body.case-study .left-menu a.active {
-  color: var(--cs-accent);
+  color: #fff;
 }
 
 /* Keep content clear of the fixed left menu (matches .viewport padding on site) */
