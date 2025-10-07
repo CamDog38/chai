@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact – chai.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Inter:wght@400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/aileron" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="case-studies.css" />
+</head>
+<body class="page--contact">
+  <!-- Fixed Left Menu -->
+  <aside class="left-menu" aria-label="Primary">
+    <a href="/" class="left-menu__logo" aria-label="Chai Home">
+      <img src="Images/Chai White ver2.png" alt="Chai logo" />
+    </a>
+    <button class="left-menu__toggle" aria-expanded="false" aria-controls="leftFlyout" title="Open menu">+</button>
+    <nav id="leftFlyout" class="left-flyout" aria-hidden="true">
+      <ul>
+        <li><a href="/">home.</a></li>
+        <li>
+          <a href="/index#services">services.</a>
+          <ul class="submenu" aria-label="Services submenu">
+            <li><a href="/mediaportfolio">media portfolio.</a></li>
+            <li><a href="/sportmediasportfolio">sports media portfolio.</a></li>
+          </ul>
+        </li>
+        <li><a href="/index#about">about us.</a></li>
+        <li><a href="/index#case-studies">case studies.</a></li>
+        <li><a href="/contact" class="active">contact us.</a></li>
+      </ul>
+    </nav>
+    <div class="left-menu__spacer" aria-hidden="true"></div>
+    <div class="left-menu__socials">
+      <a href="#" aria-label="LinkedIn" class="sm sm--in">in</a>
+      <a href="#" aria-label="Instagram" class="sm sm--ig">ig</a>
+      <a href="#" aria-label="TikTok" class="sm sm--tt">tt</a>
+    </div>
+  </aside>
+
+  <main>
+    <section class="contact-hero">
+      <div class="contact-hero__bg-text" aria-hidden="true">contact us.</div>
+      <div class="contact-hero__content layer-text">
+        <h2 class="copy-head animate-in">contact us.</h2>
+        <p class="contact-copy animate-in" style="margin-left:0; animation-delay: 0.1s">please fill out the form below or email us at 
+          <a href="mailto:info@chaidigital.com">info@chaidigital.com</a>. let's create work that is 
+          <i class="accent-serif">made to matter</i>.
+        </p>
+
+        <form id="contactForm" class="contact-form animate-in" novalidate style="animation-delay: 0.2s">
+          <div class="form-row">
+            <div class="field">
+              <label for="name">name</label>
+              <input id="name" name="name" type="text" required />
+            </div>
+            <div class="field">
+              <label for="company">company</label>
+              <input id="company" name="company" type="text" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="email">email</label>
+              <input id="email" name="email" type="email" required />
+            </div>
+            <div class="field">
+              <label for="phone">phone</label>
+              <input id="phone" name="phone" type="tel" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field full">
+              <label for="message">message</label>
+              <textarea id="message" name="message" required></textarea>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn--primary">send</button>
+          </div>
+          <p id="formNote" class="body-text" style="color:var(--muted); margin-top:12px"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script defer>
+    // Left menu toggle
+    (function(){
+      const menu = document.querySelector('.left-menu');
+      const btn = document.querySelector('.left-menu__toggle');
+      const fly = document.getElementById('leftFlyout');
+      if(!menu || !btn || !fly) return;
+      btn.addEventListener('click', ()=>{
+        const open = menu.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', String(open));
+        fly.setAttribute('aria-hidden', String(!open));
+      });
+      document.addEventListener('click', (e) => {
+        if (!menu.contains(e.target) && menu.classList.contains('is-open')) {
+          menu.classList.remove('is-open');
+          btn.setAttribute('aria-expanded', 'false');
+          fly.setAttribute('aria-hidden', 'true');
+        }
+      });
+    })();
+
+    // Form -> mailto fallback (no server)
+    (function(){
+      const form = document.getElementById('contactForm');
+      const note = document.getElementById('formNote');
+      if(!form) return;
+      form.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        const name = (document.getElementById('name').value||'').trim();
+        const email = (document.getElementById('email').value||'').trim();
+        const company = (document.getElementById('company').value||'').trim();
+        const phone = (document.getElementById('phone').value||'').trim();
+        const message = (document.getElementById('message').value||'').trim();
+        if(!name || !email || !message){
+          note.textContent = 'please complete your name, email, and message.';
+          return;
+        }
+        const subject = encodeURIComponent(`New inquiry from ${name}`);
+        const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nCompany: ${company}\n\nMessage:\n${message}`);
+        window.location.href = `mailto:info@chaidigital.com?subject=${subject}&body=${body}`;
+        note.textContent = 'opening your email client... if nothing happens, write to info@chaidigital.com';
+      });
+    })();
+  </script>
+</body>
+</html>
