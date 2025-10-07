@@ -250,3 +250,27 @@ body.bg--gradient{
 .case-card:has(.case-card__top:hover) .case-card__top::after{ opacity:1 }
 .case-card:has(.case-card__top:hover) .case-card__logo{ opacity:.15 }
 .case-card:has(.case-card__top:hover) .case-card__bottom{ opacity:1; transform: translateY(0) }
+
+/* Clickable overlay + read more chip */
+.case-card .case-card__link{
+  position:absolute; inset:0; z-index:10; display:block;
+  text-decoration:none; color:inherit; cursor:pointer;
+}
+.case-card .case-card__readmore{
+  position:absolute; right:18px; bottom:18px; z-index:11;
+  background: rgba(0,0,0,.55);
+  color:#fff; border:1px solid var(--line);
+  border-radius: 999px; padding:8px 12px;
+  font-size:14px; letter-spacing:.02em;
+  opacity:0; transform: translateY(6px); /* hidden by default */
+  transition: opacity 200ms ease, transform 200ms ease, background 200ms ease;
+  pointer-events:auto; /* clickable */
+}
+.case-card:hover .case-card__readmore,
+.case-card.is-hover .case-card__readmore,
+.case-card:focus-within .case-card__readmore{ opacity:1; transform: translateY(0) }
+.case-card .case-card__link:focus-visible{
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 12px;
+}

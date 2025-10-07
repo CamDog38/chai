@@ -35,4 +35,30 @@
     if(touchClearTimer) clearTimeout(touchClearTimer);
     touchClearTimer = setTimeout(clearHover, 1800);
   }, {passive:true});
+
+  // CLICK ROUTING: when an overlay sits above the cards (e.g., scroll proxy),
+  // route clicks to the underlying case card link at the pointer position.
+  d.addEventListener('click', (e) => {
+    // Use elementsFromPoint to find the first full-card link under the cursor
+    const stack = d.elementsFromPoint(e.clientX, e.clientY);
+    const link = stack.find(el => el && el.tagName === 'A' && el.classList.contains('case-card__link'));
+    if (link) {
+      e.preventDefault();
+      // Preserve standard navigation behavior
+      const href = link.getAttribute('href');
+      if (href) window.location.assign(href);
+    }
+  }, { capture: true });
+
+  // KEYBOARD ACCESS: if a card is hover-targeted, allow Enter/Space to activate its link
+  d.addEventListener('keydown', (e) => {
+    if (!lastHovered) return;
+    if (e.key === 'Enter' || e.key === ' ') {
+      const link = lastHovered.querySelector('a.case-card__link');
+      if (link && link.href) {
+        e.preventDefault();
+        window.location.assign(link.href);
+      }
+    }
+  });
 })();
