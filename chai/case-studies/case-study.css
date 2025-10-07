@@ -35,7 +35,27 @@ body.case-study main{
   background: linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.55) 100%);
 }
 .case-hero__inner{ position: relative; z-index: 1; text-align: center; padding: 4rem 1.5rem; }
-.case-hero__logo { max-width: 440px; width: 80vw; filter: drop-shadow(0 8px 24px rgba(0,0,0,.35)); }
+.case-hero__logo { 
+  max-width: 440px; width: 80vw; 
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,.35)); 
+  opacity: 0; transform: translateY(10px) scale(0.98);
+  animation: heroIn 680ms cubic-bezier(0.16, 1, 0.3, 1) .08s forwards;
+}
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.case-hero__caption{
+  margin-top: .75rem; color: rgba(255,255,255,.8); font-family:'Inter', system-ui; 
+  font-size: .95rem; letter-spacing:.02em;
+  opacity: 0; transform: translateY(6px);
+  animation: captionIn 620ms cubic-bezier(0.16, 1, 0.3, 1) .18s forwards;
+}
+@keyframes captionIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
 .case-hero__title{ margin-top: 1.5rem; font-size: clamp(40px, 8vw, 64px); color: var(--ink); font-weight: 800; letter-spacing: -.02em; font-family:'Aileron','Poppins',system-ui; }
 .no-hero-title .case-hero__title{ display:none; }
