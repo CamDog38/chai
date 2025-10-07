@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Polar – Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Inter:wght@400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/aileron" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="case-study.css" />
+</head>
+<body class="bg--gradient studio-light case-study">
+  <aside class="left-menu" aria-label="Primary">
+    <a href="../index.html#start" class="left-menu__logo" aria-label="Chai Home">
+      <img src="../Images/Chai White ver2.png" alt="Chai logo" />
+    </a>
+    <button class="left-menu__toggle" aria-expanded="false" aria-controls="leftFlyout" title="Open menu">+</button>
+    <nav id="leftFlyout" class="left-flyout" aria-hidden="true">
+      <ul>
+        <li><a href="../index.html#start">home.</a></li>
+        <li><a href="../index.html#services">services.</a></li>
+        <li><a href="../index.html#about">about us.</a></li>
+        <li><a href="../case-studies.html" class="active">case studies.</a></li>
+        <li><a href="../index.html#contact">contact us.</a></li>
+      </ul>
+    </nav>
+    <div class="left-menu__spacer" aria-hidden="true"></div>
+    <div class="left-menu__socials">
+      <a href="#" aria-label="LinkedIn" class="sm sm--in">in</a>
+      <a href="#" aria-label="Instagram" class="sm sm--ig">ig</a>
+      <a href="#" aria-label="TikTok" class="sm sm--tt">tt</a>
+    </div>
+  </aside>
+
+  <main>
+    <section class="case-hero" style="background-image:url('../Images/Case Study BG/Polar.jpg')">
+      <div class="case-hero__inner">
+        <img class="case-hero__logo" src="../Images/Logos/Polar.png" alt="Polar logo" />
+        <h1 class="case-hero__title">Polar.</h1>
+      </div>
+    </section>
+
+    <section class="case-intro single">
+      <div>
+        <div class="brand-label">Polar.</div>
+        <h2>Launching a global leader <em>across the Middle East</em>.</h2>
+        <p>Polar is a global leader in fitness technology. chai. is launching and localizing the brand in the Middle East with a digital-first strategy focused on e-commerce growth and brand building. we manage regional content calendars, produce video campaigns, and lead storytelling across B2C and B2B, ensuring Polar resonates with athletes and wellness communities across the region.</p>
+      </div>
+    </section>
+
+    <section class="case-cta">
+      <a class="btn" href="../case-studies.html">← back to case studies</a>
+      <a class="btn btn--primary" href="mailto:info@chaidigital.com">start a project</a>
+    </section>
+  </main>
+
+  <script defer>
+    (function(){
+      const menu = document.querySelector('.left-menu');
+      const btn = document.querySelector('.left-menu__toggle');
+      const fly = document.getElementById('leftFlyout');
+      if(!menu || !btn || !fly) return;
+      btn.addEventListener('click', ()=>{
+        const open = menu.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', String(open));
+        fly.setAttribute('aria-hidden', String(!open));
+      });
+      document.addEventListener('click', (e) => {
+        if (!menu.contains(e.target) && menu.classList.contains('is-open')) {
+          menu.classList.remove('is-open');
+          btn.setAttribute('aria-expanded', 'false');
+          fly.setAttribute('aria-hidden', 'true');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
