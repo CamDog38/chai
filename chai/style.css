@@ -1351,6 +1351,8 @@ strong, b{ font-family: var(--accent-serif) !important; letter-spacing:.005em }
     .left-menu{
       width: 280px;
       left: -280px; /* Hide completely off-screen */
+      height: 100vh;
+      height: calc(var(--vh, 1vh) * 100);
       transition: left 320ms cubic-bezier(0.4, 0, 0.2, 1);
       border-right: 1px solid var(--line);
       border-top-right-radius: 12px;
@@ -1360,13 +1362,13 @@ strong, b{ font-family: var(--accent-serif) !important; letter-spacing:.005em }
       box-shadow: 4px 0 24px rgba(0,0,0,0.4);
     }
     
-    /* Create the "tab" effect - positioned at top left */
+    /* Create the "tab" effect - positioned at bottom left */
     .left-menu::after{
       content: '';
       position: absolute;
       right: -60px;
       top: auto;
-      bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
+      bottom: max(env(safe-area-inset-bottom, 0px), 20px);
       width: 60px;
       height: 60px;
       background: rgba(18,18,18,0.95);
@@ -1379,12 +1381,12 @@ strong, b{ font-family: var(--accent-serif) !important; letter-spacing:.005em }
       transition: right 320ms cubic-bezier(0.4, 0, 0.2, 1);
     }
     
-    /* Position tab at top left with hamburger icon */
+    /* Position tab at bottom left with hamburger icon */
     .left-menu__logo{
       position: absolute;
       right: -60px;
       top: auto;
-      bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
+      bottom: max(env(safe-area-inset-bottom, 0px), 20px);
       margin: 0;
       width: 60px;
       height: 60px;
