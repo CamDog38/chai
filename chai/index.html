@@ -279,7 +279,7 @@
     <!-- CONTACT -->
     <section class="panel contact panel--text layer-text" id="contact">
       <h2 class="copy-head">contact us.</h2>
-      <p class="contact-copy">please click the button below or email us at <a href="mailto:info@chaidigital.com">info@chaidigital.com</a>. let's create work that is <i class="accent-serif">made to matter</i>.</p>
+      <p class="contact-copy">click the button below or email <a href="mailto:info@chaidigital.com">info@chaidigital.com</a>. let's create work <i class="accent-serif">made to matter</i>.</p>
       <a class="submit" href="/contact" aria-label="Contact form">✉</a>
     </section>
 
@@ -403,24 +403,45 @@
     }
   })();
   </script>
-  <script defer>
-    // Left menu toggle
-    (function(){
+  <script>
+    // Left menu toggle - run immediately, use capture phase
+    document.addEventListener('DOMContentLoaded', function(){
       const menu = document.querySelector('.left-menu');
       const btn = document.querySelector('.left-menu__toggle');
+      const logo = document.querySelector('.left-menu__logo');
       const fly = document.getElementById('leftFlyout');
-      if(!menu || !btn || !fly) return;
-      btn.addEventListener('click', ()=>{
+      if(!menu || !fly) return;
+      
+      // Toggle on button click (desktop)
+      if(btn) btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         const open = menu.classList.toggle('is-open');
-        btn.setAttribute('aria-expanded', String(open));
+        if(btn) btn.setAttribute('aria-expanded', String(open));
         fly.setAttribute('aria-hidden', String(!open));
       });
+      
+      // Toggle on logo click (mobile tab) - use capture phase to intercept early
+      if(logo) {
+        logo.addEventListener('click', (e) => {
+          // Only toggle on mobile, allow normal navigation on desktop
+          if(window.innerWidth <= 700) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            const open = menu.classList.toggle('is-open');
+            if(btn) btn.setAttribute('aria-expanded', String(open));
+            fly.setAttribute('aria-hidden', String(!open));
+            return false;
+          }
+        }, true); // Use capture phase
+      }
 
       // Close on click outside
       document.addEventListener('click', (e) => {
         if (!menu.contains(e.target) && menu.classList.contains('is-open')) {
           menu.classList.remove('is-open');
-          btn.setAttribute('aria-expanded', 'false');
+          if(btn) btn.setAttribute('aria-expanded', 'false');
           fly.setAttribute('aria-hidden', 'true');
         }
       });
@@ -430,7 +451,7 @@
         const link = e.target.closest('a');
         if (link) {
           menu.classList.remove('is-open');
-          btn.setAttribute('aria-expanded', 'false');
+          if(btn) btn.setAttribute('aria-expanded', 'false');
           fly.setAttribute('aria-hidden', 'true');
         }
       });
@@ -439,9 +460,9 @@
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && menu.classList.contains('is-open')) {
           menu.classList.remove('is-open');
-          btn.setAttribute('aria-expanded', 'false');
+          if(btn) btn.setAttribute('aria-expanded', 'false');
           fly.setAttribute('aria-hidden', 'true');
-          btn.focus();
+          if(btn) btn.focus();
         }
       });
     })();

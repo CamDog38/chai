@@ -111,7 +111,8 @@
   /* Match index marquee proportions for best fit */
   width: 236px;
   min-width: 236px;
-  height: 120px;
+  /* Ensure the card always fits inside the row (leave a little breathing room) */
+  height: calc(var(--lm-row-height) - 12px);
   padding: 8px 12px;
   border-radius: 16px;
   background: rgba(255,255,255,0.04); /* subtle charcoal pill */
@@ -127,7 +128,8 @@
   will-change: transform;
 }
 .logo-card img {
-  max-height: 100%;
+  /* Slightly below 100% so borders/shadows never clip */
+  max-height: 92%;
   max-width: 100%;
   height: auto;
   width: auto;
@@ -216,6 +218,60 @@
 
 /* Responsive tweaks */
 @media (max-width: 640px) {
-  :root { --lm-row-height: clamp(48px, 9vh, 90px); }
+  /* Allow marquee to use full viewport width on mobile */
+  :root {
+    /* Make marquee content width respect global mobile gutters */
+    --lm-max: calc(100vw - (var(--mob-gutter, 16px) * 2));
+    /* ~15% taller rows so logos fit comfortably */
+    --lm-row-height: clamp(92px, 25vw, 152px);
+    --lm-gap: 16px;
+    --lm-radius: 10px;
+  }
+
+  .lm-header { padding: calc(var(--lm-pad) * 0.75) 0; }
   .lm-header img { height: 32px; }
+
+  /* Align marquee to the same mobile gutters as text/case studies */
+  .marquee-panel {
+    margin-left: var(--mob-gutter, 16px);
+    margin-right: var(--mob-gutter, 16px);
+  }
+
+  /* Loosen edge mask so logos aren't cropped too early */
+  .marquee-row {
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      black 4%,
+      black 96%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      black 4%,
+      black 96%,
+      transparent 100%
+    );
+  }
+
+  /* Cards on mobile scale with row height */
+  .logo-card {
+    /* ~15% wider cards on mobile */
+    width: clamp(138px, 44vw, 230px);
+    min-width: clamp(138px, 44vw, 230px);
+    /* Tie card height directly to row height */
+    height: calc(var(--lm-row-height) - 8px);
+    padding: 6px 10px;
+    border-radius: 14px;
+  }
+
+  /* Allow logos to use more of the card height on mobile */
+  .logo-card img {
+    max-height: 96%;
+    transform: translate(var(--tx, 0), var(--ty, 0)) scale(var(--scale, 0.96));
+  }
+
+  /* Slightly slower animation on mobile for readability */
+  .marquee-track { animation-duration: 44s; }
 }

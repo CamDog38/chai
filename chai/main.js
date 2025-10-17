@@ -103,14 +103,30 @@ function scrollRailToSection(sectionEl, opts = {}){
   animateVerticalScrollTo(target, duration);
 }
 
-// Ensure scroll proxy height covers entire horizontal rail
+// Helper: clamp to CSS caps so JS respects stylesheet
+function desiredScrollHeightPx(basePx){
+  // CSS sets 1660vh by default and 500vh on <=700px
+  const isMobile = window.matchMedia('(max-width: 700px)').matches;
+  const cssCapPx = (isMobile ? 5 : 16.6) * window.innerHeight; // 500vh or 1660vh
+  return Math.min(basePx, cssCapPx);
+}
+
+// Ensure scroll proxy height covers entire horizontal rail (respect CSS)
 function sizeGlobalScrollProxy(){
   const sh = document.querySelector('.scroll-height');
   if (!sh) return;
+  const isMobile = window.matchMedia('(max-width: 700px)').matches;
+  if (isMobile){
+    // Let CSS media query drive the height on mobile — clear any inline override
+    sh.style.removeProperty('height');
+    return;
+  }
   const panels = document.querySelectorAll('.panel').length || 1;
-  const required = (panels + 1) * window.innerHeight; // one viewport per panel + buffer
+  // base requirement: one viewport per panel + buffer
+  const baseRequired = (panels + 1) * window.innerHeight;
+  const required = desiredScrollHeightPx(baseRequired);
   const currentPx = parseFloat(getComputedStyle(sh).height) || 0;
-  if (required > currentPx) sh.style.height = `${required}px`;
+  if (Math.abs(required - currentPx) > 1) sh.style.height = `${required}px`;
 }
 
 // Horizontal motion speed
@@ -346,12 +362,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let hasShownFirst = false;
     let forcedIdx = services.findIndex(el => el.getAttribute('data-idx') === '1');
 
-    const ROW_H = 132;
-    const ROW_GAP = 20; // closer spacing between cards
-    const GAP_SAFE = 4;  // safety pixels to prevent any bleed/overlap
+    // Mobile-specific spacing
+    const isMobile = window.innerWidth <= 720;
+    const ROW_H = isMobile ? 100 : 132;
+    const ROW_GAP = isMobile ? 8 : 20; // tighter spacing on mobile
+    const GAP_SAFE = isMobile ? 2 : 4;  // safety pixels to prevent any bleed/overlap
     const SIDE_PAD_LEFT = 0;
     const SIDE_PAD_RIGHT = 14;
-    const BOTTOM_PAD = 68; // shifted up ~30px more
+    const BOTTOM_PAD = isMobile ? 250 : 68; // center cards on mobile
     const STACK_TOP_OFFSET = 0; // no extra top offset needed with larger gaps
 
     function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
@@ -367,13 +385,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function sizeScrollProxy(){
-      const required = (Math.max(1, services.length) + 1) * window.innerHeight;
       const sh = document.querySelector('.scroll-height');
       if (!sh) return;
+      const isMobile = window.matchMedia('(max-width: 700px)').matches;
+      if (isMobile){
+        // Defer to CSS on mobile; remove inline override if present
+        sh.style.removeProperty('height');
+        return;
+      }
+      // base required height driven by number of services
+      const baseRequired = (Math.max(1, services.length) + 1) * window.innerHeight;
+      const required = desiredScrollHeightPx(baseRequired);
       const currentPx = parseFloat(getComputedStyle(sh).height) || 0;
-      if (required > currentPx) {
+      if (Math.abs(required - currentPx) > 1) {
         sh.style.height = `${required}px`;
-        if (DEBUG_STACK) console.log('[stack] sizeScrollProxy increased', { required, currentPx });
+        if (DEBUG_STACK) console.log('[stack] sizeScrollProxy set', { required, currentPx });
       }
     }
 
