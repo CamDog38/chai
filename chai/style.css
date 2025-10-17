@@ -885,7 +885,7 @@ body::before{
   .instructions{position:fixed; top:20px; left:50%; transform:translateX(-50%); background:#0f0f0f; padding:8px 16px; border:1px solid var(--line); font-size:12px; z-index:100; color:var(--muted)}
   .progress-bar{
     position:fixed;
-    bottom:24px;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 1px);
     left:50%;
     transform:translateX(-50%);
     width:420px;
@@ -894,7 +894,7 @@ body::before{
     border-radius:10px;
     overflow:hidden;
     box-shadow:0 4px 20px rgba(0,0,0,0.3);
-    z-index:100;
+    z-index:110;
   }
   .progress-fill{
     height:100%;
@@ -1364,7 +1364,8 @@ strong, b{ font-family: var(--accent-serif) !important; letter-spacing:.005em }
       content: '';
       position: absolute;
       right: -60px;
-      top: 30px;
+      top: auto;
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
       width: 60px;
       height: 60px;
       background: rgba(18,18,18,0.95);
@@ -1381,7 +1382,8 @@ strong, b{ font-family: var(--accent-serif) !important; letter-spacing:.005em }
     .left-menu__logo{
       position: absolute;
       right: -60px;
-      top: 30px;
+      top: auto;
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
       margin: 0;
       width: 60px;
       height: 60px;
