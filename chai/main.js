@@ -103,12 +103,21 @@ function scrollRailToSection(sectionEl, opts = {}){
   animateVerticalScrollTo(target, duration);
 }
 
-// Ensure scroll proxy height respects CSS (no JS override)
+// Ensure scroll proxy height is NEVER too short on real devices
+// We respect CSS as a minimum but extend when dynamic viewport is smaller (iOS bars)
 function sizeGlobalScrollProxy(){
   const sh = document.querySelector('.scroll-height');
   if (!sh) return;
-  // Let CSS control height on ALL breakpoints — clear inline to avoid overrides
-  sh.style.removeProperty('height');
+  const panels = document.querySelectorAll('.panel').length || 1;
+  // Use visualViewport height when available to account for dynamic URL bars
+  const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+  const cssPx = parseFloat(getComputedStyle(sh).height) || 0;
+  // Require one viewport per panel + a small buffer
+  const required = (panels + 1) * vh + Math.max(120, 0.15 * vh);
+  const finalPx = Math.max(cssPx, required);
+  // Only write if different to avoid layout thrash
+  const currentInline = parseFloat(sh.style.height) || 0;
+  if (Math.abs(finalPx - currentInline) > 1) sh.style.height = `${finalPx}px`;
 }
 
 // Horizontal motion speed
@@ -228,6 +237,9 @@ scrollDetector.addEventListener('scroll', () => {
   requestAnimationFrame(() => { update(); tickingGlobal = false; });
 }, { passive: true });
 window.addEventListener('resize', () => { sizeGlobalScrollProxy(); update(); });
+if (window.visualViewport){
+  window.visualViewport.addEventListener('resize', () => { sizeGlobalScrollProxy(); update(); }, { passive: true });
+}
 sizeGlobalScrollProxy();
 update();
 
@@ -369,9 +381,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function sizeScrollProxy(){
       const sh = document.querySelector('.scroll-height');
       if (!sh) return;
-      // Always defer to CSS — clear any inline override and return
-      sh.style.removeProperty('height');
-      return;
+      const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+      const cssPx = parseFloat(getComputedStyle(sh).height) || 0;
+      // Base required height driven by count of services rows; keep modest buffer
+      const baseRequired = (Math.max(1, services.length) + 1) * vh + Math.max(120, 0.15 * vh);
+      const finalPx = Math.max(cssPx, baseRequired);
+      const currentInline = parseFloat(sh.style.height) || 0;
+      if (Math.abs(finalPx - currentInline) > 1) {
+        sh.style.height = `${finalPx}px`;
+        if (DEBUG_STACK) console.log('[stack] sizeScrollProxy set', { finalPx, cssPx, vh });
+      }
     }
 
     function setMedia(url){
@@ -508,9 +527,10 @@ document.addEventListener('DOMContentLoaded', () => {
       tickingStack = true;
       requestAnimationFrame(() => { layout(); tickingStack = false; });
     }, { passive: true });
-    window.addEventListener('resize', () => {
-      updateCopyFill();
-    });
+    window.addEventListener('resize', () => { updateCopyFill(); sizeScrollProxy(); });
+    if (window.visualViewport){
+      window.visualViewport.addEventListener('resize', () => { sizeScrollProxy(); layout(); }, { passive: true });
+    }
 
     // Contact button: JS-driven hover/click to bypass overlay intercepting pointer events
     (function enableContactButtonHover() {
@@ -691,6 +711,7 @@ document.addEventListener('DOMContentLoaded', () => {
   layout(); 
   if (DEBUG_STACK) console.log('[stack] init', { count: services.length });
   sizeGlobalScrollProxy();
+  sizeScrollProxy();
   layout();
 })();
 
