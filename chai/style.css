@@ -95,7 +95,7 @@ body::before{
 
   /* Scroll proxy */
   .scroll-detector{position:fixed; inset:0; overflow-y:auto; z-index:10}
-  .scroll-height{height:1700vh; width:1px}
+  .scroll-height{height:1650vh; width:1px}
 
   /* Mobile: reduce scroll proxy height */
   @media (max-width: 700px){
