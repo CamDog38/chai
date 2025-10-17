@@ -103,8 +103,19 @@ function scrollRailToSection(sectionEl, opts = {}){
   animateVerticalScrollTo(target, duration);
 }
 
-// Ensure scroll proxy height is NEVER too short on real devices
-// We respect CSS as a minimum but extend when dynamic viewport is smaller (iOS bars)
+// Set --vh to the actual viewport height (accounts for mobile URL bars)
+function setRealVhVar(){
+  const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+  // --vh is 1% of the viewport height
+  document.documentElement.style.setProperty('--vh', `${vh * 0.01}px`);
+}
+setRealVhVar();
+window.addEventListener('resize', setRealVhVar);
+if (window.visualViewport){
+  window.visualViewport.addEventListener('resize', setRealVhVar, { passive: true });
+}
+
+// Ensure scroll proxy height covers entire horizontal rail (use real viewport)
 function sizeGlobalScrollProxy(){
   const sh = document.querySelector('.scroll-height');
   if (!sh) return;
@@ -126,18 +137,6 @@ const PX_PER_SCROLL = 1.0;
 // Grow settings (kept modest so media doesn't swamp text)
 const MIN_SCALE = 0.90;
 const MAX_SCALE = 1.12;
-
-// Set --vh to the actual viewport height (accounts for mobile URL bars)
-function setRealVhVar(){
-  const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
-  // --vh is 1% of the viewport height
-  document.documentElement.style.setProperty('--vh', `${vh * 0.01}px`);
-}
-setRealVhVar();
-window.addEventListener('resize', setRealVhVar);
-if (window.visualViewport){
-  window.visualViewport.addEventListener('resize', setRealVhVar, { passive: true });
-}
 
 // Elements that should grow when centered:
 const growTargets = [];
@@ -249,9 +248,6 @@ scrollDetector.addEventListener('scroll', () => {
   requestAnimationFrame(() => { update(); tickingGlobal = false; });
 }, { passive: true });
 window.addEventListener('resize', () => { sizeGlobalScrollProxy(); update(); });
-if (window.visualViewport){
-  window.visualViewport.addEventListener('resize', () => { sizeGlobalScrollProxy(); update(); }, { passive: true });
-}
 sizeGlobalScrollProxy();
 update();
 
@@ -539,10 +535,9 @@ document.addEventListener('DOMContentLoaded', () => {
       tickingStack = true;
       requestAnimationFrame(() => { layout(); tickingStack = false; });
     }, { passive: true });
-    window.addEventListener('resize', () => { updateCopyFill(); sizeScrollProxy(); });
-    if (window.visualViewport){
-      window.visualViewport.addEventListener('resize', () => { sizeScrollProxy(); layout(); }, { passive: true });
-    }
+    window.addEventListener('resize', () => {
+      updateCopyFill();
+    });
 
     // Contact button: JS-driven hover/click to bypass overlay intercepting pointer events
     (function enableContactButtonHover() {
@@ -723,7 +718,6 @@ document.addEventListener('DOMContentLoaded', () => {
   layout(); 
   if (DEBUG_STACK) console.log('[stack] init', { count: services.length });
   sizeGlobalScrollProxy();
-  sizeScrollProxy();
   layout();
 })();
 

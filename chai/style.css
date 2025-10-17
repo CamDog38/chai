@@ -108,6 +108,7 @@ body::before{
     -ms-overflow-style: none;    /* IE 10+ / old Edge */
   }
   .scroll-detector::-webkit-scrollbar{ /* Chrome, Safari, new Edge */
+    width: 0;
     height: 0;
   }
 
@@ -117,8 +118,8 @@ body::before{
     background:transparent; /* let the body texture show through */
     overflow:visible; z-index:1;
     padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-left:84px;
   }
-  
 
   /* Case studies responsive height */
   @media (max-width: 900px){
