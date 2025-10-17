@@ -103,30 +103,12 @@ function scrollRailToSection(sectionEl, opts = {}){
   animateVerticalScrollTo(target, duration);
 }
 
-// Helper: clamp to CSS caps so JS respects stylesheet
-function desiredScrollHeightPx(basePx){
-  // CSS sets 1660vh by default and 500vh on <=700px
-  const isMobile = window.matchMedia('(max-width: 700px)').matches;
-  const cssCapPx = (isMobile ? 5 : 16.6) * window.innerHeight; // 500vh or 1660vh
-  return Math.min(basePx, cssCapPx);
-}
-
-// Ensure scroll proxy height covers entire horizontal rail (respect CSS)
+// Ensure scroll proxy height respects CSS (no JS override)
 function sizeGlobalScrollProxy(){
   const sh = document.querySelector('.scroll-height');
   if (!sh) return;
-  const isMobile = window.matchMedia('(max-width: 700px)').matches;
-  if (isMobile){
-    // Let CSS media query drive the height on mobile — clear any inline override
-    sh.style.removeProperty('height');
-    return;
-  }
-  const panels = document.querySelectorAll('.panel').length || 1;
-  // base requirement: one viewport per panel + buffer
-  const baseRequired = (panels + 1) * window.innerHeight;
-  const required = desiredScrollHeightPx(baseRequired);
-  const currentPx = parseFloat(getComputedStyle(sh).height) || 0;
-  if (Math.abs(required - currentPx) > 1) sh.style.height = `${required}px`;
+  // Let CSS control height on ALL breakpoints — clear inline to avoid overrides
+  sh.style.removeProperty('height');
 }
 
 // Horizontal motion speed
@@ -387,20 +369,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function sizeScrollProxy(){
       const sh = document.querySelector('.scroll-height');
       if (!sh) return;
-      const isMobile = window.matchMedia('(max-width: 700px)').matches;
-      if (isMobile){
-        // Defer to CSS on mobile; remove inline override if present
-        sh.style.removeProperty('height');
-        return;
-      }
-      // base required height driven by number of services
-      const baseRequired = (Math.max(1, services.length) + 1) * window.innerHeight;
-      const required = desiredScrollHeightPx(baseRequired);
-      const currentPx = parseFloat(getComputedStyle(sh).height) || 0;
-      if (Math.abs(required - currentPx) > 1) {
-        sh.style.height = `${required}px`;
-        if (DEBUG_STACK) console.log('[stack] sizeScrollProxy set', { required, currentPx });
-      }
+      // Always defer to CSS — clear any inline override and return
+      sh.style.removeProperty('height');
+      return;
     }
 
     function setMedia(url){
