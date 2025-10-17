@@ -116,6 +116,7 @@ body::before{
     position:fixed; top:0; left:0; width:100vw; height:calc(var(--vh, 1vh) * 100);
     background:transparent; /* let the body texture show through */
     overflow:visible; z-index:1;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
   
 
@@ -1115,7 +1116,7 @@ body.studio-light .viewport::before{
   /* Avoid over-promoting layers to reduce flicker */
 }
 
-.hero{min-height:100svh; height:100svh; display:flex; align-items:center; overflow:visible}
+.hero{min-height:calc(var(--vh, 1vh) * 100); height:calc(var(--vh, 1vh) * 100); display:flex; align-items:center; overflow:visible}
 .panel--hero{ overflow: visible; }
 .hero__inner{position:relative; width:100%; height:100%; padding:40px 32px; display:grid; align-items:center; grid-template-columns:minmax(0, 1.05fr) minmax(0, 0.95fr); gap:32px}
 
@@ -1171,7 +1172,7 @@ body.studio-light .viewport::before{
   .visual{height:min(40vh, 420px)}
 }
 @media (max-width: 700px){
-  .hero__inner{padding:22px 120px 22px 8px; grid-template-columns:1fr 1fr; column-gap:24px; row-gap:12px; align-items:center; margin-left: -49px;}
+  .hero__inner{padding:calc(env(safe-area-inset-top, 0px) + 22px) 120px calc(env(safe-area-inset-bottom, 0px) + 22px) 8px; grid-template-columns:1fr 1fr; column-gap:24px; row-gap:12px; align-items:center; margin-left: -49px;}
   .hero__heading .line{font-size:clamp(61px, 8.8vh, 104px)}
   .type-serif{font-size:clamp(24px, 7vh, 64px)}
   .hero__left{ padding-right: 8px; }
@@ -1182,7 +1183,7 @@ body.studio-light .viewport::before{
   .hero__cta .btn{padding:9px 12px; font-size:13px}
 }
 @media (max-width: 480px){
-  .hero__inner{padding:18px 100px 18px 8px; grid-template-columns:1fr 1fr; column-gap:20px; align-items:center; margin-left: -39px;}
+  .hero__inner{padding:calc(env(safe-area-inset-top, 0px) + 18px) 100px calc(env(safe-area-inset-bottom, 0px) + 18px) 8px; grid-template-columns:1fr 1fr; column-gap:20px; align-items:center; margin-left: -39px;}
   .hero__heading .line{font-size:clamp(63px, 5.2vh, 48px)}
   .hero__left{ padding-right: 6px; }
   .hero__right{ justify-self:center; align-self:center; padding-left: 9vh; }
