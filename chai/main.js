@@ -119,14 +119,20 @@ if (window.visualViewport){
 function sizeGlobalScrollProxy(){
   const sh = document.querySelector('.scroll-height');
   if (!sh) return;
+  const isMobile = window.matchMedia('(max-width: 700px)').matches;
+  
+  if (isMobile) {
+    // On mobile, strictly respect CSS — clear any inline override
+    sh.style.removeProperty('height');
+    return;
+  }
+  
+  // Desktop: calculate based on panels
   const panels = document.querySelectorAll('.panel').length || 1;
-  // Use visualViewport height when available to account for dynamic URL bars
   const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
   const cssPx = parseFloat(getComputedStyle(sh).height) || 0;
-  // Require one viewport per panel + a small buffer
   const required = (panels + 1) * vh + Math.max(120, 0.15 * vh);
   const finalPx = Math.max(cssPx, required);
-  // Only write if different to avoid layout thrash
   const currentInline = parseFloat(sh.style.height) || 0;
   if (Math.abs(finalPx - currentInline) > 1) sh.style.height = `${finalPx}px`;
 }
@@ -389,9 +395,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function sizeScrollProxy(){
       const sh = document.querySelector('.scroll-height');
       if (!sh) return;
+      const isMobile = window.matchMedia('(max-width: 700px)').matches;
+      
+      if (isMobile) {
+        // On mobile, defer to CSS — clear inline override
+        sh.style.removeProperty('height');
+        return;
+      }
+      
+      // Desktop: calculate based on services count
       const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
       const cssPx = parseFloat(getComputedStyle(sh).height) || 0;
-      // Base required height driven by count of services rows; keep modest buffer
       const baseRequired = (Math.max(1, services.length) + 1) * vh + Math.max(120, 0.15 * vh);
       const finalPx = Math.max(cssPx, baseRequired);
       const currentInline = parseFloat(sh.style.height) || 0;
