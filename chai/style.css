@@ -108,17 +108,16 @@ body::before{
     -ms-overflow-style: none;    /* IE 10+ / old Edge */
   }
   .scroll-detector::-webkit-scrollbar{ /* Chrome, Safari, new Edge */
-    width: 0;
     height: 0;
   }
 
   /* Full-screen viewport (no border, no frame) */
   .viewport{
-    position:fixed; top:0; left:0; width:100vw; height:100vh;
+    position:fixed; top:0; left:0; width:100vw; height:calc(var(--vh, 1vh) * 100);
     background:transparent; /* let the body texture show through */
     overflow:visible; z-index:1;
-    padding-left:84px;
   }
+  
 
   /* Case studies responsive height */
   @media (max-width: 900px){

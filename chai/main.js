@@ -127,6 +127,18 @@ const PX_PER_SCROLL = 1.0;
 const MIN_SCALE = 0.90;
 const MAX_SCALE = 1.12;
 
+// Set --vh to the actual viewport height (accounts for mobile URL bars)
+function setRealVhVar(){
+  const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+  // --vh is 1% of the viewport height
+  document.documentElement.style.setProperty('--vh', `${vh * 0.01}px`);
+}
+setRealVhVar();
+window.addEventListener('resize', setRealVhVar);
+if (window.visualViewport){
+  window.visualViewport.addEventListener('resize', setRealVhVar, { passive: true });
+}
+
 // Elements that should grow when centered:
 const growTargets = [];
 document.querySelectorAll('.hero-media .photo-wrap').forEach(el => growTargets.push(el));
