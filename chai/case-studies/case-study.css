@@ -177,12 +177,13 @@ body.sported-right .case-split .split-text h2 em{
 body.sported-right .case-bottom-video{
   margin-top: clamp(10px, 7vw, 22px);
   padding-bottom: clamp(16px, 4vw, 40px);
+  padding-inline: clamp(16px, 4vw, 56px); /* align with split section padding */
 }
 body.sported-right .case-bottom-video .video-wrap{
   position: relative;
   width: 100%;
   height: auto;
-  margin: 0;
+  margin: 0 auto; /* center within padding */
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 6px 24px rgba(0,0,0,0.25);
@@ -220,4 +221,32 @@ body.sported-right .sound-toggle.muted::after{ content: '🔇'; }
   body.sported-right .case-split figure.split-media{
     aspect-ratio: 16 / 9;
   }
+}
+
+/* ---------------------------------------------
+   Mobile responsiveness (fits viewport)
+   Applies to all case-study pages, with Sported-specific tweaks
+---------------------------------------------- */
+@media (max-width: 700px){
+  /* Remove left gutter on mobile so content fits */
+  body.case-study main{ padding-left: 0; padding-right: 0; }
+
+  /* Hero becomes shorter and logo scales down */
+  .case-hero{ min-height: 56vh; }
+  .case-hero__inner{ padding: 56px 16px; }
+  .case-hero__logo{ width: 64vw; max-width: 320px; }
+
+  /* Sported split section padding/margins tightened */
+  body.sported-right .case-split{ padding-inline: 16px; padding-block: 16px; row-gap: 16px }
+  body.sported-right .case-split .split-text{ padding-right: 0; max-width: 100% }
+  body.sported-right .case-split figure.split-media{ width: 100%; border-radius: 14px }
+  body.sported-right .case-split figure.split-media img{ width: 100%; height: auto; object-fit: cover }
+
+  /* Bottom video fills width with comfortable margins */
+  body.sported-right .case-bottom-video{ margin-top: 12px; padding-bottom: 24px; padding-inline: 16px }
+  body.sported-right .case-bottom-video .video-wrap{ border-radius: 14px; margin: 0 } /* use section padding for alignment */
+  body.sported-right .case-bottom-video .video-wrap video{ width: 100%; height: auto }
+
+  /* CTA stack vertically on small screens */
+  .case-cta{ padding: 40px 16px 80px; flex-direction: column }
 }

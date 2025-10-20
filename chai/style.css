@@ -721,6 +721,13 @@ body::before{
     transform: translateY(0);
   }
 
+  /* Contact page: center the send button on mobile so it isn't covered by left menu */
+  .page--contact .form-actions{ display:flex; justify-content:flex-start; }
+  @media (max-width: 768px){
+    .page--contact .form-actions{ justify-content:center; padding-inline: 16px; }
+    .page--contact .form-actions .btn{ margin: 0 auto; }
+  }
+
   @media (max-width: 900px){
     .contact-hero{ margin:80px auto 120px auto; padding:32px 20px }
     .contact-form .form-row{ grid-template-columns:1fr }
