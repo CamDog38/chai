@@ -9,6 +9,7 @@ body.portfolio-page {
 /* Align Contact section with page copy on mediaportfolio */
 body.portfolio-page .panel.contact {
     margin: 0 140px !important; /* nudge further right */
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 60px) !important; /* keep content above home bar */
 }
 
 /* Align heading and copy flush with left content edge */
@@ -30,6 +31,7 @@ body.portfolio-page .panel.contact .logos-marquee {
 /* Center the large circular email button to the viewport */
 body.portfolio-page .panel.contact .submit {
     left: 50% !important;
+    top: 50% !important; /* center on portfolio pages */
 }
 
 /* Responsive: keep comfortable margins on mobile */
@@ -38,6 +40,8 @@ body.portfolio-page .panel.contact .submit {
   body.portfolio-page .contact .copy-head { margin: 0 0 18px 0 !important; }
   body.portfolio-page .contact-copy { margin: 6px 0 18px 0 !important; }
   body.portfolio-page .panel.contact .logos-marquee { transform: translateX(calc(-50% + 20px)) !important; }
+  /* Center on mobile as well */
+  body.portfolio-page .panel.contact .submit { top: 50% !important; }
 }
 
 /* Portfolio CTA white button (moved from mediaportfolio.html inline styles) */

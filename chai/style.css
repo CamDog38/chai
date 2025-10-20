@@ -902,13 +902,13 @@ body::before{
   .submit:hover::before{ opacity:1 }
   
   .submit:hover .submit__arrow{
-    transform:translateY(-3px) rotate(-45deg);
+    transform:translateY(-3px) rotate(45deg);
     animation:arrowBounce 600ms ease-in-out infinite;
   }
   
   @keyframes arrowBounce{
-    0%, 100%{ transform:translateY(-3px) rotate(-45deg) }
-    50%{ transform:translateY(-6px) rotate(-45deg) }
+    0%, 100%{ transform:translateY(-3px) rotate(45deg) }
+    50%{ transform:translateY(-6px) rotate(45deg) }
   }
   
   /* Active/click state */
@@ -917,26 +917,24 @@ body::before{
     transition:all 80ms ease;
   }
   
-  /* Ripple effect on click */
+  /* Sheen overlay on hover (diagonal light sweep) */
   .submit::after{
     content:'';
     position:absolute;
-    inset:0;
+    inset:6px; /* keep inside the border */
     border-radius:50%;
-    background:radial-gradient(circle, rgba(255,255,255,.3) 0%, transparent 70%);
-    transform:scale(0);
+    background: linear-gradient(135deg,
+      rgba(255,255,255,0.22) 0%,
+      rgba(255,255,255,0.08) 32%,
+      rgba(0,0,0,0) 60%
+    );
+    filter: blur(0.2px);
     opacity:0;
+    transform: translateY(10px);
+    transition: opacity 320ms ease, transform 420ms ease;
     pointer-events:none;
   }
-  
-  .submit:active::after{
-    animation:ripple 600ms ease-out;
-  }
-  
-  @keyframes ripple{
-    0%{ transform:scale(0); opacity:1 }
-    100%{ transform:scale(2.5); opacity:0 }
-  }
+  .submit:hover::after{ opacity:1; transform: translateY(0) }
 
   /* Mobile About layout override */
   @media (max-width: 700px){
@@ -966,8 +964,8 @@ body::before{
       line-height: 1.8 !important;
     }
   }
-  /* Center the contact button in the middle of the contact rail */
-  .panel.contact .submit{ position:absolute; left:60%; top:66%; transform:translate(-50%, -50%); margin-top:50px; z-index:20; will-change:transform }
+  /* Center the contact button in the middle of the contact rail (index) */
+  .panel.contact .submit{ position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); margin-top:50px; z-index:20; will-change:transform }
   /* Preserve centering on hover while adding scale and lift */
   .panel.contact .submit:hover{ 
     transform:translate(-50%, calc(-50% - 8px)) scale(1.05);
@@ -984,16 +982,13 @@ body::before{
     background:var(--accent);
     color:#fff;
     border-color:var(--accent);
-    transform:scale(1.02);
-    box-shadow:0 28px 80px rgba(0,0,0,.45);
+    /* rely on enhanced hover animation above for transform and shadow */
   }
   /* Generic JS-driven hover for non-absolute contexts */
   .submit.is-hover{
     background:var(--accent);
     color:#fff;
     border-color:var(--accent);
-    transform:scale(1.02);
-    box-shadow:0 28px 80px rgba(0,0,0,.45);
   }
 
   /* Fixed UI */
