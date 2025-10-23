@@ -284,18 +284,19 @@ body::before{
     /* About section mobile optimization */
     .about{
       margin: 0;
-      padding: 0 24px 0 88px;
+      /* bring content higher on screen (5px higher) */
+      padding: 11px 24px 40px 88px;
       top: 0;
-      padding-bottom: 40px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      min-height: 100vh;
+      justify-content: flex-start; /* was center, too low */
+      min-height: auto;            /* allow natural height */
       max-width: 100vw;
       box-sizing: border-box;
     }
     .about .copy-head{
-      margin: 0 0 16px 0;
+      /* a bit more space below heading */
+      margin: 0 0 22px 0;
       font-size: clamp(24px, 6vw, 32px);
       max-width: calc(100vw - 112px);
       word-wrap: break-word;
@@ -328,23 +329,24 @@ body::before{
     .copy-head{font-size: clamp(30px, 5.5vw, 28px);}
     .panel.panel--copy{margin-left: -15px;}
     #services.panel.panel--copy{margin-left: -12vh; margin-right: 8vh;}
-    .panel--copy.panel--text{flex-basis:auto; margin-left: 30px; margin-top: -30px;}
+    .panel--copy.panel--text{flex-basis:auto; margin-left: 30px; margin-right: 132px; margin-top: -30px;}
     
     /* About section mobile optimization */
     .about{
       margin: 0;
-      padding: 0 20px 0 72px;
+      /* bring title up further on very small screens (5px higher) */
+      padding: 9px 20px 30px 72px;
       top: 0;
-      padding-bottom: 30px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      min-height: 100vh;
+      justify-content: flex-start;
+      min-height: auto;
       max-width: 100vw;
       box-sizing: border-box;
     }
     .about .copy-head{
-      margin: 0 0 14px 0;
+      /* a bit more space below heading */
+      margin: 0 0 20px 0;
       font-size: clamp(30px, 5.5vw, 28px);
       max-width: calc(100vw - 92px);
       word-wrap: break-word;
@@ -540,7 +542,7 @@ body::before{
   /* About & Contact */
   .about{flex-basis:680px; align-self:flex-start; margin:100px 100px 0 100px; position:relative; top:60px; padding-bottom:40px}
   /* Align About header with other headers and enlarge about copy */
-  .about .copy-head{margin:0 0 13px 46px;}
+  .about .copy-head{margin:-10vh 0 19vh 10vh;}
   /* About headline per-word reveal */
   .about .copy-head{color:var(--ink); max-width: calc(150vw - 104px); width: calc(110vw - 104px);}
   .about .copy-head .word{color:var(--muted); transition:color 140ms linear}
@@ -985,7 +987,7 @@ body::before{
     .about .copy-cols{ max-width:360px !important; gap:48px !important; margin:0 48px !important }
   }
   @media (max-width: 480px){
-    .about .copy-cols{ max-width:360px !important; gap:48px !important; margin:0 48px !important }
+    .about .copy-cols{ max-width:360px !important; gap:48px !important; margin:0 85px !important }
   }
 
   /* ================= Mobile typography normalization ================= */
@@ -1138,13 +1140,19 @@ body::before{
   }
   @media (max-width: 1200px){
     .services-stack{grid-template-columns:1fr}
-    .services-stack .media-pane{display:none}
+    /* Show the real heading element; hide the image stack */
+    .services-stack .media-pane{display:block; padding-left:0; margin-left:0}
+    .services-stack .media-title{font-size:40px; line-height:1; font-weight:800; margin:8px 0 12px 6px}
+    .services-stack .media-stack{display:none}
+    /* Disable pseudo heading when real title is visible */
+    .services-stack .services-list::before{display:none}
     .services-stack .service{grid-template-columns:64px 1.8fr 0.7fr 48px}
   }
   @media (max-width: 900px){
     .services-stack .service{grid-template-columns:56px 1fr 44px; min-height:128px; padding:10px 20px}
     .services-stack .service__title{font-size:clamp(18px, 5vw, 22px)}
     .services-stack .service__desc{display:none}
+    .services-stack .media-title{font-size:36px; margin:6px 0 12px 4px}
   }
   
   /* Mobile optimization: keep desktop stacking, adjust sizing */
@@ -1159,12 +1167,16 @@ body::before{
     #services + .services-stack{
       margin-top: -40vh;
     }
-    .services-stack .media-pane{display: none;}
+    /* Show the heading container on mobile */
+    .services-stack .media-pane{display: block; padding-left: 0; margin-left: 0;}
+    .services-stack .media-stack{display: none;}
     .services-stack .services-list{
-      padding: 0 16px;
+      padding: 0 16px; /* remove extra top padding; real title is visible */
       max-width: 100%;
       box-sizing: border-box;
+      position: relative;
     }
+    .services-stack .media-title{ font-size: clamp(30px, 5.5vw, 28px); margin: -51px 0 10px -110px }
     .services-stack .service{
       left: 16px;
       right: 16px;
@@ -1198,13 +1210,22 @@ body::before{
     /* Reduce spacing from previous section */
     #services + .services-stack{
       margin-top: 36vh;
-      margin-left: 10vh;
+      margin-left: 31vh;
     }
     
     .services-stack .services-list{
-      padding: 0 12px;
+      padding: 0px 0px 0 52px; /* top space for pseudo heading */
       max-width: 100%;
       box-sizing: border-box;
+      position: relative;
+    }
+    .services-stack .services-list::before{
+      font-size: clamp(26px, 7vw, 32px);
+      margin: 0;
+      position: absolute;
+      top: 6px;
+      left: 12px;
+      z-index: 2;
     }
     .services-stack .service{
       left: 12px;
@@ -1694,3 +1715,21 @@ strong, b{ font-family: var(--accent-serif) !important; letter-spacing:.005em }
       margin-right: auto;
     }
   }
+
+/* Final mobile overrides (placed at end to win cascade) */
+@media (max-width: 720px){
+  .about{
+    padding: 11px 24px 40px 88px !important; /* lift section higher */
+  }
+  .about .copy-head{
+    margin: -20px 0 22px 20px !important; /* more space under heading */
+  }
+}
+@media (max-width: 480px){
+  .about{
+    padding: 9px 20px 30px 72px !important; /* lift further on very small screens */
+  }
+  .about .copy-head{
+    margin: -25px 0 30px 0 !important;
+  }
+}
