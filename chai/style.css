@@ -1087,7 +1087,7 @@ body::before{
   /* Ensure parent class 'layer-media' does not disable interactions here */
   .services-stack.layer-media{ pointer-events: auto !important; }
   .services-stack .media-pane{position:relative; padding-left:0; margin-left:-28px}
-  .services-stack .media-title{font-size:56px; line-height:1; font-weight:800; margin-bottom: 27px; margin-top: 30px;}
+  .services-stack .media-title{font-size:56px; line-height:1; font-weight:800; margin-bottom: 27px; margin-top: 20px;}
   .services-stack .media-stack{position:relative; width:100%; max-width:360px; height:420px}
   .services-stack .media-card{position:absolute; width:320px; height:360px; left:0; top:60px; background:#1a1a1a; border:1px solid var(--line); transform:rotate(-8deg); box-shadow:0 20px 40px rgba(0,0,0,0.45); overflow:hidden}
   /* Premium feel: tiny parallax/nudge and smoother transitions */
