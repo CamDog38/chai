@@ -474,59 +474,6 @@
       });
     })();
 ;
-    // Mobile swipe helper (shows briefly on first visit, hides on interaction)
-    (function(){
-      return;
-      function initSwipeHelper(){
-        const helper = document.getElementById('swipeHelper');
-        const scrollDetector = document.getElementById('scrollDetector');
-        if(!helper) return;
-
-        const STORAGE_KEY = 'chai_swipe_hint_seen';
-        const seen = sessionStorage.getItem(STORAGE_KEY) === 'true';
-
-        if(!seen){
-          // Show after a short delay
-          setTimeout(function(){ helper.classList.add('is-visible'); }, 1200);
-          // Hide after 5s
-          setTimeout(function(){ helper.classList.remove('is-visible'); }, 6200);
-
-          var hideHelper = function(){
-            helper.classList.remove('is-visible');
-            sessionStorage.setItem(STORAGE_KEY, 'true');
-          };
-          // Use window to avoid any shadowing of document and ensure global listener
-          window.addEventListener('scroll', hideHelper, { once: true, passive: true });
-          window.addEventListener('touchstart', hideHelper, { once: true, passive: true });
-        }
-
-        // Convert horizontal swipes to vertical scroll (for scroll-detector proxy)
-        if(scrollDetector){
-          var touchStartX = 0, touchStartY = 0;
-          window.addEventListener('touchstart', function(e){
-            touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
-          }, { passive: true });
-          window.addEventListener('touchmove', function(e){
-            if(!touchStartX && !touchStartY) return;
-            var deltaX = e.touches[0].clientX - touchStartX;
-            var deltaY = e.touches[0].clientY - touchStartY;
-            if(Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 20){
-              scrollDetector.scrollTop += (-deltaX * 2.5);
-              touchStartX = e.touches[0].clientX;
-              touchStartY = e.touches[0].clientY;
-            }
-          }, { passive: true });
-          window.addEventListener('touchend', function(){ touchStartX = 0; touchStartY = 0; }, { passive: true });
-        }
-      }
-      // Initialize after page load (safer than DOMContentLoaded for inline scripts)
-      if(document.readyState === 'complete' || document.readyState === 'interactive'){
-        initSwipeHelper();
-      } else {
-        window.addEventListener('load', initSwipeHelper, false);
-      }
-    })();
     </script>
     <script src="swipe-helper.js" defer></script>
     <script src="gesture-scroll.js" defer></script>
