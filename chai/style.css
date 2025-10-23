@@ -821,7 +821,7 @@ body::before{
       font-size: 15px;
       line-height: 1.55;
       margin-bottom: 50px;
-      max-width: calc(114vw - 32px);
+      max-width: calc(110vw - 32px);
     }
     .panel.contact .submit{
       position: absolute !important;
