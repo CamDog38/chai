@@ -325,6 +325,54 @@ body::before{
       margin-top: 20px;
     }
   }
+  /* ================= Mobile Swipe Helper ================= */
+  .swipe-helper{
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999; /* above everything */
+    display: none; /* hidden by default, shown on mobile via JS */
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+  .swipe-helper.is-visible{
+    opacity: 1;
+  }
+  .swipe-helper__hand{
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(73, 89, 50, 0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(73, 89, 50, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    animation: swipeNudge 2s ease-in-out infinite;
+  }
+  .swipe-helper__text{
+    font-family: 'Inter', system-ui;
+    font-size: 13px;
+    color: var(--muted);
+    text-transform: lowercase;
+    letter-spacing: 0.02em;
+  }
+  @keyframes swipeNudge {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+  }
+  /* Only show on mobile */
+  @media (max-width: 700px){
+    .swipe-helper{ display: flex; }
+  }
+
   @media (max-width: 480px){
     .copy-head{font-size: clamp(30px, 5.5vw, 28px);}
     .panel.panel--copy{margin-left: -15px;}

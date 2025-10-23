@@ -86,6 +86,16 @@
       </div>
     </section>
 
+    <!-- Mobile swipe helper (shows on first visit) -->
+    <div class="swipe-helper" id="swipeHelper" aria-hidden="true">
+      <div class="swipe-helper__hand">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13 5.5V11.5M13 11.5V17.5M13 11.5H19M13 11.5H7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="swipe-helper__text">swipe to explore</div>
+    </div>
+
     <!-- TEXT -->
     <section class="panel panel--text panel--copy layer-text" id="services">
       <div class="body-text">
@@ -462,6 +472,84 @@
           if(btn) btn.focus();
         }
       });
+    })();
+
+    // Mobile swipe helper (shows briefly on first visit, hides on interaction)
+    (function(){
+      if(window.innerWidth > 700) return; // mobile only
+      
+      const helper = document.getElementById('swipeHelper');
+      const scrollDetector = document.getElementById('scrollDetector');
+      if(!helper) return;
+
+      console.log('[swipe-helper] initialized on mobile');
+
+      const STORAGE_KEY = 'chai_swipe_hint_seen';
+      const seen = sessionStorage.getItem(STORAGE_KEY);
+      
+      if(!seen){
+        // Show after a short delay
+        setTimeout(() => {
+          helper.classList.add('is-visible');
+          console.log('[swipe-helper] showing');
+        }, 1200);
+
+        // Hide after 4 seconds
+        setTimeout(() => {
+          helper.classList.remove('is-visible');
+          console.log('[swipe-helper] auto-hiding');
+        }, 5200);
+
+        // Hide on any scroll/touch
+        const hideHelper = () => {
+          helper.classList.remove('is-visible');
+          sessionStorage.setItem(STORAGE_KEY, 'true');
+          console.log('[swipe-helper] hidden by interaction');
+        };
+
+        if(scrollDetector){
+          scrollDetector.addEventListener('scroll', hideHelper, { once: true, passive: true });
+        }
+        document.addEventListener('touchstart', hideHelper, { once: true, passive: true });
+      } else {
+        console.log('[swipe-helper] already seen this session');
+      }
+
+      // Convert horizontal swipes to vertical scroll (for scroll-detector proxy)
+      if(scrollDetector){
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        document.addEventListener('touchstart', (e) => {
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+          if(!touchStartX || !touchStartY) return;
+
+          const deltaX = e.touches[0].clientX - touchStartX;
+          const deltaY = e.touches[0].clientY - touchStartY;
+
+          // If horizontal swipe is stronger than vertical
+          if(Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 30){
+            // Convert horizontal swipe to scroll
+            // Left swipe (negative deltaX) = scroll down (forward)
+            // Right swipe (positive deltaX) = scroll up (back)
+            const scrollAmount = -deltaX * 2; // multiply for sensitivity
+            scrollDetector.scrollTop += scrollAmount;
+            
+            // Reset to prevent continuous scrolling
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+          }
+        }, { passive: true });
+
+        document.addEventListener('touchend', () => {
+          touchStartX = 0;
+          touchStartY = 0;
+        }, { passive: true });
+      }
     })();
     </script>
 </body>
