@@ -163,7 +163,7 @@ body::before{
   }
 
   /* Boxless copy panel: focus on type and comfortable spacing */
-  .panel.panel--copy{border:0; background:transparent; padding:0; margin:-29px 100px; margin-left: 200px; margin-right: -650px;}
+  .panel.panel--copy{border:0; background:transparent; padding:0; margin:14px 100px; margin-left: 200px; margin-right: -650px;}
   /* Make the copy panel wider than default text panels */
   .panel--copy.panel--text{flex-basis:980px}
   /* Extra space after the copy block before first service card (reduced for closer proximity) */
