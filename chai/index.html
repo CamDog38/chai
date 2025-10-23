@@ -473,84 +473,61 @@
         }
       });
     })();
-
+;
     // Mobile swipe helper (shows briefly on first visit, hides on interaction)
     (function(){
-      if(window.innerWidth > 700) return; // mobile only
-      
-      const helper = document.getElementById('swipeHelper');
-      const scrollDetector = document.getElementById('scrollDetector');
-      if(!helper) return;
+      return;
+      function initSwipeHelper(){
+        const helper = document.getElementById('swipeHelper');
+        const scrollDetector = document.getElementById('scrollDetector');
+        if(!helper) return;
 
-      console.log('[swipe-helper] initialized on mobile');
+        const STORAGE_KEY = 'chai_swipe_hint_seen';
+        const seen = sessionStorage.getItem(STORAGE_KEY) === 'true';
 
-      const STORAGE_KEY = 'chai_swipe_hint_seen';
-      const seen = sessionStorage.getItem(STORAGE_KEY);
-      
-      if(!seen){
-        // Show after a short delay
-        setTimeout(() => {
-          helper.classList.add('is-visible');
-          console.log('[swipe-helper] showing');
-        }, 1200);
+        if(!seen){
+          // Show after a short delay
+          setTimeout(function(){ helper.classList.add('is-visible'); }, 1200);
+          // Hide after 5s
+          setTimeout(function(){ helper.classList.remove('is-visible'); }, 6200);
 
-        // Hide after 4 seconds
-        setTimeout(() => {
-          helper.classList.remove('is-visible');
-          console.log('[swipe-helper] auto-hiding');
-        }, 5200);
-
-        // Hide on any scroll/touch
-        const hideHelper = () => {
-          helper.classList.remove('is-visible');
-          sessionStorage.setItem(STORAGE_KEY, 'true');
-          console.log('[swipe-helper] hidden by interaction');
-        };
-
-        if(scrollDetector){
-          scrollDetector.addEventListener('scroll', hideHelper, { once: true, passive: true });
+          var hideHelper = function(){
+            helper.classList.remove('is-visible');
+            sessionStorage.setItem(STORAGE_KEY, 'true');
+          };
+          // Use window to avoid any shadowing of document and ensure global listener
+          window.addEventListener('scroll', hideHelper, { once: true, passive: true });
+          window.addEventListener('touchstart', hideHelper, { once: true, passive: true });
         }
-        document.addEventListener('touchstart', hideHelper, { once: true, passive: true });
-      } else {
-        console.log('[swipe-helper] already seen this session');
-      }
 
-      // Convert horizontal swipes to vertical scroll (for scroll-detector proxy)
-      if(scrollDetector){
-        let touchStartX = 0;
-        let touchStartY = 0;
-
-        document.addEventListener('touchstart', (e) => {
-          touchStartX = e.touches[0].clientX;
-          touchStartY = e.touches[0].clientY;
-        }, { passive: true });
-
-        document.addEventListener('touchmove', (e) => {
-          if(!touchStartX || !touchStartY) return;
-
-          const deltaX = e.touches[0].clientX - touchStartX;
-          const deltaY = e.touches[0].clientY - touchStartY;
-
-          // If horizontal swipe is stronger than vertical
-          if(Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 30){
-            // Convert horizontal swipe to scroll
-            // Left swipe (negative deltaX) = scroll down (forward)
-            // Right swipe (positive deltaX) = scroll up (back)
-            const scrollAmount = -deltaX * 2; // multiply for sensitivity
-            scrollDetector.scrollTop += scrollAmount;
-            
-            // Reset to prevent continuous scrolling
+        // Convert horizontal swipes to vertical scroll (for scroll-detector proxy)
+        if(scrollDetector){
+          var touchStartX = 0, touchStartY = 0;
+          window.addEventListener('touchstart', function(e){
             touchStartX = e.touches[0].clientX;
             touchStartY = e.touches[0].clientY;
-          }
-        }, { passive: true });
-
-        document.addEventListener('touchend', () => {
-          touchStartX = 0;
-          touchStartY = 0;
-        }, { passive: true });
+          }, { passive: true });
+          window.addEventListener('touchmove', function(e){
+            if(!touchStartX && !touchStartY) return;
+            var deltaX = e.touches[0].clientX - touchStartX;
+            var deltaY = e.touches[0].clientY - touchStartY;
+            if(Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 20){
+              scrollDetector.scrollTop += (-deltaX * 2.5);
+              touchStartX = e.touches[0].clientX;
+              touchStartY = e.touches[0].clientY;
+            }
+          }, { passive: true });
+          window.addEventListener('touchend', function(){ touchStartX = 0; touchStartY = 0; }, { passive: true });
+        }
+      }
+      // Initialize after page load (safer than DOMContentLoaded for inline scripts)
+      if(document.readyState === 'complete' || document.readyState === 'interactive'){
+        initSwipeHelper();
+      } else {
+        window.addEventListener('load', initSwipeHelper, false);
       }
     })();
     </script>
+    <script src="swipe-helper.js" defer></script>
 </body>
 </html>

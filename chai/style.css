@@ -328,49 +328,59 @@ body::before{
   /* ================= Mobile Swipe Helper ================= */
   .swipe-helper{
     position: fixed;
-    bottom: 80px;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 28px);
     left: 50%;
     transform: translateX(-50%);
-    z-index: 9999; /* above everything */
-    display: none; /* hidden by default, shown on mobile via JS */
+    z-index: 99999 !important; /* above everything */
+    display: flex !important; /* always flex, control visibility with opacity */
     flex-direction: column;
     align-items: center;
     gap: 12px;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.6s ease;
+    /* Debug: make sure it's visible */
+    visibility: hidden;
   }
   .swipe-helper.is-visible{
-    opacity: 1;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
   .swipe-helper__hand{
-    width: 56px;
-    height: 56px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
-    background: rgba(73, 89, 50, 0.15);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(73, 89, 50, 0.3);
+    background: rgba(73, 89, 50, 0.25);
+    backdrop-filter: blur(12px);
+    border: 2px solid rgba(73, 89, 50, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--accent);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
     animation: swipeNudge 2s ease-in-out infinite;
+  }
+  .swipe-helper__hand svg{
+    width: 32px;
+    height: 32px;
   }
   .swipe-helper__text{
     font-family: 'Inter', system-ui;
-    font-size: 13px;
-    color: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
     text-transform: lowercase;
     letter-spacing: 0.02em;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
   }
   @keyframes swipeNudge {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-8px); }
-    75% { transform: translateX(8px); }
+    0%, 100% { transform: translateX(0) scale(1); }
+    25% { transform: translateX(-12px) scale(1.05); }
+    75% { transform: translateX(12px) scale(1.05); }
   }
-  /* Only show on mobile */
-  @media (max-width: 700px){
-    .swipe-helper{ display: flex; }
+  /* Hide on desktop */
+  @media (min-width: 701px){
+    .swipe-helper{ display: none !important; }
   }
 
   @media (max-width: 480px){
