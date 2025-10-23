@@ -94,7 +94,7 @@ body::before{
 }
 
   /* Scroll proxy */
-  .scroll-detector{position:fixed; inset:0; overflow-y:auto; z-index:10}
+  .scroll-detector{position:fixed; inset:0; overflow-y:auto; z-index:10; touch-action: pan-x pan-y}
   .scroll-height{height:1630vh; width:1px}
 
   /* Mobile: reduce scroll proxy height */
@@ -358,7 +358,24 @@ body::before{
     justify-content: center;
     color: var(--accent);
     box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    animation: swipeNudge 2s ease-in-out infinite;
+    position: relative;
+    animation: sweepHand 2.6s ease-in-out infinite;
+  }
+  /* trailing streak */
+  .swipe-helper__hand::after{
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 48px; /* start slightly inside the circle's right edge */
+    transform: translateY(-50%);
+    height: 18px;
+    width: 0;
+    border-radius: 10px;
+    background: linear-gradient(90deg, rgba(73,89,50,0.28), rgba(73,89,50,0.12), rgba(73,89,50,0));
+    filter: blur(1.2px);
+    opacity: 0;
+    pointer-events: none;
+    animation: sweepTrail 2.6s ease-in-out infinite;
   }
   .swipe-helper__hand svg{
     width: 32px;
@@ -373,10 +390,17 @@ body::before{
     letter-spacing: 0.02em;
     text-shadow: 0 2px 8px rgba(0,0,0,0.4);
   }
-  @keyframes swipeNudge {
-    0%, 100% { transform: translateX(0) scale(1); }
-    25% { transform: translateX(-12px) scale(1.05); }
-    75% { transform: translateX(12px) scale(1.05); }
+  @keyframes sweepHand {
+    0%   { transform: translateX(-24px) scale(1); }
+    25%  { transform: translateX(0) scale(1.04); }
+    60%  { transform: translateX(72px) scale(1.06); }
+    100% { transform: translateX(-24px) scale(1); }
+  }
+  @keyframes sweepTrail {
+    0%   { opacity: 0; width: 0; }
+    20%  { opacity: .12; width: 40px; }
+    60%  { opacity: .32; width: 120px; }
+    100% { opacity: 0; width: 0; }
   }
   /* Hide on desktop */
   @media (min-width: 701px){
