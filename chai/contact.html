@@ -46,10 +46,7 @@
       <div class="contact-hero__bg-text" aria-hidden="true">contact us.</div>
       <div class="contact-hero__content layer-text">
         <h2 class="copy-head animate-in">contact us.</h2>
-        <p class="contact-copy animate-in" style="margin-left:0; animation-delay: 0.1s">please fill out the form below or email us at 
-          <a href="mailto:info@chaidigital.com">info@chaidigital.com</a>. let's create work that is 
-          <i class="accent-serif">made to matter</i>.
-        </p>
+        <p class="contact-copy animate-in" style="margin-left:0; animation-delay: 0.1s">please fill out the form below and let's create work that is <i class="accent-serif">made to matter</i>.</p>
 
         <form id="contactForm" class="contact-form animate-in" novalidate style="animation-delay: 0.2s">
           <div class="form-row">
@@ -77,6 +74,11 @@
               <label for="message">message</label>
               <textarea id="message" name="message" required></textarea>
             </div>
+          </div>
+          <!-- Honeypot field (hidden from users) -->
+          <div class="field" style="position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;">
+            <label for="website">website</label>
+            <input id="website" name="website" type="text" autocomplete="off" tabindex="-1" />
           </div>
           <div class="form-actions">
             <button type="submit" class="btn btn--primary">send</button>
@@ -108,13 +110,64 @@
       });
     })();
 
-    // Form -> mailto fallback (no server)
+    // Form submission with client-side rate limiting and basic anti-spam
     (function(){
       const form = document.getElementById('contactForm');
       const note = document.getElementById('formNote');
+      const btn = form?.querySelector('button[type="submit"]');
       if(!form) return;
+
+      // Track form render time to enforce minimum fill time
+      const FORM_MIN_MS = 5000; // 5s
+      const startAt = Date.now();
+
+      // Simple sliding-window rate limit in localStorage
+      const RL_KEY = 'contact_submits_v1';
+      const RL_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
+      const RL_MAX = 3; // max submissions per window
+
+      function getHistory(){
+        try { return JSON.parse(localStorage.getItem(RL_KEY) || '[]'); } catch { return []; }
+      }
+      function putHistory(arr){
+        try { localStorage.setItem(RL_KEY, JSON.stringify(arr)); } catch {}
+      }
+
+      function isRateLimited(){
+        const now = Date.now();
+        const recent = getHistory().filter(ts => now - ts < RL_WINDOW_MS);
+        return { limited: recent.length >= RL_MAX, recent };
+      }
+
       form.addEventListener('submit', (e)=>{
         e.preventDefault();
+        if (!btn) return;
+
+        // Honeypot check
+        const hp = (document.getElementById('website')?.value || '').trim();
+        if (hp.length){
+          // Silently accept to confuse bots
+          note.textContent = 'thanks!';
+          return;
+        }
+
+        // Minimum fill time
+        const elapsed = Date.now() - startAt;
+        if (elapsed < FORM_MIN_MS){
+          note.textContent = 'please take a moment to complete the form.';
+          return;
+        }
+
+        // Rate limiting
+        const { limited, recent } = isRateLimited();
+        if (limited){
+          const retryMs = RL_WINDOW_MS - (Date.now() - recent[0]);
+          const mins = Math.ceil(retryMs / 60000);
+          note.textContent = `you have reached the limit. please try again in about ${mins} minute(s).`;
+          return;
+        }
+
+        // Validate required fields
         const name = (document.getElementById('name').value||'').trim();
         const email = (document.getElementById('email').value||'').trim();
         const company = (document.getElementById('company').value||'').trim();
@@ -124,10 +177,20 @@
           note.textContent = 'please complete your name, email, and message.';
           return;
         }
+
+        // Disable and proceed (mailto)
+        btn.disabled = true;
+        btn.textContent = 'sending…';
         const subject = encodeURIComponent(`New inquiry from ${name}`);
         const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nCompany: ${company}\n\nMessage:\n${message}`);
-        window.location.href = `mailto:info@chaidigital.com?subject=${subject}&body=${body}`;
-        note.textContent = 'opening your email client... if nothing happens, write to info@chaidigital.com';
+        // Record attempt in rate limit history before navigation
+        const now = Date.now();
+        const updated = [...recent.filter(ts => now - ts < RL_WINDOW_MS), now];
+        putHistory(updated);
+        // Navigate using mailto
+        window.location.href = `mailto:cameron@digitaljunction.ae?subject=${subject}&body=${body}`;
+        note.textContent = 'opening your email client... if nothing happens, write to cameron@digitaljunction.ae';
+        setTimeout(() => { btn.disabled = false; btn.textContent = 'send'; }, 4000);
       });
     })();
   </script>

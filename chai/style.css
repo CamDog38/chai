@@ -163,7 +163,7 @@ body::before{
   }
 
   /* Boxless copy panel: focus on type and comfortable spacing */
-  .panel.panel--copy{border:0; background:transparent; padding:0; margin:-29px 100px; margin-left: 200px; margin-right: 200px;}
+  .panel.panel--copy{border:0; background:transparent; padding:0; margin:-29px 100px; margin-left: 200px; margin-right: -650px;}
   /* Make the copy panel wider than default text panels */
   .panel--copy.panel--text{flex-basis:980px}
   /* Extra space after the copy block before first service card (reduced for closer proximity) */
@@ -173,7 +173,7 @@ body::before{
   #case-studies.panel{border:0; padding:0; background:transparent}
   #case-studies.panel--text{flex-basis:auto}
   /* Align case studies header with copy panel margins */
-  #case-studies{align-self:flex-start; margin:29px 100px 0 100px}
+  #case-studies{align-self:flex-start; margin:12px 100px 0 100px}
   #case-studies .copy-head{margin:0}
   .panel--copy .body-text{
     max-width:980px;
@@ -248,11 +248,11 @@ body::before{
   /* Reference-style headline and columns */
   .copy-head{
     font-family:'Aileron', 'Poppins', system-ui;
-    font-size:46px;
-    line-height:1.15;
-    font-weight:800;
-    color:var(--ink);
-    letter-spacing:-0.2px;
+    font-size: 56px;
+    line-height: 1;
+    font-weight: 800;
+    margin-bottom: 24px;
+    margin-top: 56px;
     margin:0 24px 22px 24px;
     max-width:980px;
   }
@@ -538,7 +538,7 @@ body::before{
  .case-card__desc{font-family:'Inter','Poppins',system-ui; font-size:15px; color:var(--muted); line-height:1.7}
 
   /* About & Contact */
-  .about{flex-basis:680px; align-self:flex-start; margin:100px 100px 0 100px; position:relative; top:60px; padding-bottom:80px}
+  .about{flex-basis:680px; align-self:flex-start; margin:100px 100px 0 100px; position:relative; top:60px; padding-bottom:40px}
   /* Align About header with other headers and enlarge about copy */
   .about .copy-head{margin:0 0 13px 46px;}
   /* About headline per-word reveal */
@@ -546,8 +546,16 @@ body::before{
   .about .copy-head .word{color:var(--muted); transition:color 140ms linear}
   .about .copy-head .word.on{color:var(--ink)}
   /* Desktop default for About copy columns */
-  .about .copy-cols{max-width:1100px; gap:48px; margin:0 48px}
-  .about .copy-cols p{font-size:22px; line-height:1.8}
+  /* Make About copy fill the available horizontal space similar to the heading */
+  .about .copy-cols{
+    max-width: calc(180vw - 104px);
+    width: calc(140vw - 104px);
+    gap: 48px;
+    /* keep left inset aligned with heading, remove right margin to allow full width */
+    margin: 80px 0 0 400px;
+  }
+  /* Match Services intro copy size */
+  .about .copy-cols p{font-size: clamp(22px, 3.2vw, 30px);line-height: 1.25;}
   .about .copy-cols p + p{margin-top:14px}
   /* About per-word reveal (match Services behavior) */
   .about .copy-cols p{ color:var(--muted); }
@@ -557,8 +565,13 @@ body::before{
   .about .copy-cols p.is-strong .word{ font-weight:800 }
   .contact{flex-basis:680px; align-self:flex-start; margin:100px 100px 0 100px; position:relative; top:29px}
   /* Make contact panel align with copy layout spacing */
-  .panel.contact{border:0; padding:0; background:transparent; margin:0 100px; position:relative; min-height:70vh}
+  .panel.contact{
+    border:0; padding:0; background:transparent; margin:0 100px; position:relative; min-height:70vh;
+    /* control the measure (line length) of the contact copy */
+    --contact-copy-width: 820px;
+  }
   /* Contact header alignment to match About */
+  /* Offset header to align with the text column */
   .contact .copy-head{margin:0 0 22px 48px}
   /* Contact helper copy above the button */
   .contact-copy{
@@ -567,11 +580,31 @@ body::before{
     line-height:1.8; /* match About rhythm */
     color:var(--muted);
     text-align:left;
-    max-width:520px; /* tighter to fit within the indicated red box */
-    margin:8px 0 68px 0; /* add more space before the form */
+    max-width: var(--contact-copy-width);
+    margin:8px 0 28px 48px; /* align text under header and reduce bottom gap */
   }
   .contact-hero .copy-head{ margin:0 0 12px 0; }
   .contact-copy a{ color:var(--ink); text-decoration:underline; text-underline-offset:3px }
+
+  /* Center the circular CTA under the text column (not the full panel) */
+  .panel.contact .contact-copy + .submit{
+    position: relative !important;
+    left: calc(48px + (var(--contact-copy-width) / 2)) !important;
+    top: 0 !important;
+    transform: translateX(-50%) !important;
+    margin-top: 8px !important;
+  }
+
+  /* Mobile tweaks: copy uses full width; center button below */
+  @media (max-width: 700px){
+    .panel.contact{ --contact-copy-width: calc(100vw - 120px) }
+    .contact .copy-head{ margin-left: 24px }
+    .contact-copy{ margin-left:24px; margin-right:24px; max-width: calc(100vw - 120px) }
+    .panel.contact .contact-copy + .submit{
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+    }
+  }
 
   /* Contact page (standalone) */
   .contact-hero{ position:relative; margin:100px auto 160px auto; max-width:1100px; padding:40px 24px 20px; z-index: 5; }

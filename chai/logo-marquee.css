@@ -222,8 +222,8 @@
   :root {
     /* Make marquee content width respect global mobile gutters */
     --lm-max: calc(100vw - (var(--mob-gutter, 16px) * 2));
-    /* ~15% taller rows so logos fit comfortably */
-    --lm-row-height: clamp(92px, 25vw, 152px);
+    /* Slightly taller rows so logos fit comfortably without cropping */
+    --lm-row-height: clamp(110px, 28vw, 164px);
     --lm-gap: 16px;
     --lm-radius: 10px;
   }
@@ -266,11 +266,23 @@
     border-radius: 14px;
   }
 
-  /* Allow logos to use more of the card height on mobile */
+  /* Allow logos to use most of the card height on mobile without cropping */
   .logo-card img {
-    max-height: 96%;
-    transform: translate(var(--tx, 0), var(--ty, 0)) scale(var(--scale, 0.96));
+    /* zoom in ~25% vs previous sizing */
+    max-height: 92%;
+    max-width: 96%;
+    /* Force perfect centering on mobile regardless of inline per-logo tweaks */
+    --tx: 0 !important;
+    --ty: 0 !important;
+    --bg-x: 50% !important;
+    --bg-y: 50% !important;
+    transform: scale(1.12) !important; /* ~25% larger appearance overall */
+    transform-origin: center center;
   }
+
+  /* Disable hover lift/scale on touch to prevent accidental zoom feel */
+  .logo-card:hover { transform: none; }
+  .logo-card:hover img { transform: none; }
 
   /* Slightly slower animation on mobile for readability */
   .marquee-track { animation-duration: 44s; }

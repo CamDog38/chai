@@ -63,6 +63,9 @@ body.case-study main{
 
 .case-intro{ padding: clamp(30px,5vw,80px) 20px; max-width: 1200px; margin: 0 auto; display: grid; gap: 32px; grid-template-columns: 1.2fr .8fr; align-items: start; }
 .case-intro.single{ grid-template-columns: 1fr; max-width: 980px; }
+.case-intro.single p{ line-height: 1.8; margin: 0 0 16px; }
+.case-intro.single p:last-child{ margin-bottom: 0; }
+.case-intro.single > div{ max-width: none; }
 .brand-label{ font-family:'Aileron','Poppins',system-ui; font-weight:800; color: var(--ink); letter-spacing:-0.02em; font-size: clamp(28px, 3.8vw, 48px); line-height: 1.05; display:block; margin-bottom:6px; }
 .case-intro h2{ font-size: clamp(28px,3.8vw,48px); line-height: 1.05; font-weight: 800; color: var(--ink); font-family:'Aileron','Poppins',system-ui; }
 .case-intro h2 em{ font-family: "Playfair Display", serif; font-style: italic; color: var(--ink); }
@@ -157,15 +160,17 @@ body.sported-right .case-split figure.split-media img{
 
 /* Text block */
 body.sported-right .case-split .split-text{
-  max-width: 820px;
+  max-width: 68ch; /* comfortable reading measure */
   padding-right: clamp(8px, 1.5vw, 16px);
 }
 body.sported-right .case-split .split-text h2{ margin-top: 0; }
 /* Use Inter for paragraph copy to match site tone */
 body.sported-right .case-split .split-text p{
   font-family: 'Inter', system-ui;
-  line-height: 1.75;
+  line-height: 1.8;
+  margin: 0 0 16px; /* clear paragraph separation */
 }
+body.sported-right .case-split .split-text p:last-child{ margin-bottom: 0 }
 /* Accent font for emphasized word in heading (match case-study.css intro style) */
 body.sported-right .case-split .split-text h2 em{
   font-family: "Playfair Display", serif;
