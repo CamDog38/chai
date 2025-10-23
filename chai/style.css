@@ -1209,7 +1209,7 @@ body::before{
     }
     /* Reduce spacing from previous section */
     #services + .services-stack{
-      margin-top: 36vh;
+      margin-top: 34vh;
       margin-left: 31vh;
     }
     
