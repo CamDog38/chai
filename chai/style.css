@@ -1167,7 +1167,7 @@ body::before{
   }
 
   /* Services (STACKED layout copied from stack.css, adapted) */
-  .services-stack{flex-basis:1400px; border:0; padding:0; display:grid; grid-template-columns:360px 1fr; gap:32px; align-items:start; margin:0 100px; pointer-events:auto}
+  .services-stack{flex-basis:1400px; border:0; padding:0; display:grid; grid-template-columns:360px 1fr; gap:32px; align-items:start; margin:0 100px; pointer-events:auto; align-self:flex-start}
   /* Ensure parent class 'layer-media' does not disable interactions here */
   .services-stack.layer-media{ pointer-events: auto !important; }
   .services-stack .media-pane{position:relative; padding-left:0; margin-left:-28px}
