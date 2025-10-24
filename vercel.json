@@ -24,9 +24,12 @@
     { "source": "/:path*.html", "destination": "/chai/:path*.html" },
     { "source": "/index", "destination": "/chai/index.html" },
     { "source": "/index.html", "destination": "/chai/index.html" },
+    { "source": "/case-studies", "destination": "/chai/case-studies.html" },
+    { "source": "/contact", "destination": "/chai/contact.html" },
     { "source": "/mediaportfolio", "destination": "/chai/mediaportfolio.html" },
     { "source": "/mediaportfolio.html", "destination": "/chai/mediaportfolio.html" },
     { "source": "/sportmediasportfolio", "destination": "/chai/sportmediasportfolio.html" },
-    { "source": "/sportmediasportfolio.html", "destination": "/chai/sportmediasportfolio.html" }
+    { "source": "/sportmediasportfolio.html", "destination": "/chai/sportmediasportfolio.html" },
+    { "source": "/case-studies/:slug", "destination": "/chai/case-studies/:slug.html" }
   ]
 }
