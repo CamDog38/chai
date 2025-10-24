@@ -676,7 +676,7 @@ body::before{
     left: calc(48px + (var(--contact-copy-width) / 2)) !important;
     top: 0 !important;
     transform: translateX(-50%) !important;
-    margin-top: 8px !important;
+    margin-top: 80px !important;
   }
 
   /* Mobile tweaks: copy uses full width; center button below */
