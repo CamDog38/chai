@@ -28,9 +28,8 @@
     </nav>
     <div class="left-menu__spacer" aria-hidden="true"></div>
     <div class="left-menu__socials">
-      <a href="#" aria-label="LinkedIn" class="sm sm--in">in</a>
-      <a href="#" aria-label="Instagram" class="sm sm--ig">ig</a>
-      <a href="#" aria-label="TikTok" class="sm sm--tt">tt</a>
+      <a href="https://www.linkedin.com/company/chai-digital-communications/ " aria-label="LinkedIn" class="sm sm--in">in</a>
+      <a href="https://www.instagram.com/chaidigital?igsh=NjMxY3Q4ODlkdzYy&utm_source=qr" aria-label="Instagram" class="sm sm--ig">ig</a>
     </div>
   </aside>
 
@@ -83,6 +82,18 @@
         btn.setAttribute('aria-expanded', String(open));
         fly.setAttribute('aria-hidden', String(!open));
       });
+      // Mobile: use the logo tab as the hamburger toggle; prevent navigation
+      const logoLink = menu.querySelector('.left-menu__logo');
+      if (logoLink) {
+        logoLink.addEventListener('click', (e) => {
+          if (window.matchMedia('(max-width: 700px)').matches) {
+            e.preventDefault();
+            const open = menu.classList.toggle('is-open');
+            if (btn) btn.setAttribute('aria-expanded', String(open));
+            fly.setAttribute('aria-hidden', String(!open));
+          }
+        });
+      }
       document.addEventListener('click', (e) => {
         if (!menu.contains(e.target) && menu.classList.contains('is-open')) {
           menu.classList.remove('is-open');
