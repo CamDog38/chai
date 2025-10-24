@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="case-study.css" />
 </head>
-<body class="bg--gradient studio-light case-study">
+<body class="bg--gradient studio-light case-study sported-right asgc">
   <aside class="left-menu" aria-label="Primary">
     <a href="../index#start" class="left-menu__logo" aria-label="Chai Home">
       <img src="../Images/Chai White ver2.png" alt="Chai logo" />
@@ -38,19 +38,30 @@
     <section class="case-hero" style="background-image:url('../Images/Case Study BG/GS.png')">
       <div class="case-hero__inner">
         <img class="case-hero__logo" src="../Images/Logos/GS.png" alt="Growthspace logo" />
+        <p class="case-hero__caption">case study</p>
       </div>
     </section>
 
-    <section class="case-intro single">
-      <div>
+    <!-- Split section: side video with full original copy (Sported layout) -->
+    <section class="case-split">
+      <figure class="split-media">
+        <div class="video-card">
+          <video src="./Media/GS/GS Side video.mp4" preload="metadata" playsinline muted autoplay loop controls></video>
+        </div>
+      </figure>
+      <div class="split-text">
         <div class="brand-label">Growthspace.</div>
         <p>Growthspace is a platform that helps companies deliver personalized professional development at scale through AI-powered coaching and expert-led learning journeys.</p>
-
         <p>chai. manages the end-to-end digital rollout of the Growthspace podcast, ensuring each episode becomes a strategic content asset. we edit the final audio and video, produce three high-performing shorts per episode, and manage uploads to Spotify, YouTube, and Apple Podcasts.</p>
-
         <p>our role goes beyond execution - we monitor performance metrics and use them to iterate content structures, thumbnails, and short-form titles to maximize engagement. we’ve also supported the team with YouTube Ads to drive discovery and growth within a competitive niche.</p>
-
         <p>by handling the post-production and digital distribution process, we help Growthspace maintain a consistent thought leadership presence and extend the reach of its expert conversations with HR and L&D leaders - keeping the platform top-of-mind in the talent development space.</p>
+      </div>
+    </section>
+
+    <!-- Bottom video (reusing bottom section spacing/styles) -->
+    <section class="case-bottom-video">
+      <div class="video-wrap">
+        <video src="./Media/GS/GS Bottom video - muted.mp4" preload="metadata" muted autoplay playsinline loop controls style="width:100%;height:auto;display:block"></video>
       </div>
     </section>
 

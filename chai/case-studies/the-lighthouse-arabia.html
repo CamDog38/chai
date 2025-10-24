@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="case-study.css" />
 </head>
-<body class="bg--gradient studio-light case-study">
+<body class="bg--gradient studio-light case-study sported-right asgc">
   <aside class="left-menu" aria-label="Primary">
     <a href="../index#start" class="left-menu__logo" aria-label="Chai Home">
       <img src="../Images/Chai White ver2.png" alt="Chai logo" />
@@ -33,6 +33,7 @@
       <a href="#" aria-label="TikTok" class="sm sm--tt">tt</a>
     </div>
   </aside>
+
   <main>
     <section class="case-hero" style="background-image:url('../Images/Case Study BG/TLHA.png')">
       <div class="case-hero__inner">
@@ -40,16 +41,27 @@
       </div>
     </section>
 
-    <section class="case-intro single">
-      <div>
+    <!-- Split section: side video with full original copy (Sported layout) -->
+    <section class="case-split">
+      <figure class="split-media">
+        <div class="video-card">
+          <img src="./Media/TLHA/TLHA Side Image.jpg" alt="The Lighthouse Arabia side" style="display:block;width:100%;height:auto" />
+        </div>
+      </figure>
+      <div class="split-text">
+        <div>
         <h2>The Lighthouse Arabia.</h2>
         <p>The LightHouse Arabia is Dubai’s leading center for mental health and wellbeing - offering therapy, workshops, and community groups to individuals, families, and organizations.</p>
-
         <p>chai. supports The LightHouse with a full. social and content strategy that blends empathy with clarity. we manage end-to-end planning, creative execution, and analytics across social media. these activities combine to help establish their mental health expertise in a crowded digital space.</p>
-
         <p>from designing evergreen carousels and support group content, to producing best-practice educational series and wellness campaign toolkits, our work keeps the brand rooted in trust while staying relevant to digital audiences.</p>
-
         <p>with a focus on insight-driven content and thoughtful storytelling, chai. helps The LightHouse connect with the communities who need them most - and builds long-term digital equity for the brand.</p>
+      </div>
+    </section>
+
+    <!-- Bottom video (reusing bottom section spacing/styles) -->
+    <section class="case-bottom-video">
+      <div class="video-wrap">
+        <video src="./Media/TLHA/TLHA Bottom video.mp4" preload="metadata" muted autoplay playsinline loop controls style="width:100%;height:auto;display:block"></video>
       </div>
     </section>
 

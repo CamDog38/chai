@@ -136,7 +136,7 @@ body.sported-right .case-split{
   display: grid;
   grid-template-columns: minmax(360px, min(48vw, 680px)) 1fr;
   align-items: center;
-  column-gap: clamp(24px, 4vw, 48px);
+  column-gap: clamp(24px, 4vw, 60px);
   row-gap: clamp(16px, 3vw, 28px);
   padding-inline: clamp(20px, 4vw, 56px);
   padding-block: clamp(16px, 4vw, 40px);
@@ -243,7 +243,7 @@ body.sported-right .sound-toggle.muted::after{ content: '🔇'; }
 
   /* Sported split section padding/margins tightened */
   body.sported-right .case-split{ padding-inline: 16px; padding-block: 16px; row-gap: 16px }
-  body.sported-right .case-split .split-text{ padding-right: 0; max-width: 100% }
+  body.sported-right .case-split .split-text{ padding-right: 0; max-width: 100%; margin-top: 15px;}
   body.sported-right .case-split figure.split-media{ width: 100%; border-radius: 14px }
   body.sported-right .case-split figure.split-media img{ width: 100%; height: auto; object-fit: cover }
 
@@ -254,4 +254,117 @@ body.sported-right .sound-toggle.muted::after{ content: '🔇'; }
 
   /* CTA stack vertically on small screens */
   .case-cta{ padding: 40px 16px 80px; flex-direction: column }
+}
+
+/* ---------------------------------------------------------
+   ASGC-specific overrides
+   - Let the split-media card follow the video's intrinsic aspect ratio
+   - Ensure the video sizes itself without enforced cropping/letterboxing
+--------------------------------------------------------- */
+body.asgc .case-split figure.split-media{
+  aspect-ratio: auto;            /* remove fixed ratio */
+  display: flex;                 /* center media while constraining height */
+  align-items: center;
+  justify-content: center;
+  background: transparent;       /* no black letterbox background */
+  width: 100%;
+  max-height: min(56vw, 86vh);   /* fit to viewport width cap to avoid over-tall media */
+}
+body.asgc .case-split figure.split-media video{
+  width: auto;                   /* let height drive scaling to cap tallness */
+  height: 100%;                  /* fill figure height within cap */
+  max-width: 100%;               /* never overflow column width */
+  display: block;                
+  object-fit: contain;           /* avoid cropping; no letterbox once container follows video */
+  background: transparent;       /* no extra black background */
+}
+
+@media (max-width: 900px){
+  body.asgc .case-split figure.split-media{ max-height: 72vw; }
+}
+
+/* Narrower left column for ASGC so tall video fits fully without cropping */
+body.asgc .case-split{
+  grid-template-columns: minmax(220px, min(26vw, 420px)) 1fr;
+  /* Match Sported spacing */
+  column-gap: clamp(28px, 5vw, 72px);
+  row-gap: clamp(16px, 3vw, 28px);
+  padding-inline: clamp(20px, 4vw, 56px);
+  padding-block: clamp(16px, 4vw, 40px);
+  padding-left: 15vw;
+  padding-bottom: 6vw;
+  padding-top: 5vw;
+}
+
+/* Make media card a bit shorter and narrower overall */
+body.asgc .case-split figure.split-media{
+  max-height: min(46vw, 68vh);
+  overflow: visible;             /* allow video-card to define boundaries */
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+/* Granular control wrapper for video card edges */
+body.asgc .case-split figure.split-media .video-card{
+  position: relative;
+  width: 100%;
+  height: auto;
+  margin: 0;                    /* no extra spacing around the card */
+  border-radius: 18px;           /* rounded corners */
+  overflow: hidden;              /* clip video to rounded corners */
+  box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+  background: transparent;
+  display: block;
+}
+
+body.asgc .case-split figure.split-media .video-card video{
+  display: block;
+  width: 100%;
+  height: auto;                  /* let video define card height */
+  object-fit: contain;           /* show all content */
+  background: transparent;
+}
+
+@media (max-width: 900px){
+  body.asgc .case-split figure.split-media{
+    max-height: 72vw;
+  }
+}
+
+/* Match Sported bottom section spacing */
+body.asgc .case-bottom-video{
+  margin-top: clamp(10px, 7vw, 22px);
+  padding-bottom: clamp(16px, 4vw, 40px);
+  padding-inline: clamp(16px, 4vw, 56px);
+}
+
+/* ---------------------------------------------
+   ASGC mobile layout — stack Media (video), Text, Media (image)
+---------------------------------------------- */
+@media (max-width: 800px){
+  body.asgc .case-split{
+    grid-template-columns: 1fr;         /* stack */
+    padding-inline: 16px;               /* tight gutters */
+    padding-block: 16px;
+    row-gap: 20px;                      /* a bit more spacing between media and text */
+    padding-left: 16px;                 /* override desktop left pad */
+    padding-top: 16px;                  /* override top pad */
+    padding-bottom: 16px;               /* override bottom pad */
+  }
+  body.asgc .case-split figure.split-media{ 
+    width: 100%; max-width: 100%; margin: 0; 
+    max-height: none;                     /* allow natural video height */
+  }
+  body.asgc .case-split figure.split-media .video-card{ 
+    width: 100%; max-width: 100%; border-radius: 14px; 
+  }
+  body.asgc .case-split figure.split-media .video-card video{ 
+    width: 100%; height: auto;           /* scale to viewport width */
+  }
+  body.asgc .case-bottom-video{ 
+    padding-inline: 16px; padding-bottom: 24px; 
+  }
 }

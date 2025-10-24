@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="case-study.css" />
 </head>
-<body class="bg--gradient studio-light case-study">
+<body class="bg--gradient studio-light case-study sported-right asgc">
   <aside class="left-menu" aria-label="Primary">
     <a href="../index#start" class="left-menu__logo" aria-label="Chai Home">
       <img src="../Images/Chai White ver2.png" alt="Chai logo" />
@@ -42,8 +42,14 @@
       </div>
     </section>
 
-    <section class="case-intro single">
-      <div>
+    <!-- Split section: side video with full original copy (Sported layout) -->
+    <section class="case-split">
+      <figure class="split-media">
+        <div class="video-card">
+          <video src="./Media/ASCG/ASGC Side video.mp4" preload="metadata" playsinline muted autoplay loop controls></video>
+        </div>
+      </figure>
+      <div class="split-text">
         <div class="brand-label">ASGC.</div>
         <p>ASGC is one of the Middle East’s most respected construction conglomerates, known for delivering iconic projects that shape cities - from museums and mosques to luxury hotels and cultural landmarks.</p>
 
@@ -52,6 +58,13 @@
         <p>we created and rolled out a comprehensive content and communications strategy: social media, recruitment campaigns, employee features, milestone highlights, and press kits. our editorial team shaped thought leadership content and project showcases, while our campaign team ensured ASGC remained visible during key events like Cityscape and COP28.</p>
 
         <p>with every post, reel, and asset, we told the story of what happens after construction - the lives, stories, and possibilities that unfold in the spaces ASGC creates.</p>
+      </div>
+    </section>
+
+    <!-- Bottom banner image (reuse bottom section spacing/styles) -->
+    <section class="case-bottom-video">
+      <div class="video-wrap">
+        <img src="./Media/ASCG/ASGC Bottom banner.jpg" alt="ASGC bottom banner" style="width:100%;height:auto;display:block" />
       </div>
     </section>
 
