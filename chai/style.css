@@ -174,7 +174,7 @@ body::before{
   #case-studies.panel--text{flex-basis:auto}
   /* Align case studies header with copy panel margins */
   #case-studies{align-self:flex-start; margin:12px 100px 0 100px}
-  #case-studies .copy-head{margin:0}
+  #case-studies .copy-head{margin:0; padding-top: clamp(2rem, 4vh, 4rem);}
   .panel--copy .body-text{
     max-width:980px;
     padding:0 24px; /* breathing room without a box */
@@ -624,7 +624,7 @@ body::before{
   /* About & Contact */
   .about{flex-basis:680px; align-self:flex-start; margin:100px 100px 0 100px; position:relative; top:60px; padding-bottom:40px}
   /* Align About header with other headers and enlarge about copy */
-  .about .copy-head{margin:-10vh 0 19vh 10vh;}
+  .about .copy-head{margin:-10vh 0 19vh 10vh; padding-top: clamp(2rem, 4vh, 4rem);}
   /* About headline per-word reveal */
   .about .copy-head{color:var(--ink); max-width: calc(150vw - 104px); width: calc(110vw - 104px);}
   .about .copy-head .word{color:var(--muted); transition:color 140ms linear}
@@ -1168,7 +1168,7 @@ body::before{
   /* Ensure parent class 'layer-media' does not disable interactions here */
   .services-stack.layer-media{ pointer-events: auto !important; }
   .services-stack .media-pane{position:relative; padding-left:0; margin-left:-28px}
-  .services-stack .media-title{font-size:56px; line-height:1; font-weight:800; margin-bottom: 27px;}
+  .services-stack .media-title{font-size:56px; line-height:1; font-weight:800; margin-bottom: 27px; padding-top: clamp(2rem, 4vh, 4rem);}
   .services-stack .media-stack{position:relative; width:100%; max-width:360px; height:420px}
   .services-stack .media-card{position:absolute; width:320px; height:360px; left:0; top:60px; background:#1a1a1a; border:1px solid var(--line); transform:rotate(-8deg); box-shadow:0 20px 40px rgba(0,0,0,0.45); overflow:hidden}
   /* Premium feel: tiny parallax/nudge and smoother transitions */
