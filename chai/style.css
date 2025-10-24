@@ -24,6 +24,7 @@
   /* Accent serif for selective emphasis (Didot LP Display → Playfair fallback) */
   --accent-serif: "Didot LP Display", "Playfair Display", serif;
   --about-center-offset: -30px;
+  --services-rail-offset: 0px; /* tweak if you want the rail slightly up/down */
 }
 
 /* ================= Loader ================= */
@@ -1202,7 +1203,7 @@ body::before{
   .services-stack .media-accent{position:absolute; width:140px; height:40px; background:#495932; right:-20px; bottom:24px; transform:rotate(-10deg)}
 
   /* Right services list (STACKED, animated) */
-  .services-stack .services-list{position:relative; height:720px; overflow:hidden; padding:0px 16px 0 16px; pointer-events:auto}
+  .services-stack .services-list{position:relative; height:876px; overflow:hidden; padding:0px 16px 0 16px; pointer-events:auto}
   .services-stack .service{position:absolute; height:132px; display:grid; grid-template-columns:56px minmax(0, 1.4fr) minmax(0, 0.8fr) 32px; align-items:center; gap:12px; padding:10px 20px; border:1px solid #1d1d1d; background:rgba(15,15,15,0.92); border-radius:10px; left:14px; right:14px; overflow:hidden; margin-bottom:4px; pointer-events:auto; z-index:1; cursor:pointer;
     /* animation vars set by JS */
     --ty: 0px; --tx: 0px; --alpha: 0; --bg: none;

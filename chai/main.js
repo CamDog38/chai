@@ -377,7 +377,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const GAP_SAFE = isMobile ? 2 : 4;  // safety pixels to prevent any bleed/overlap
     const SIDE_PAD_LEFT = 0;
     const SIDE_PAD_RIGHT = 14;
-    const BOTTOM_PAD = isMobile ? 250 : 68; // center cards on mobile
     const STACK_TOP_OFFSET = 0; // no extra top offset needed with larger gaps
 
     function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
@@ -448,6 +447,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Horizontal-position driven progress (guarantee full stack by center)
       const vRect = viewport.getBoundingClientRect();
       const sRect = stackRoot.getBoundingClientRect();
+      const listRect = listEl ? listEl.getBoundingClientRect() : sRect;
       const vCenter = vRect.left + vRect.width / 2;
       const vRight = vRect.left + vRect.width;
       const sCenter = sRect.left + sRect.width / 2;
@@ -458,6 +458,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const g = clamp(base * STACK_SPEED, 0, 1);
 
       const ch = listEl ? listEl.clientHeight : vh;
+      // Compute bottom padding dynamically so the gap between card 2 and 3 aligns with the viewport center
+      // EFFECTIVE row footprint = row height + gap + safety
+      const EFFECTIVE_LOCAL = ROW_H + ROW_GAP + GAP_SAFE;
+      const vpCenterY = vRect.top + vRect.height / 2;
+      const vpYInList = (listRect ? vpCenterY - listRect.top : vRect.height / 2);
+      // How many EFFECTIVE rows from bottom should we leave so the center falls between rows 2 and 3? ~2.5 rows
+      const cssOffset = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--services-rail-offset')) || 0;
+      const bottomPad = Math.max(isMobile ? 120 : 40,
+        Math.round(ch - vpYInList - EFFECTIVE_LOCAL * 2.5 + ROW_GAP + ROW_H / 2 + cssOffset));
 
       let activeIdx = 0;
       let bestDist = Infinity;
@@ -469,7 +478,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const eased = easeOutCubic(p);
         const startY = -ROW_H - 60;
         const EFFECTIVE = ROW_H + ROW_GAP + GAP_SAFE;
-        const targetY = Math.max(0, STACK_TOP_OFFSET + ch - BOTTOM_PAD - EFFECTIVE * (i + 1) + ROW_GAP);
+        const targetY = Math.max(0, STACK_TOP_OFFSET + ch - bottomPad - EFFECTIVE * (i + 1) + ROW_GAP);
         const curY = startY + (targetY - startY) * eased;
         el.style.setProperty('--ty', `${curY}px`);
         el.style.left = `${SIDE_PAD_LEFT}px`;
