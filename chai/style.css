@@ -175,6 +175,7 @@ body::before{
   /* Align case studies header with copy panel margins */
   #case-studies{align-self:flex-start; margin:12px 100px 0 100px}
   #case-studies .copy-head{margin:0; padding-top: clamp(2rem, 4vh, 4rem);}
+  #services.panel{ align-self:flex-start }
   .panel--copy .body-text{
     max-width:980px;
     padding:0 24px; /* breathing room without a box */
