@@ -669,6 +669,9 @@ body::before{
   }
   .contact-hero .copy-head{ margin:0 0 12px 0; }
   .contact-copy a{ color:var(--ink); text-decoration:underline; text-underline-offset:3px }
+  .panel.contact .contact-copy i.accent-serif{ font-family: var(--accent-serif) !important; font-style: italic; font-weight:400; font-size: 1.30em; letter-spacing:.01em; }
+  /* Tighten line-height for contact paragraph on larger screens to reduce gap above the accent line */
+  .panel.contact .contact-copy{ line-height: 1.3; }
 
   /* Center the circular CTA under the text column (not the full panel) */
   .panel.contact .contact-copy + .submit{
