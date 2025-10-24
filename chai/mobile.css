@@ -1,0 +1,204 @@
+/* ===============================================
+   MOBILE-SPECIFIC OVERRIDES
+   Applied only on screens <= 720px
+   Keeps mobile layouts independent from desktop changes
+   =============================================== */
+
+/* Reset About section for mobile */
+@media (max-width: 720px) {
+  .panel.about,
+  section.about,
+  .panel--text.about,
+  .panel--copy.about {
+    margin: 0 20px !important;
+    padding: 40px 0 60px 0 !important; /* top and bottom padding */
+    top: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important; /* vertically center content */
+    min-height: 100vh !important; /* full viewport height */
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+  }
+
+  .about .copy-head,
+  .about h2.copy-head {
+    margin: 0 0 0 0 !important; /* no bottom margin - let flex spacing handle it */
+    padding: 0 !important;
+    padding-top: 0 !important;
+    font-size: clamp(26px, 7vw, 32px) !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    position: absolute !important; /* position at top */
+    top: 40px !important;
+    left: 0 !important;
+  }
+
+  .about .copy-cols,
+  .about div.copy-cols {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important; /* more space between paragraphs */
+    margin: 0 !important;
+    margin-top: auto !important; /* vertically center */
+    margin-bottom: auto !important;
+    margin-left: 40px !important; /* indent text from left */
+    margin-right: 0 !important; /* no extra right margin */
+    padding-right: 10px !important; /* small buffer on right */
+    transform: none !important;
+    max-width: calc(100% - 50px) !important; /* left indent + right buffer */
+    width: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  .about .copy-cols p {
+    font-size: clamp(20px, 5.2vw, 26px) !important; /* much larger text */
+    line-height: 1.55 !important; /* tighter line height for bigger text */
+    margin: 0 !important;
+    max-width: 100% !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .about .copy-cols p + p {
+    margin-top: 28px !important; /* more space between paragraphs */
+  }
+
+  .about .copy-cols > div + div {
+    margin-top: 24px !important;
+  }
+}
+
+/* Very small screens (<=480px) */
+@media (max-width: 480px) {
+  .panel.about,
+  section.about,
+  .panel--text.about,
+  .panel--copy.about {
+    margin: 0 16px !important;
+    padding: 36px 0 50px 0 !important;
+    justify-content: center !important;
+    min-height: 100vh !important;
+  }
+
+  .about .copy-head,
+  .about h2.copy-head {
+    margin: 0 !important;
+    padding: 0 !important;
+    padding-top: 0 !important;
+    font-size: clamp(24px, 6.5vw, 28px) !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    position: absolute !important;
+    top: clamp(32px, 4.5vh, 40px) !important; /* responsive top position */
+    left: clamp(-40px, -5vw, -30px) !important; /* responsive left offset - scales with viewport */
+  }
+
+  .about .copy-cols,
+  .about div.copy-cols {
+    gap: 28px !important; /* more space between paragraphs */
+    margin: 0 !important;
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+    margin-left: 32px !important; /* slightly less indent on small screens */
+    margin-right: 0 !important;
+    padding-right: 8px !important; /* small buffer on right */
+    transform: none !important;
+    max-width: calc(100% - 40px) !important; /* left indent + right buffer */
+    width: auto !important;
+  }
+
+  .about .copy-cols p {
+    font-size: clamp(18px, 5.8vw, 24px) !important; /* much larger text */
+    line-height: 1.5 !important; /* tighter for bigger text */
+  }
+
+  .about .copy-cols p + p {
+    margin-top: 24px !important; /* more space between paragraphs */
+  }
+
+  .about .copy-cols > div + div {
+    margin-top: 20px !important;
+  }
+}
+
+/* Services section - add responsive heading offset for small screens */
+@media (max-width: 480px) {
+  .services-stack .media-title {
+    font-size: clamp(24px, 6.5vw, 28px) !important;
+    margin: 0 0 14px clamp(-70px, -9vw, -50px) !important; /* responsive left offset */
+  }
+}
+
+/* Case Studies mobile reset */
+@media (max-width: 720px) {
+  #case-studies {
+    margin: 0 20px !important; /* match services margin */
+    padding-bottom: clamp(50px, 8vh, 70px) !important; /* responsive space before first card */
+  }
+
+  #case-studies .copy-head {
+    padding-top: 0 !important;
+    margin: clamp(28px, 4.5vh, 40px) clamp(20px, 3.5vw, 32px) 0 0 !important; /* responsive top and right margins */
+    font-size: clamp(26px, 7vw, 32px) !important; /* match services heading size */
+  }
+}
+
+@media (max-width: 480px) {
+  #case-studies {
+    margin: 0 16px !important; /* match services margin */
+    padding-bottom: clamp(40px, 7vh, 60px) !important; /* responsive space before first card */
+  }
+
+  #case-studies .copy-head {
+    margin: clamp(25px, 4vh, 35px) clamp(18px, 3vw, 28px) 0 0 !important; /* responsive top and right margins */
+    padding-top: 0 !important;
+    font-size: clamp(24px, 6.5vw, 28px) !important; /* match services heading size */
+  }
+}
+
+/* Contact section mobile reset */
+@media (max-width: 720px) {
+  .panel.contact {
+    margin: 0 20px !important; /* match services margin */
+  }
+
+  .contact .copy-head {
+    margin: 0 0 16px 0 !important; /* match services heading margin */
+    padding-top: 0 !important;
+    font-size: clamp(26px, 7vw, 32px) !important; /* match services heading size */
+  }
+
+  .contact-copy {
+    margin: 0 0 28px 0 !important;
+    max-width: 100% !important; /* fill container width */
+    font-size: 22px !important;
+    line-height: 1.8 !important;
+  }
+
+  .panel.contact .contact-copy + .submit {
+    position: relative !important;
+    left: 50% !important;
+    top: auto !important;
+    transform: translateX(-50%) !important;
+    margin-top: 20px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .panel.contact {
+    margin: 0 16px !important; /* match services margin */
+  }
+
+  .contact .copy-head {
+    margin: 0 0 14px 0 !important; /* match services heading margin */
+    font-size: clamp(24px, 6.5vw, 28px) !important; /* match services heading size */
+  }
+
+  .contact-copy {
+    font-size: 22px !important;
+    max-width: 100% !important;
+  }
+}

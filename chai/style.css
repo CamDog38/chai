@@ -283,52 +283,7 @@ body::before{
     #services.panel.panel--copy{margin:0}
     .panel--copy.panel--text{flex-basis:auto}
     
-    /* About section mobile optimization */
-    .about{
-      margin: 0;
-      /* bring content higher on screen (5px higher) */
-      padding: 11px 24px 40px 88px;
-      top: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center; /* center paragraph vertically */
-      min-height: 100vh;       /* match viewport height */
-      max-width: 100vw;
-      box-sizing: border-box;
-    }
-    .about .copy-head{
-      /* a bit more space below heading */
-      margin: 0 0 22px 0;
-      font-size: clamp(24px, 6vw, 32px);
-      max-width: calc(100vw - 112px);
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-    }
-    .about .copy-cols{
-      grid-template-columns: 1fr;
-      gap: 20px;
-      margin: 0; /* reset horizontal */
-      margin-top: auto;   /* center vertically */
-      margin-bottom: auto;
-      transform: translateY(var(--about-center-offset));
-      max-width: calc(100vw - 112px);
-      width: 100%;
-      box-sizing: border-box;
-    }
-    .about .copy-cols p{
-      font-size: clamp(15px, 4vw, 18px);
-      line-height: 1.6;
-      margin: 0;
-      max-width: 100%;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-    }
-    .about .copy-cols p + p{
-      margin-top: 12px;
-    }
-    .about .copy-cols > div + div{
-      margin-top: 20px;
-    }
+    /* About section mobile optimization - handled in mobile.css */
   }
   /* ================= Mobile Swipe Helper ================= */
   .swipe-helper{
@@ -418,52 +373,7 @@ body::before{
     #services.panel.panel--copy{margin-left: -12vh; margin-right: 8vh;}
     .panel--copy.panel--text{flex-basis:auto; margin-left: 30px; margin-right: 132px; margin-top: -30px;}
     
-    /* About section mobile optimization */
-    .about{
-      margin: 0;
-      /* bring title up further on very small screens (5px higher) */
-      padding: 9px 20px 30px 72px;
-      top: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center; /* center paragraph vertically */
-      min-height: 100vh;       /* match viewport height */
-      max-width: 100vw;
-      box-sizing: border-box;
-    }
-    .about .copy-head{
-      /* a bit more space below heading */
-      margin: 0 0 20px 0;
-      font-size: clamp(30px, 5.5vw, 28px);
-      max-width: calc(100vw - 92px);
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-    }
-    .about .copy-cols{
-      grid-template-columns: 1fr;
-      gap: 16px;
-      margin: 0; /* reset horizontal */
-      margin-top: auto;   /* center vertically */
-      margin-bottom: auto;
-      transform: translateY(var(--about-center-offset));
-      max-width: calc(100vw - 92px);
-      width: 100%;
-      box-sizing: border-box;
-    }
-    .about .copy-cols p{
-      font-size: clamp(14px, 3.8vw, 16px);
-      line-height: 1.55;
-      margin: 0;
-      max-width: 100%;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-    }
-    .about .copy-cols p + p{
-      margin-top: 10px;
-    }
-    .about .copy-cols > div + div{
-      margin-top: 16px;
-    }
+    /* About section mobile optimization - handled in mobile.css */
   }
 
   /* Horizontal rail */
@@ -1078,34 +988,9 @@ body::before{
   }
   .submit:hover::after{ opacity:1; transform: translateY(0) }
 
-  /* Mobile About layout override */
-  @media (max-width: 700px){
-    .about .copy-cols{ max-width:360px !important; gap:48px !important; margin:0 48px !important }
-  }
-  @media (max-width: 480px){
-    .about .copy-cols{ max-width:360px !important; gap:48px !important; margin:0 85px !important }
-  }
+  /* Mobile About layout - handled in mobile.css */
 
-  /* ================= Mobile typography normalization ================= */
-  /* Ensure all primary body text uses 22px/1.8 on mobile, including Contact */
-  @media (max-width: 700px){
-    .panel--text .body-text,
-    .panel--text .body-text p,
-    .about .copy-cols p,
-    .contact-copy{
-      font-size: 22px !important;
-      line-height: 1.8 !important;
-    }
-  }
-  @media (max-width: 480px){
-    .panel--text .body-text,
-    .panel--text .body-text p,
-    .about .copy-cols p,
-    .contact-copy{
-      font-size: 22px !important;
-      line-height: 1.8 !important;
-    }
-  }
+  /* Mobile typography - handled in mobile.css */
   /* Center the contact button in the middle of the contact rail (index) */
   .panel.contact .submit{
     position:absolute; left:50%; top:68%; transform:translate(-50%, -50%);
@@ -1259,9 +1144,9 @@ body::before{
       max-width: 100vw;
       box-sizing: border-box;
     }
-    /* Reduce spacing from previous section */
+    /* Spacing between intro copy and cards */
     #services + .services-stack{
-      margin-top: -40vh;
+      margin-top: 40px;
     }
     /* Show the heading container on mobile */
     .services-stack .media-pane{display: block; padding-left: 0; margin-left: 0;}
@@ -1272,7 +1157,7 @@ body::before{
       box-sizing: border-box;
       position: relative;
     }
-    .services-stack .media-title{ font-size: clamp(30px, 5.5vw, 28px); margin: -51px 0 10px -110px }
+    .services-stack .media-title{ font-size: clamp(26px, 7vw, 32px); margin: 0 0 16px 0; padding-top: 0; }
     .services-stack .service{
       left: 16px;
       right: 16px;
@@ -1303,26 +1188,18 @@ body::before{
       max-width: 100vw;
       box-sizing: border-box;
     }
-    /* Reduce spacing from previous section */
-    #services + .services-stack{
-      margin-top: 34vh;
-      margin-left: 31vh;
+    
+    .services-stack .media-title{ 
+      font-size: clamp(24px, 6.5vw, 28px); 
+      margin: 0 0 14px 0; 
     }
     
     .services-stack .services-list{
-      padding: 0px 0px 0 52px; /* top space for pseudo heading */
+      padding: 0 12px;
       max-width: 100%;
       box-sizing: border-box;
-      position: relative;
     }
-    .services-stack .services-list::before{
-      font-size: clamp(26px, 7vw, 32px);
-      margin: 0;
-      position: absolute;
-      top: 6px;
-      left: 12px;
-      z-index: 2;
-    }
+    
     .services-stack .service{
       left: 12px;
       right: 12px;
@@ -1812,20 +1689,4 @@ strong, b{ font-family: var(--accent-serif) !important; letter-spacing:.005em }
     }
   }
 
-/* Final mobile overrides (placed at end to win cascade) */
-@media (max-width: 720px){
-  .about{
-    padding: 11px 24px 40px 88px !important; /* lift section higher */
-  }
-  .about .copy-head{
-    margin: -20px 0 22px 20px !important; /* more space under heading */
-  }
-}
-@media (max-width: 480px){
-  .about{
-    padding: 9px 20px 30px 72px !important; /* lift further on very small screens */
-  }
-  .about .copy-head{
-    margin: -25px 0 30px 0 !important;
-  }
-}
+/* Mobile overrides are now handled in mobile.css */
