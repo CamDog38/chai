@@ -622,9 +622,9 @@ body::before{
  .case-card__desc{font-family:'Inter','Poppins',system-ui; font-size:15px; color:var(--muted); line-height:1.7}
 
   /* About & Contact */
-  .about{flex-basis:680px; align-self:flex-start; margin:100px 100px 0 100px; position:relative; top:60px; padding-bottom:40px}
+  .about{flex-basis:680px; align-self:flex-start; margin:12px 100px 0 100px; position:relative; top:0; padding-bottom:40px}
   /* Align About header with other headers and enlarge about copy */
-  .about .copy-head{margin:-10vh 0 19vh 10vh; padding-top: clamp(2rem, 4vh, 4rem);}
+  .about .copy-head{margin:0; padding-top: clamp(2rem, 4vh, 4rem);}
   /* About headline per-word reveal */
   .about .copy-head{color:var(--ink); max-width: calc(150vw - 104px); width: calc(110vw - 104px);}
   .about .copy-head .word{color:var(--muted); transition:color 140ms linear}
