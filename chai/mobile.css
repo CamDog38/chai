@@ -11,7 +11,7 @@
   .panel--text.about,
   .panel--copy.about,
   .about {
-    margin: 0 20px !important;
+    margin: 0 20px 0 20px !important;
     padding: 40px 0 60px 0 !important; /* top and bottom padding */
     top: 0 !important;
     display: flex !important;
@@ -23,6 +23,8 @@
     position: relative !important;
     transform: none !important; /* reset desktop transform */
     --about-center-offset: 0 !important; /* reset CSS variable */
+    flex-basis: auto !important; /* reset desktop flex-basis */
+    align-self: auto !important; /* reset desktop align-self */
   }
 
   .about .copy-head,
@@ -44,14 +46,12 @@
   .about div.copy-cols {
     grid-template-columns: 1fr !important;
     gap: 32px !important; /* more space between paragraphs */
-    margin: 0 auto !important;
+    margin: 0 !important;
     margin-top: clamp(15px, 25vh - 125px, 95px) !important; /* position above hamburger menu */
-    margin-left: clamp(20px, 5vw, 40px) !important; /* responsive left offset */
-    margin-right: clamp(20px, 5vw, 40px) !important; /* responsive right offset for centering */
-    padding-right: 10px !important; /* small buffer on right */
+    padding: 0 clamp(20px, 5vw, 40px) !important; /* responsive padding instead of margin */
     transform: none !important;
-    max-width: calc(100% - clamp(40px, 10vw, 80px)) !important; /* center with responsive margins */
-    width: auto !important;
+    max-width: 100% !important;
+    width: 100% !important;
     box-sizing: border-box !important;
   }
 
@@ -80,12 +80,14 @@
   .panel--text.about,
   .panel--copy.about,
   .about {
-    margin: 0 16px !important;
+    margin: 0 16px 0 16px !important;
     padding: 36px 0 50px 0 !important;
     justify-content: center !important;
     min-height: 100vh !important;
     transform: none !important; /* reset desktop transform */
     --about-center-offset: 0 !important; /* reset CSS variable */
+    flex-basis: auto !important; /* reset desktop flex-basis */
+    align-self: auto !important; /* reset desktop align-self */
   }
 
   .about .copy-head,
@@ -104,14 +106,12 @@
   .about .copy-cols,
   .about div.copy-cols {
     gap: 28px !important; /* more space between paragraphs */
-    margin: 0 auto !important;
+    margin: 0 !important;
     margin-top: clamp(5px, 20vh - 105px, 75px) !important; /* position above hamburger menu */
-    margin-left: clamp(16px, 4vw, 32px) !important; /* responsive left offset */
-    margin-right: clamp(16px, 4vw, 32px) !important; /* responsive right offset for centering */
-    padding-right: 8px !important; /* small buffer on right */
+    padding: 0 clamp(16px, 4vw, 32px) !important; /* responsive padding instead of margin */
     transform: none !important;
-    max-width: calc(100% - clamp(32px, 8vw, 64px)) !important; /* center with responsive margins */
-    width: auto !important;
+    max-width: 100% !important;
+    width: 100% !important;
   }
 
   .about .copy-cols p {
