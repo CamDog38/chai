@@ -29,8 +29,8 @@
 
   .about .copy-head,
   .about h2.copy-head {
-    margin: 0 0 16px 0 !important; /* match case studies heading margin */
-    padding: 0 !important;
+    margin: clamp(28px, 4.5vh, 40px) 0 16px 0 !important; /* match case studies top margin - override desktop margin:0 */
+    padding: 0 !important; /* override desktop padding-top */
     padding-top: 0 !important;
     font-size: clamp(26px, 7vw, 32px) !important;
     max-width: 100% !important;
@@ -48,11 +48,12 @@
     grid-template-columns: 1fr !important;
     gap: 32px !important; /* more space between paragraphs */
     margin: 0 !important;
-    margin-top: clamp(15px, 25vh - 125px, 95px) !important; /* position above hamburger menu */
+    margin-top: auto !important; /* vertically center in flex container */
+    margin-bottom: auto !important;
     padding: 0 !important;
-    transform: none !important;
-    max-width: 100% !important;
-    width: 100% !important;
+    transform: none !important; /* override desktop transform: translateY */
+    max-width: 100% !important; /* override desktop calc(180vw - 104px) */
+    width: 100% !important; /* override desktop calc(140vw - 104px) */
     box-sizing: border-box !important;
   }
 
@@ -93,8 +94,8 @@
 
   .about .copy-head,
   .about h2.copy-head {
-    margin: 0 0 14px 0 !important; /* match case studies heading margin */
-    padding: 0 !important;
+    margin: clamp(25px, 4vh, 35px) 0 14px 0 !important; /* match case studies top margin - override desktop margin:0 */
+    padding: 0 !important; /* override desktop padding-top */
     padding-top: 0 !important;
     font-size: clamp(24px, 6.5vw, 28px) !important;
     max-width: 100% !important;
@@ -109,11 +110,12 @@
   .about div.copy-cols {
     gap: 28px !important; /* more space between paragraphs */
     margin: 0 !important;
-    margin-top: clamp(5px, 20vh - 105px, 75px) !important; /* position above hamburger menu */
+    margin-top: auto !important; /* vertically center in flex container */
+    margin-bottom: auto !important;
     padding: 0 !important;
-    transform: none !important;
-    max-width: 100% !important;
-    width: 100% !important;
+    transform: none !important; /* override desktop transform: translateY */
+    max-width: 100% !important; /* override desktop calc(180vw - 104px) */
+    width: 100% !important; /* override desktop calc(140vw - 104px) */
   }
 
   .about .copy-cols p {
