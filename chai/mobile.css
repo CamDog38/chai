@@ -11,7 +11,7 @@
   .panel--text.about,
   .panel--copy.about,
   .about {
-    margin: 0 20px 0 20px !important;
+    margin: 0 80px 0 20px !important; /* more right margin for spacing */
     padding: 40px 0 60px 0 !important; /* top and bottom padding */
     top: 0 !important;
     display: flex !important;
@@ -29,7 +29,7 @@
 
   .about .copy-head,
   .about h2.copy-head {
-    margin: clamp(28px, 4.5vh, 40px) 0 16px 0 !important; /* match case studies top margin - override desktop margin:0 */
+    margin: clamp(26px, 4.5vh, 38px) 0 16px 0 !important; /* match case studies top margin - override desktop margin:0 */
     padding: 0 !important; /* override desktop padding-top */
     padding-top: 0 !important;
     font-size: clamp(26px, 7vw, 32px) !important;
@@ -50,6 +50,8 @@
     margin: 0 !important;
     margin-top: auto !important; /* vertically center in flex container */
     margin-bottom: auto !important;
+    margin-left: 45px !important; /* offset text to the right */
+    margin-right: 60px !important; /* space before services */
     padding: 0 !important;
     transform: none !important; /* override desktop transform: translateY */
     max-width: 100% !important; /* override desktop calc(180vw - 104px) */
@@ -82,7 +84,7 @@
   .panel--text.about,
   .panel--copy.about,
   .about {
-    margin: 0 16px 0 16px !important;
+    margin: 0 70px 0 16px !important; /* more right margin for spacing */
     padding: 36px 0 50px 0 !important;
     justify-content: center !important;
     min-height: 100vh !important;
@@ -94,7 +96,7 @@
 
   .about .copy-head,
   .about h2.copy-head {
-    margin: clamp(25px, 4vh, 35px) 0 14px 0 !important; /* match case studies top margin - override desktop margin:0 */
+    margin: clamp(23px, 4vh, 33px) 0 14px 0 !important; /* match case studies top margin - override desktop margin:0 */
     padding: 0 !important; /* override desktop padding-top */
     padding-top: 0 !important;
     font-size: clamp(24px, 6.5vw, 28px) !important;
@@ -112,6 +114,8 @@
     margin: 0 !important;
     margin-top: auto !important; /* vertically center in flex container */
     margin-bottom: auto !important;
+    margin-left: 45px !important; /* offset text to the right */
+    margin-right: 60px !important; /* space before services */
     padding: 0 !important;
     transform: none !important; /* override desktop transform: translateY */
     max-width: 100% !important; /* override desktop calc(180vw - 104px) */
