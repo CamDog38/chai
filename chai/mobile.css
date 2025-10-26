@@ -29,7 +29,7 @@
 
   .about .copy-head,
   .about h2.copy-head {
-    margin: clamp(26px, 4.5vh, 38px) 0 16px 0 !important; /* match case studies top margin - override desktop margin:0 */
+    margin: clamp(20px, 3.5vh, 28px) 0 16px 0 !important; /* reduce to match services/case studies height */
     padding: 0 !important; /* override desktop padding-top */
     padding-top: 0 !important;
     font-size: clamp(26px, 7vw, 32px) !important;
@@ -96,7 +96,7 @@
 
   .about .copy-head,
   .about h2.copy-head {
-    margin: clamp(23px, 4vh, 33px) 0 14px 0 !important; /* match case studies top margin - override desktop margin:0 */
+    margin: clamp(18px, 3vh, 26px) 0 14px 0 !important; /* reduce to match services/case studies height */
     padding: 0 !important; /* override desktop padding-top */
     padding-top: 0 !important;
     font-size: clamp(24px, 6.5vw, 28px) !important;
