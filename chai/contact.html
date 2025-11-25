@@ -55,10 +55,20 @@
     <section class="contact-hero">
       <div class="contact-hero__bg-text" aria-hidden="true">contact us.</div>
       <div class="contact-hero__content layer-text">
-        <h2 class="copy-head animate-in">contact us.</h2>
-        <p class="contact-copy animate-in" style="margin-left:0; animation-delay: 0.1s">please fill out the form below and let's create work that is <i class="accent-serif">made to matter</i>.</p>
+        <div class="contact-hero__intro animate-in">
+          <img src="Images/Chai White ver2.png" alt="chai. helping brands speak human." class="contact-hero__logo" />
+          <div class="contact-hero__divider" aria-hidden="true"></div>
+          <p class="contact-hero__tagline">let's create work that's <i class="accent-serif">made to matter</i>.</p>
+          <div class="contact-hero__ctas">
+            <a href="#contactForm" class="contact-hero__btn contact-hero__btn--connect">connect with us.</a>
+            <a href="https://form.typeform.com/to/a9icRe6g" class="contact-hero__btn" target="_blank" rel="noopener noreferrer">work with us.</a>
+            <a href="https://form.typeform.com/to/etv0aSPL" class="contact-hero__btn" target="_blank" rel="noopener noreferrer">partner with us.</a>
+          </div>
+        </div>
+        <div class="contact-section contact-section--hidden">
+          <p class="contact-copy animate-in" style="margin-left:0; animation-delay: 0.1s">please fill out the form below and let's create work that is <i class="accent-serif">made to matter</i>.</p>
 
-        <form id="contactForm" class="contact-form animate-in" novalidate style="animation-delay: 0.2s">
+          <form id="contactForm" class="contact-form" novalidate>
           <div class="form-row">
             <div class="field">
               <label for="name">name</label>
@@ -95,6 +105,7 @@
           </div>
           <p id="formNote" class="body-text" style="color:var(--muted); margin-top:12px"></p>
         </form>
+        </div>
       </div>
     </section>
   </main>
@@ -117,6 +128,23 @@
           btn.setAttribute('aria-expanded', 'false');
           fly.setAttribute('aria-hidden', 'true');
         }
+      });
+    })();
+
+    // Reveal contact section (heading + copy + form) when clicking "connect with us."
+    (function(){
+      const connectBtn = document.querySelector('.contact-hero__btn--connect');
+      const section = document.querySelector('.contact-section');
+      if (!connectBtn || !section) return;
+
+      connectBtn.addEventListener('click', function(e){
+        e.preventDefault();
+        if (section.classList.contains('contact-section--hidden')) {
+          section.classList.remove('contact-section--hidden');
+          section.classList.add('contact-section--visible');
+        }
+        // Smooth scroll so the contact block is fully in view
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     })();
 
