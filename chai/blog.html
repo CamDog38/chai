@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>chai. | blog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Inter:wght@400;600;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/aileron" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="hero.css" />
+<link rel="stylesheet" href="case-studies.css" />
+<link rel="stylesheet" href="mobile.css" />
+
+<style>
+  .page--blog{ --blog-balance-gap: 300px; }
+  .page--blog .hero__inner{ grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--blog-balance-gap); }
+  .page--blog #post-01{ margin-left: calc(var(--blog-balance-gap) - var(--rail-gap)) !important; }
+  .page--blog .hero__right{ display:flex; justify-content:center; }
+  .page--blog .about{ flex-basis:auto; align-self:auto; margin:0; padding-bottom:0; min-height:auto; width:100% }
+  .page--blog .about .copy-cols{ margin:0 auto; width:100%; max-width: 820px; transform:none; grid-template-columns:1fr; gap:42px }
+  .blog-hero-intro .copy-cols p{ font-size: clamp(22px, 3.2vw, 30px); line-height: 1.25; color: var(--muted) }
+  .blog-hero-intro .copy-cols p + p{ margin-top:14px }
+  .page--blog.cs2 .case-card .case-card__desc{ -webkit-line-clamp:5; line-clamp:5; }
+  .page--blog .scroll-height{ height:1px; }
+</style>
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon" href="Images/Chai%20favicon.ico">
+</head>
+<body class="bg--gradient studio-light cs2 page--blog">
+
+<!-- Fixed Left Menu -->
+<aside class="left-menu" aria-label="Primary">
+  <a href="index#start" class="left-menu__logo" aria-label="Chai Home">
+    <img src="Images/Chai White ver2.png" alt="Chai logo" />
+  </a>
+  <button class="left-menu__toggle" aria-expanded="false" aria-controls="leftFlyout" title="Open menu">+</button>
+  <nav id="leftFlyout" class="left-flyout" aria-hidden="true">
+    <ul>
+      <li><a href="index#start">home.</a></li>
+      <li><a href="#start" class="active">notes.</a></li>
+      <li><a href="contact">contact us.</a></li>
+    </ul>
+  </nav>
+  <div class="left-menu__spacer" aria-hidden="true"></div>
+  <div class="left-menu__socials">
+      <a href="https://www.linkedin.com/company/chai-digital-communications/ " aria-label="LinkedIn" class="sm sm--in">in</a>
+      <a href="https://www.instagram.com/chaidigital?igsh=NjMxY3Q4ODlkdzYy&utm_source=qr" aria-label="Instagram" class="sm sm--ig">ig</a>
+  </div>
+</aside>
+
+<!-- scroll proxy -->
+<div class="scroll-detector" id="scrollDetector"><div class="scroll-height"></div></div>
+
+<!-- full-screen viewport (no frame) -->
+<div class="viewport">
+  <div class="rail" id="rail">
+
+    <!-- HERO -->
+    <section class="panel panel--hero" id="start">
+      <div class="hero">
+        <div class="hero__inner">
+          <section class="hero__left layer-text">
+            <h1 class="hero__heading" aria-label="chai blog">
+              <span class="line">notes, insights, <i class="accent-serif">and stories</i>.</span>
+            </h1>
+            <div class="hero__cta">
+              <a class="btn btn--primary" href="#post-01">browse posts</a>
+              <a class="btn" href="contact">start a project</a>
+            </div>
+          </section>
+
+          <aside class="hero__right layer-text">
+            <div class="about blog-hero-intro">
+              <div class="copy-cols">
+                <div>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+                  <p>duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+        <div style='font-family:"Inter" ;' class="scrollhint" aria-hidden="true"><span>scroll</span></div>
+      </div>
+    </section>
+
+    <!-- Blog posts (case study-style tiles) -->
+    <section class="panel case-card" id="post-01">
+      <div class="case-card__top grow-on-center layer-media" style="background-image:url('Images/Case Study BG/GS.png?v=20250903-1106'); background-size:cover; background-position:center;">
+        <div class="case-card__num">01</div>
+        <div class="case-card__logo"><img src="Images/Chai White ver2.png" alt="chai." /></div>
+      </div>
+      <div class="case-card__bottom layer-text">
+        <div class="case-card__brand">post one.</div>
+        <div class="case-card__desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</div>
+      </div>
+      <a class="case-card__link" href="blog-post" aria-label="Read blog post"><span class="case-card__readmore">read more →</span></a>
+    </section>
+
+    <section class="panel case-card">
+      <div class="case-card__top grow-on-center layer-media" style="background-image:url('Images/Case Study BG/ASGC.png'); background-size:cover; background-position:center;">
+        <div class="case-card__num">02</div>
+        <div class="case-card__logo"><img src="Images/Chai White ver2.png" alt="chai." /></div>
+      </div>
+      <div class="case-card__bottom layer-text">
+        <div class="case-card__brand">post two.</div>
+        <div class="case-card__desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Viverra accumsan in nisl nisi scelerisque. Tincidunt praesent semper feugiat nibh sed pulvinar proin gravida. Nisl nunc mi ipsum faucibus vitae aliquet nec ullamcorper sit. Amet venenatis urna cursus eget nunc scelerisque viverra mauris.</div>
+      </div>
+      <a class="case-card__link" href="blog-post" aria-label="Read blog post"><span class="case-card__readmore">read more →</span></a>
+    </section>
+
+    <section class="panel case-card">
+      <div class="case-card__top grow-on-center layer-media" style="background-image:url('Images/Case Study BG/Polar.jpg'); background-size:cover; background-position:center;">
+        <div class="case-card__num">03</div>
+        <div class="case-card__logo"><img src="Images/Chai White ver2.png" alt="chai." /></div>
+      </div>
+      <div class="case-card__bottom layer-text">
+        <div class="case-card__brand">post three.</div>
+        <div class="case-card__desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sagittis nisl rhoncus mattis rhoncus urna neque viverra. Id aliquet lectus proin nibh nisl condimentum id venenatis a. Gravida quis blandit turpis cursus in hac habitasse platea dictumst. Faucibus purus in massa tempor nec feugiat nisl pretium fusce.</div>
+      </div>
+      <a class="case-card__link" href="blog-post" aria-label="Read blog post"><span class="case-card__readmore">read more →</span></a>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="panel contact panel--text layer-text" id="contact">
+      <h2 class="copy-head">contact us.</h2>
+      <p class="contact-copy">please click the button below and let's create work that is <i class="accent-serif">made to matter.</i></p>
+      <a class="submit" href="/contact" aria-label="Contact form">
+        <span class="submit__arrow">↘</span>
+        <span class="submit__text"><span>Connect</span><span>Now</span></span>
+      </a>
+    </section>
+
+  </div>
+</div>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<script src="main.js" defer></script>
+<script src="case-studies-hover.js" defer></script>
+
+<script>
+  // Left menu toggle - run immediately, use capture phase
+  document.addEventListener('DOMContentLoaded', function(){
+    const menu = document.querySelector('.left-menu');
+    const btn = document.querySelector('.left-menu__toggle');
+    const logo = document.querySelector('.left-menu__logo');
+    const fly = document.getElementById('leftFlyout');
+    if(!menu || !fly) return;
+
+    // Toggle on button click (desktop)
+    if(btn) btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const open = menu.classList.toggle('is-open');
+      if(btn) btn.setAttribute('aria-expanded', String(open));
+      fly.setAttribute('aria-hidden', String(!open));
+    });
+
+    // Toggle on logo click (mobile tab) - use capture phase to intercept early
+    if(logo) {
+      logo.addEventListener('click', (e) => {
+        // Only toggle on mobile, allow normal navigation on desktop
+        if(window.innerWidth <= 700) {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          const open = menu.classList.toggle('is-open');
+          if(btn) btn.setAttribute('aria-expanded', String(open));
+          fly.setAttribute('aria-hidden', String(!open));
+          return false;
+        }
+      }, true); // Use capture phase
+    }
+
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && menu.classList.contains('is-open')) {
+        menu.classList.remove('is-open');
+        if(btn) btn.setAttribute('aria-expanded', 'false');
+        fly.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    // Close when any link inside the flyout is clicked
+    fly.addEventListener('click', (e) => {
+      const link = e.target.closest('a');
+      if (link) {
+        menu.classList.remove('is-open');
+        if(btn) btn.setAttribute('aria-expanded', 'false');
+        fly.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.classList.contains('is-open')) {
+        menu.classList.remove('is-open');
+        if(btn) btn.setAttribute('aria-expanded', 'false');
+        fly.setAttribute('aria-hidden', 'true');
+        if(btn) btn.focus();
+      }
+    });
+  });
+    </script>
+
+    <script src="swipe-helper.js" defer></script>
+
+<script>
+  // Hero CTA fix: scroll-detector sits on top (z-index:10) so e.target is always the overlay,
+  // not the button. Use elementFromPoint to find the real element under the cursor.
+  document.addEventListener('click', function(e){
+    var sd = document.getElementById('scrollDetector');
+    var realEl = null;
+    if(sd){
+      var prev = sd.style.pointerEvents;
+      sd.style.pointerEvents = 'none';
+      realEl = document.elementFromPoint(e.clientX, e.clientY);
+      sd.style.pointerEvents = prev || '';
+    } else {
+      realEl = e.target;
+    }
+    if(!realEl) return;
+    var a = realEl.closest ? realEl.closest('.hero__cta a') : null;
+    if(!a) return;
+    var href = a.getAttribute('href');
+    if(!href) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if(href.startsWith('#') && href.length > 1){
+      var doScroll = function(){
+        var target = document.querySelector(href);
+        if(!target) return;
+        if(typeof scrollRailToSection === 'function'){
+          scrollRailToSection(target, { focus:'auto' });
+        }
+      };
+      if(typeof scrollRailToSection === 'function') doScroll();
+      else window.addEventListener('load', doScroll);
+    } else {
+      window.location.href = href;
+    }
+  }, true);
+</script>
+</body>
+</html>

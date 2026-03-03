@@ -248,14 +248,16 @@ function update() {
 
 // Throttle global updates to animation frames to reduce jank
 let tickingGlobal = false;
-scrollDetector.addEventListener('scroll', () => {
-  if (tickingGlobal) return;
-  tickingGlobal = true;
-  requestAnimationFrame(() => { update(); tickingGlobal = false; });
-}, { passive: true });
-window.addEventListener('resize', () => { sizeGlobalScrollProxy(); update(); });
-sizeGlobalScrollProxy();
-update();
+if (scrollDetector && rail && progressFill && viewport){
+  scrollDetector.addEventListener('scroll', () => {
+    if (tickingGlobal) return;
+    tickingGlobal = true;
+    requestAnimationFrame(() => { update(); tickingGlobal = false; });
+  }, { passive: true });
+  window.addEventListener('resize', () => { sizeGlobalScrollProxy(); update(); });
+  sizeGlobalScrollProxy();
+  update();
+}
 
 // Contact form submit handler (moved from inline onsubmit)
 document.addEventListener('DOMContentLoaded', () => {
@@ -650,21 +652,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Overlay click proxy: forward clicks that land on the scroll overlay to the underlying CTA anchors
   if (scrollDetector){
-    scrollDetector.addEventListener('click', (ev) => {
+    function forwardOverlayAnchor(ev){
       // If the click actually hit a real anchor, let existing handlers process it
-      if (ev.target.closest && ev.target.closest('a')) return;
+      if (ev.target && ev.target.closest && ev.target.closest('a')) return;
+      const x = ev.clientX ?? (ev.changedTouches && ev.changedTouches[0] && ev.changedTouches[0].clientX);
+      const y = ev.clientY ?? (ev.changedTouches && ev.changedTouches[0] && ev.changedTouches[0].clientY);
+      if (typeof x !== 'number' || typeof y !== 'number') return;
+
       // Peek underneath the overlay to find the element at the click point
       const prev = scrollDetector.style.pointerEvents;
       scrollDetector.style.pointerEvents = 'none';
-      const below = document.elementFromPoint(ev.clientX, ev.clientY);
+      const below = document.elementFromPoint(x, y);
       scrollDetector.style.pointerEvents = prev || '';
-      const anchor = below && below.closest ? below.closest('a[href="#case-studies"], a[href="#contact"]') : null;
+
+      const anchor = below && below.closest ? below.closest('a') : null;
       if (!anchor) return;
-      ev.preventDefault();
       const href = anchor.getAttribute('href');
-      const target = document.querySelector(href);
-      if (!target) return;
-      scrollRailToSection(target, { focus: 'section' });
+      if (!href) return;
+
+      ev.preventDefault();
+
+      // Smooth-scroll for in-rail hash targets
+      if (href.startsWith('#') && href.length > 1){
+        const svcStack = document.querySelector('#rail > section.panel.services-stack.layer-media');
+        const target = (href === '#services' && svcStack) ? svcStack : document.querySelector(href);
+        if (!target) return;
+        if (!target.closest || !target.closest('.rail')) return;
+        const focus = href === '#services' ? 'section' : 'auto';
+        scrollRailToSection(target, { focus });
+      } else {
+        // Normal navigation (e.g. /contact)
+        window.location.href = href;
+      }
+
       // Close flyout if open
       const menu = document.querySelector('.left-menu');
       if (menu && menu.classList.contains('is-open')){
@@ -674,7 +694,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btn) btn.setAttribute('aria-expanded', 'false');
         if (fly) fly.setAttribute('aria-hidden', 'true');
       }
-    }, { passive: false });
+    }
+
+    scrollDetector.addEventListener('click', forwardOverlayAnchor, { passive: false });
+    scrollDetector.addEventListener('pointerup', forwardOverlayAnchor, { passive: false });
+    scrollDetector.addEventListener('touchend', forwardOverlayAnchor, { passive: false });
   }
 
   // Fallback: ensure hero CTA anchors (#case-studies, #contact) always scroll
